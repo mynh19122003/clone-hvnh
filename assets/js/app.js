@@ -16,11 +16,26 @@ const HVNH = {
     },
 
     init: function () {
-        // Load user from localStorage if exists
-        const savedUser = localStorage.getItem("hvnh_user");
-        if (savedUser) {
+        // Save initial public layout HTML from DOM before routing
+        const bodyEl = document.getElementById("body");
+        if (bodyEl) {
+            this.publicLayoutHtml = bodyEl.innerHTML;
+        }
+
+        // Load user from URL query param or localStorage if exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const userParam = urlParams.get("user");
+        if (userParam && HVNH_DATA && HVNH_DATA.students && HVNH_DATA.students[userParam]) {
+            this.state.currentUser = HVNH_DATA.students[userParam];
             try {
-                this.state.currentUser = JSON.parse(savedUser);
+                localStorage.setItem("hvnh_user", JSON.stringify(this.state.currentUser));
+            } catch (err) {}
+        } else {
+            try {
+                const savedUser = localStorage.getItem("hvnh_user");
+                if (savedUser) {
+                    this.state.currentUser = JSON.parse(savedUser);
+                }
             } catch (e) {
                 this.state.currentUser = null;
             }
@@ -39,6 +54,13 @@ const HVNH = {
         this.bindEvents();
     },
 
+    ensurePublicLayout: function () {
+        const bodyEl = document.getElementById("body");
+        if (bodyEl && !document.getElementById("mainContent") && this.publicLayoutHtml) {
+            bodyEl.innerHTML = this.publicLayoutHtml;
+        }
+    },
+
     // Handle Client-Side Routing
     handleRouting: function () {
         const hash = window.location.hash || "#/";
@@ -49,6 +71,10 @@ const HVNH = {
         // Reset search if changing main pages
         if (route !== "home") {
             this.state.searchKeyword = "";
+        }
+
+        if (route !== "portal") {
+            this.ensurePublicLayout();
         }
 
         this.setActiveNav(route);
@@ -67,7 +93,7 @@ const HVNH = {
                 this.renderLoginPage();
                 break;
             case "portal":
-                this.renderStudentPortal();
+                this.renderStudentPortal(param);
                 break;
             case "tin-tuc":
                 if (param) {
@@ -849,135 +875,80 @@ const HVNH = {
        ========================================================================== */
     renderLoginPage: function () {
         const html = `
-            <div class="divmain">
-                <div class="bgtitle">CỔNG THÔNG TIN ĐÀO TẠO - ĐĂNG NHẬP</div>
+            <div class="divmain" style="display: flex; justify-content: center; align-items: center; padding: 40px 15px; background: #f2f4f7; min-height: 520px;">
+                <div class="login-card" style="max-width: 380px; width: 100%; background: #ffffff; padding: 36px 32px 30px; border-radius: 6px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center;">
+                    <!-- Shield Logo replicating regist.hvnh.edu.vn/Login -->
+                    <div class="logo-box" style="display: flex; justify-content: center; margin-bottom: 14px;">
+                        <svg width="74" height="88" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 4 L93 20 C93 78 50 114 50 116 C50 114 7 78 7 20 Z" fill="#002d4f" stroke="#002d4f" stroke-width="1.5"/>
+                            <path d="M50 8 L89 23 C89 74 50 108 50 111 C50 108 11 74 11 23 Z" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+                            <text x="50" y="44" font-family="'Arial Black', Arial, sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">BAV</text>
+                            <g transform="translate(26, 49)">
+                                <path d="M24 16 C16 13 4 14 0 17 L0 31 C6 28 16 27 24 30 Z" fill="#ffffff"/>
+                                <path d="M24 16 C32 13 44 14 48 17 L48 31 C42 28 32 27 24 30 Z" fill="#ffffff"/>
+                                <line x1="24" y1="16" x2="24" y2="30" stroke="#002d4f" stroke-width="2"/>
+                                <path d="M24 4 L26 10 L32 12 L26 14 L24 20 L22 14 L16 12 L22 10 Z" fill="#ffc107"/>
+                                <rect x="36" y="19" width="7" height="2" fill="#ffc107" rx="1"/>
+                                <rect x="36" y="23" width="5" height="2" fill="#ffc107" rx="1"/>
+                            </g>
+                            <text x="50" y="100" font-family="'Arial', sans-serif" font-size="12" font-weight="bold" fill="#ffc107" text-anchor="middle" letter-spacing="1.5">1961</text>
+                        </svg>
+                    </div>
 
-                <div class="login-container">
-                    <div class="loginbox">
-                        <div class="loginbox-social">
-                            <div class="logo">
-                                <img src="assets/logo/logo.png" alt="Học viện Ngân hàng">
-                            </div>
-                            <div class="uni-name">HỌC VIỆN NGÂN HÀNG</div>
-                            <div class="social-title">Cổng thông tin đào tạo</div>
+                    <div style="font-size: 15px; font-weight: 500; color: #2b3648; margin-bottom: 12px; letter-spacing: 0.2px;">Đăng ký học phần</div>
+                    <div style="position: relative; margin: 0 0 20px 0; border-top: 1px solid #e5e7eb;">
+                        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ffffff; padding: 0 6px; color: #9ca3af; font-size: 13px;">*</span>
+                    </div>
+
+                    <div id="loginAlertBox" style="display: none; margin-bottom: 14px; padding: 8px 12px; border-radius: 4px; font-size: 13px; text-align: left;"></div>
+
+                    <form onsubmit="HVNH.submitLogin(event)">
+                        <div style="margin-bottom: 14px; text-align: left;">
+                            <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" required autocomplete="username" style="height: 38px; font-size: 13.5px; border-radius: 4px;">
                         </div>
-
-                        <div class="loginbox-or">
-                            <div class="or-line"></div>
-                            <div class="or">-*-</div>
+                        <div style="margin-bottom: 18px; text-align: left;">
+                            <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password" style="height: 38px; font-size: 13.5px; border-radius: 4px;">
                         </div>
+                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #1877f2; border: none; height: 38px; font-size: 14px; font-weight: 500; border-radius: 4px;">
+                            Đăng nhập
+                        </button>
+                    </form>
 
-                        <div id="loginAlertBox"></div>
-
-                        <form onsubmit="HVNH.submitLogin(event)">
-                            <div class="loginbox-textbox">
-                                <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập (Mã sinh viên)" required autocomplete="username">
-                            </div>
-
-                            <div class="loginbox-textbox">
-                                <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password">
-                            </div>
-
-                            <div class="loginbox-forgot">
-                                <div style="font-size: 13px; margin-bottom: 4px; font-weight: 500;">Nhập mã bảo vệ:</div>
-                                <div class="captcha-box">
-                                    <canvas id="captchaCanvas" width="130" height="38"></canvas>
-                                    <button type="button" class="btn-refresh-captcha" onclick="HVNH.generateCaptcha()" title="Đổi mã bảo vệ khác">
-                                        <i class="glyphicon glyphicon-refresh"></i> Đổi mã
-                                    </button>
-                                </div>
-                                <input type="text" class="form-control" id="txtCaptcha" placeholder="Nhập chữ/số bảo vệ..." style="max-width: 220px;" required>
-                            </div>
-
-                            <div style="margin-top: 20px;">
-                                <button type="submit" class="btn btn-info btn-block" style="background-color: #056382 !important; border-color: #056382; font-weight: bold; padding: 10px;">
-                                    Đăng nhập
-                                </button>
-                            </div>
-
-                            <div style="margin-top: 15px; text-align: center; font-size: 12.5px;">
-                                <a href="javascript:void(0)" onclick="HVNH.fillDemoLogin()" style="color: #056382; font-weight: bold;">
-                                    <i class="glyphicon glyphicon-log-in"></i> Đăng nhập nhanh bằng tài khoản mẫu
-                                </a>
-                            </div>
-                        </form>
+                    <div style="margin-top: 22px; padding-top: 14px; border-top: 1px dashed #e5e7eb; font-size: 12px; color: #6b7280;">
+                        <div>Tài khoản test: <strong>008307000568</strong> | Mật khẩu: <strong>12351235</strong></div>
+                        <button type="button" class="btn btn-xs btn-default" onclick="HVNH.fillTestAccount()" style="margin-top: 6px; color: #0284c7; font-weight: 600; border-radius: 3px;">
+                            ⚡ Điền tài khoản test
+                        </button>
                     </div>
                 </div>
             </div>
         `;
 
         document.getElementById("mainContent").innerHTML = html;
-        this.generateCaptcha();
     },
 
-    generateCaptcha: function () {
-        const canvas = document.getElementById("captchaCanvas");
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        
-        // Random 5 characters
-        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        let code = "";
-        for (let i = 0; i < 5; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        this.state.currentCaptcha = code;
-
-        // Draw background
-        ctx.fillStyle = "#f0f4f8";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Add noise lines
-        for (let i = 0; i < 4; i++) {
-            ctx.strokeStyle = `rgba(5, 99, 130, ${Math.random() * 0.4 + 0.2})`;
-            ctx.beginPath();
-            ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-            ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-            ctx.stroke();
-        }
-
-        // Add text with slight distortion
-        ctx.font = "bold 22px Courier, monospace";
-        ctx.fillStyle = "#056382";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(code, canvas.width / 2, canvas.height / 2);
-    },
-
-    fillDemoLogin: function () {
+    fillTestAccount: function () {
         const u = document.getElementById("txtUsername");
         const p = document.getElementById("txtPassword");
-        const c = document.getElementById("txtCaptcha");
-        if (u) u.value = "21A4010123";
-        if (p) p.value = "123";
-        if (c) c.value = this.state.currentCaptcha;
+        if (u) u.value = "008307000568";
+        if (p) p.value = "12351235";
+        const alertBox = document.getElementById("loginAlertBox");
+        if (alertBox) alertBox.style.display = "none";
     },
 
     submitLogin: function (e) {
         if (e) e.preventDefault();
         const username = (document.getElementById("txtUsername").value || "").trim();
         const password = (document.getElementById("txtPassword").value || "").trim();
-        const captcha = (document.getElementById("txtCaptcha").value || "").trim().toUpperCase();
         const alertBox = document.getElementById("loginAlertBox");
-
-        if (captcha !== this.state.currentCaptcha) {
-            alertBox.innerHTML = `
-                <div class="alert alert-danger" style="padding: 8px; font-size: 13px;">
-                    Mã bảo vệ không chính xác. Vui lòng nhập lại!
-                </div>
-            `;
-            this.generateCaptcha();
-            return;
-        }
 
         const student = HVNH_DATA.students[username];
         if (!student || student.password !== password) {
-            alertBox.innerHTML = `
-                <div class="alert alert-danger" style="padding: 8px; font-size: 13px;">
-                    Tên đăng nhập hoặc mật khẩu không chính xác!
-                </div>
-            `;
-            this.generateCaptcha();
+            if (alertBox) {
+                alertBox.style.display = "block";
+                alertBox.className = "alert alert-danger";
+                alertBox.innerHTML = "Tên đăng nhập hoặc mật khẩu không chính xác!";
+            }
             return;
         }
 
@@ -1002,277 +973,1535 @@ const HVNH = {
         if (!container) return;
 
         if (this.state.currentUser) {
+            const u = this.state.currentUser;
             container.innerHTML = `
-                <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropdown-toggle user-dropdown-btn" data-toggle="dropdown">
-                        <img src="${this.state.currentUser.avatar}" class="user-avatar-mini" alt="User">
-                        <span>${this.state.currentUser.hoTen}</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu" style="right: 0; left: auto; padding: 5px 0;">
-                        <li><a href="#/portal"><i class="glyphicon glyphicon-user"></i> Cổng thông tin SV</a></li>
-                        <li><a href="#/portal/diem"><i class="glyphicon glyphicon-list-alt"></i> Kết quả học tập</a></li>
-                        <li><a href="#/portal/dangky"><i class="glyphicon glyphicon-edit"></i> Đăng ký môn học</a></li>
-                        <li class="divider"></li>
-                        <li><a href="javascript:void(0)" onclick="HVNH.logout()"><i class="glyphicon glyphicon-log-out"></i> Đăng xuất</a></li>
-                    </ul>
+                <li style="display: flex; align-items: center; padding-top: 6px; padding-bottom: 6px; padding-right: 15px;">
+                    <div class="user-top-badge">
+                        <span>
+                            <a href="#/portal" style="color: #ffffff; font-weight: bold; text-decoration: none;">
+                                ${u.username} | ${u.hoTen}
+                            </a>
+                        </span>
+                        <a href="javascript:void(0)" class="logout-link" onclick="HVNH.logout()">
+                            <i class="glyphicon glyphicon-log-out"></i> [Đăng xuất]
+                        </a>
+                    </div>
                 </li>
             `;
         } else {
             container.innerHTML = `
                 <li id="nav-login">
-                    <a href="#/login"><i class="glyphicon glyphicon-lock"></i> Đăng nhập</a>
+                    <a href="login.html"><i class="glyphicon glyphicon-lock"></i> Đăng nhập</a>
                 </li>
             `;
         }
     },
 
     /* ==========================================================================
-       6. STUDENT PORTAL DASHBOARD
+       6. AUTHENTIC STUDENT PORTAL DASHBOARD (online.hvnh.edu.vn)
        ========================================================================== */
-    renderStudentPortal: function () {
+    renderStudentPortal: function (subTab = "info") {
         if (!this.state.currentUser) {
             window.location.hash = "#/login";
             return;
         }
 
-        const u = this.state.currentUser;
+        const bodyEl = document.getElementById("body");
+        if (!bodyEl) return;
 
-        let gradesRows = "";
-        if (u.grades) {
-            u.grades.forEach((g, idx) => {
-                gradesRows += `
+        // Render authentic 2-column portal shell
+        bodyEl.innerHTML = `
+            <div class="portal-wrapper">
+                <!-- Left Sidebar: Chức năng -->
+                <div class="portal-sidebar">
+                    <div class="portal-sidebar-title">
+                        <i class="glyphicon glyphicon-th"></i> Chức năng
+                    </div>
+
+                    <!-- 1. Trang cá nhân -->
+                    <div class="portal-sidebar-group">
+                        <div class="portal-sidebar-group-header">
+                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Trang cá nhân
+                        </div>
+                        <ul class="portal-sidebar-nav">
+                            <li><a href="javascript:void(0)" id="pnav-info" onclick="HVNH.switchPortalSection('info')">Thông tin cá nhân</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-thong-bao" onclick="HVNH.switchPortalSection('thong-bao')">Thông báo</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-huong-dan" onclick="HVNH.switchPortalSection('huong-dan')">Hướng dẫn sử dụng</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. Tra cứu thông tin -->
+                    <div class="portal-sidebar-group">
+                        <div class="portal-sidebar-group-header">
+                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Tra cứu thông tin
+                        </div>
+                        <ul class="portal-sidebar-nav">
+                            <li><a href="javascript:void(0)" id="pnav-study-programs" onclick="HVNH.switchPortalSection('study-programs')">Chương trình đào tạo</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-lich-hoc" onclick="HVNH.switchPortalSection('lich-hoc')">Lịch học</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-lich-thi" onclick="HVNH.switchPortalSection('lich-thi')">Lịch thi</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-quyet-dinh" onclick="HVNH.switchPortalSection('quyet-dinh')">Quyết định sinh viên</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-diem-danh" onclick="HVNH.switchPortalSection('diem-danh')">Chuyên cần</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-ren-luyen" onclick="HVNH.switchPortalSection('ren-luyen')">Kết quả rèn luyện</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-marks" onclick="HVNH.switchPortalSection('marks')">Kết quả học tập</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-tai-chinh" onclick="HVNH.switchPortalSection('tai-chinh')">Tài chính sinh viên</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-hoa-don" onclick="HVNH.switchPortalSection('hoa-don')">Chi tiết hóa đơn</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-ket-qua-dang-ky" onclick="HVNH.switchPortalSection('ket-qua-dang-ky')">Xem kết quả đăng ký học phần</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-chung-chi" onclick="HVNH.switchPortalSection('chung-chi')">Chứng chỉ</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Chức năng trực tuyến -->
+                    <div class="portal-sidebar-group">
+                        <div class="portal-sidebar-group-header">
+                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Chức năng trực tuyến
+                        </div>
+                        <ul class="portal-sidebar-nav">
+                            <li><a href="javascript:void(0)" id="pnav-dang-ky-hoc-phan" onclick="HVNH.switchPortalSection('dang-ky-hoc-phan')">Đăng ký học phần</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-xin-giay-xac-nhan" onclick="HVNH.switchPortalSection('xin-giay-xac-nhan')">Xin giấy xác nhận</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-lien-he" onclick="HVNH.switchPortalSection('lien-he')">Liên hệ - góp ý</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-xet-tot-nghiep" onclick="HVNH.switchPortalSection('xet-tot-nghiep')">Xét tốt nghiệp</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-nop-chung-chi" onclick="HVNH.switchPortalSection('nop-chung-chi')">Nộp chứng chỉ</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-dang-ky-phuc-khao" onclick="HVNH.switchPortalSection('dang-ky-phuc-khao')">Đăng ký phúc khảo</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-dang-ky-vang-thi" onclick="HVNH.switchPortalSection('dang-ky-vang-thi')">Đăng ký vắng thi</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-bao-hiem-y-te" onclick="HVNH.switchPortalSection('bao-hiem-y-te')">Khai báo bảo hiểm y tế</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-dang-ky-le-phi" onclick="HVNH.switchPortalSection('dang-ky-le-phi')">Đăng ký lệ phí</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Main Panel -->
+                <div class="portal-main-panel" id="portalMainPanel">
+                    <div class="portal-header-bar" id="portalHeaderTitle">Thông tin sinh viên</div>
+                    <div class="portal-body-inner" id="portalBodyContent"></div>
+                </div>
+            </div>
+        `;
+
+        this.switchPortalSection(subTab || "info");
+    },
+
+    switchPortalSection: function (tabId) {
+        document.querySelectorAll(".portal-sidebar-nav a").forEach(a => a.classList.remove("active"));
+        const link = document.getElementById(`pnav-${tabId}`);
+        if (link) link.classList.add("active");
+
+        const u = this.state.currentUser;
+        if (!u) return;
+
+        const headerTitle = document.getElementById("portalHeaderTitle");
+        const bodyContent = document.getElementById("portalBodyContent");
+        if (!headerTitle || !bodyContent) return;
+
+        switch (tabId) {
+            case "info":
+                headerTitle.innerText = "Thông tin sinh viên";
+                bodyContent.innerHTML = this.renderPortalInfo(u);
+                break;
+            case "thong-bao":
+                headerTitle.innerText = "Thông báo";
+                bodyContent.innerHTML = this.renderPortalThongBao(u);
+                break;
+            case "study-programs":
+                headerTitle.innerText = "Chương trình đào tạo";
+                bodyContent.innerHTML = this.renderPortalStudyPrograms(u);
+                break;
+            case "diem-danh":
+                headerTitle.innerText = "Chuyên cần";
+                bodyContent.innerHTML = this.renderPortalDiemDanh(u);
+                break;
+            case "ren-luyen":
+                headerTitle.innerText = "Kết quả rèn luyện";
+                bodyContent.innerHTML = this.renderPortalRenLuyen(u);
+                break;
+            case "marks":
+                headerTitle.innerText = "Kết quả học tập";
+                bodyContent.innerHTML = this.renderPortalMarks(u);
+                break;
+            case "tai-chinh":
+                headerTitle.innerText = "Tài chính sinh viên";
+                bodyContent.innerHTML = this.renderPortalTaiChinh(u);
+                break;
+            case "hoa-don":
+                headerTitle.innerText = "Chi tiết hóa đơn";
+                bodyContent.innerHTML = this.renderPortalHoaDon(u);
+                break;
+            case "ket-qua-dang-ky":
+                headerTitle.innerText = "Xem kết quả đăng ký học phần";
+                bodyContent.innerHTML = this.renderPortalKetQuaDangKy(u);
+                break;
+            case "chung-chi":
+                headerTitle.innerText = "Chứng chỉ";
+                bodyContent.innerHTML = this.renderPortalChungChi(u);
+                break;
+            case "nop-chung-chi":
+                headerTitle.innerText = "Nộp chứng chỉ";
+                bodyContent.innerHTML = this.renderPortalNopChungChi(u);
+                break;
+            case "xet-tot-nghiep":
+                headerTitle.innerText = "Xét tốt nghiệp";
+                bodyContent.innerHTML = this.renderPortalXetTotNghiep(u);
+                break;
+            case "dang-ky-phuc-khao":
+                headerTitle.innerText = "Đăng ký phúc khảo";
+                bodyContent.innerHTML = this.renderPortalPhucKhao(u);
+                break;
+            case "dang-ky-vang-thi":
+                headerTitle.innerText = "Đăng ký vắng thi";
+                bodyContent.innerHTML = this.renderPortalVangThi(u);
+                break;
+            case "lich-hoc":
+                headerTitle.innerText = "Lịch học";
+                bodyContent.innerHTML = this.renderPortalLichHoc(u);
+                break;
+            case "lich-thi":
+                headerTitle.innerText = "Lịch thi";
+                bodyContent.innerHTML = this.renderPortalLichThi(u);
+                break;
+            case "quyet-dinh":
+                headerTitle.innerText = "Quyết định sinh viên";
+                bodyContent.innerHTML = this.renderPortalQuyetDinh(u);
+                break;
+            case "dang-ky-hoc-phan":
+                headerTitle.innerText = "Đăng ký học phần";
+                bodyContent.innerHTML = this.renderPortalDangKyHocPhan(u);
+                break;
+            case "xin-giay-xac-nhan":
+                headerTitle.innerText = "Xin giấy xác nhận";
+                bodyContent.innerHTML = this.renderPortalXinGiayXacNhan(u);
+                break;
+            case "lien-he":
+                headerTitle.innerText = "Liên hệ - góp ý";
+                bodyContent.innerHTML = this.renderPortalLienHe(u);
+                break;
+            case "bao-hiem-y-te":
+                headerTitle.innerText = "Khai báo bảo hiểm y tế";
+                bodyContent.innerHTML = this.renderPortalBaoHiem(u);
+                break;
+            case "dang-ky-le-phi":
+                headerTitle.innerText = "Đăng ký lệ phí";
+                bodyContent.innerHTML = this.renderPortalLePhi(u);
+                break;
+            case "huong-dan":
+                headerTitle.innerText = "Hướng dẫn sử dụng";
+                bodyContent.innerHTML = this.renderPortalHuongDan(u);
+                break;
+            default:
+                headerTitle.innerText = "Thông tin sinh viên";
+                bodyContent.innerHTML = this.renderPortalInfo(u);
+                break;
+        }
+
+        window.scrollTo({ top: 180, behavior: 'smooth' });
+    },
+
+    /* ==========================================================================
+       PORTAL SUB-VIEW RENDERERS
+       ========================================================================== */
+    // 1. Thông tin cá nhân (Photo 1)
+    renderPortalInfo: function (u) {
+        const gd = u.thongTinGiaDinh || {};
+        const thpt = u.thongTinTHPT || {};
+
+        return `
+            <div class="student-info-grid">
+                <!-- Col 1: Avatar & Personal Info -->
+                <div class="student-col" style="display: flex; gap: 15px;">
+                    <div class="student-col-avatar">
+                        <img src="${u.avatar || 'assets/logo/logo.png'}" class="student-avatar-img" alt="Avatar">
+                    </div>
+                    <div style="flex: 1;">
+                        <table class="student-info-table">
+                            <tr><td class="label-td">Mã SV:</td><td class="val-td">${u.username}</td></tr>
+                            <tr><td class="label-td">Họ tên:</td><td class="val-td">${u.hoTen}</td></tr>
+                            <tr><td class="label-td">Giới tính:</td><td class="val-td">${u.gioiTinh || "Nữ"}</td></tr>
+                            <tr><td class="label-td">Ngày sinh:</td><td class="val-td">${u.ngaySinh || "12/04/2007"}</td></tr>
+                            <tr><td class="label-td">Nơi sinh:</td><td class="val-td">${u.noiSinh || "Hà Nội"}</td></tr>
+                            <tr><td class="label-td">CMND/CCCD:</td><td class="val-td">${u.cmnd || u.username}</td></tr>
+                            <tr><td class="label-td">Tình trạng học:</td><td class="val-td" style="color: #2e7d32;">${u.tinhTrang || "Còn học"}</td></tr>
+                            <tr><td class="label-td">Email cá nhân:</td><td class="val-td">${u.emailCaNhan || u.email}</td></tr>
+                            <tr><td class="label-td">Địa chỉ liên lạc SV:</td><td class="val-td">${u.diaChi || "Hà Nội"}</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Col 2: Academic Info -->
+                <div class="student-col">
+                    <div class="section-sub-title">Thông tin khóa học</div>
+                    <table class="student-info-table">
+                        <tr><td class="label-td">Niên khóa:</td><td class="val-td">${u.nienKhoa || "2025 - 2029"}</td></tr>
+                        <tr><td class="label-td">Khóa học:</td><td class="val-td">${u.khoaHoc || "K28 (2025 - 2029)"}</td></tr>
+                        <tr><td class="label-td">Chức vụ:</td><td class="val-td">${u.chucVu || "Sinh viên"}</td></tr>
+                        <tr><td class="label-td">Đối tượng:</td><td class="val-td">${u.doiTuong || "Đại học chính quy"}</td></tr>
+                        <tr><td class="label-td">THPT lớp 12:</td><td class="val-td">${u.lop12 || "THPT Chuyên Chu Văn An"}</td></tr>
+                        <tr><td class="label-td">Đoàn:</td><td class="val-td">${u.doan || "Đã vào đoàn"}</td></tr>
+                        <tr><td class="label-td">Ngày vào đoàn:</td><td class="val-td">${u.ngayVaoDoan || "26/03/2023"}</td></tr>
+                        <tr><td class="label-td">Đảng:</td><td class="val-td">${u.dang || "Chưa"}</td></tr>
+                        <tr><td class="label-td">Ngày vào đảng:</td><td class="val-td">${u.ngayVaoDang || ""}</td></tr>
+                        <tr><td class="label-td">Loại hình đào tạo:</td><td class="val-td">${u.loaiHinhDaoTao || "Đại học chính quy CLC"}</td></tr>
+                        <tr><td class="label-td">Cố vấn học tập:</td><td class="val-td">${u.coVanHocTap || "TS. Phạm Thị Minh Nguyệt"}</td></tr>
+                        <tr><td class="label-td">Liên hệ CVHT:</td><td class="val-td">${u.lienHeCVHT || "nguyetptm@hvnh.edu.vn"}</td></tr>
+                        <tr><td class="label-td">Lớp sinh viên:</td><td class="val-td" style="color: #004b63;">${u.lop || "CLC - Hoạch định và Tư vấn tài chính 01"}</td></tr>
+                    </table>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div class="student-col">
+                    <div class="section-sub-title">Thông tin liên lạc</div>
+                    <table class="student-info-table">
+                        <tr><td class="label-td">Dân tộc:</td><td class="val-td">${u.danToc || "Kinh"}</td></tr>
+                        <tr><td class="label-td">Tôn giáo:</td><td class="val-td">${u.tonGiao || "Không"}</td></tr>
+                        <tr><td class="label-td">Quốc gia:</td><td class="val-td">${u.quocGia || "Việt Nam"}</td></tr>
+                        <tr><td class="label-td">Tỉnh thành:</td><td class="val-td">${u.tinhThanh || "TP. Hà Nội"}</td></tr>
+                        <tr><td class="label-td">Quận huyện:</td><td class="val-td">${u.quanHuyen || "Quận Cầu Giấy"}</td></tr>
+                        <tr><td class="label-td">Di động:</td><td class="val-td">${u.diDong || "0968 554 219"}</td></tr>
+                        <tr><td class="label-td">ĐT bàn:</td><td class="val-td">${u.dtBan || ""}</td></tr>
+                    </table>
+                    <div class="portal-action-btn-group">
+                        <a href="javascript:void(0)" class="portal-action-btn" onclick="HVNH.capNhatThongTin()">[Cập nhật thông tin cá nhân]</a>
+                        <a href="javascript:void(0)" class="portal-action-btn" onclick="HVNH.capNhatNganHang()">[Cập nhật thông tin ngân hàng]</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Family Information Section -->
+            <div class="section-sub-title">Thông tin gia đình</div>
+            <div class="row" style="font-size: 13px; line-height: 2; margin-bottom: 20px;">
+                <div class="col-md-6">
+                    <div>Họ tên Cha: <strong>${gd.hoTenCha || "Huỳnh Quốc Thái"}</strong></div>
+                    <div>Họ tên Mẹ: <strong>${gd.hoTenMe || "Nguyễn Thị Thu Hương"}</strong></div>
+                    <div>Khi cần báo tin cho: <strong>${gd.khiCanBaoTin || "Huỳnh Quốc Thái (Bố)"}</strong></div>
+                    <div>Địa chỉ báo tin: <strong>${gd.diaChiBaoTin || "Số 36 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội"}</strong></div>
+                </div>
+                <div class="col-md-6">
+                    <div>Điện thoại Cha: <strong>${gd.sdtCha || "0912 345 678"}</strong></div>
+                    <div>Điện thoại Mẹ: <strong>${gd.sdtMe || "0983 654 321"}</strong></div>
+                    <div>Điện thoại báo tin: <strong>${gd.sdtBaoTin || "0912 345 678"}</strong></div>
+                </div>
+            </div>
+
+            <!-- High School Graduation Info -->
+            <div class="section-sub-title">Thông tin bằng tốt nghiệp THPT</div>
+            <div class="row" style="font-size: 13px; line-height: 2;">
+                <div class="col-md-4">
+                    <div>Số hiệu bằng: <strong>${thpt.soHieuBang || "B2025-081293"}</strong></div>
+                </div>
+                <div class="col-md-4">
+                    <div>Số vào sổ cấp bằng: <strong>${thpt.soVaoSo || "1284/THPT"}</strong></div>
+                </div>
+                <div class="col-md-4">
+                    <div>Nơi cấp: <strong>${thpt.noiCap || "Sở GD&ĐT Hà Nội"}</strong></div>
+                </div>
+            </div>
+        `;
+    },
+
+    // 2. Thông báo (Photo 2)
+    renderPortalThongBao: function (u) {
+        const list = u.thongBao || [
+            { id: 1, tieuDe: "Hóa đơn điện tử ngày : 2026-03-20 20:30:05", nguoiGui: "Phòng Tài chính - Kế toán", thoiGian: "20/03/2026" },
+            { id: 2, tieuDe: "Hóa đơn điện tử ngày : 2026-02-09 16:00:03", nguoiGui: "Phòng Tài chính - Kế toán", thoiGian: "09/02/2026" },
+            { id: 3, tieuDe: "Hóa đơn điện tử ngày : 2026-01-06 00:15:32", nguoiGui: "Phòng Tài chính - Kế toán", thoiGian: "06/01/2026" },
+            { id: 4, tieuDe: "Hóa đơn điện tử ngày : 2025-10-02 12:04:45", nguoiGui: "Phòng Tài chính - Kế toán", thoiGian: "02/10/2025" }
+        ];
+
+        let rows = "";
+        list.forEach((item, idx) => {
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 45px;">${idx + 1}</td>
+                    <td>
+                        <a href="javascript:void(0)" onclick="HVNH.xemChiTietHoaDon('${idx}')" style="color: #004b63; font-weight: 500;">
+                            <i class="glyphicon glyphicon-file" style="margin-right: 5px; color: #e09d37;"></i> ${item.tieuDe}
+                        </a>
+                    </td>
+                    <td style="width: 220px;">${item.nguoiGui}</td>
+                    <td style="width: 130px; text-align: center;">${item.thoiGian}</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th>Tiêu đề</th>
+                            <th style="width: 220px;">Người gửi</th>
+                            <th style="width: 130px;">Thời gian gửi</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 3. Chương trình đào tạo (Photos 3-8)
+    renderPortalStudyPrograms: function (u) {
+        const programs = u.studyPrograms || [];
+        if (programs.length === 0) {
+            return `<div class="alert alert-info">Chưa có dữ liệu chương trình đào tạo.</div>`;
+        }
+
+        let html = `
+            <div style="background: #f4f8fa; padding: 10px 14px; border-left: 4px solid #004b63; margin-bottom: 15px; font-size: 13px;">
+                <strong>Ngành:</strong> Tài chính - Ngân hàng | <strong>Khóa học:</strong> ${u.khoaHoc || "K28 (2025 - 2029)"} | <strong>Chuyên ngành:</strong> ${u.chuongTrinhDaoTao || "CLC-Hoạch định và Tư vấn tài chính"}
+            </div>
+        `;
+
+        programs.forEach(block => {
+            let courseRows = "";
+            (block.courses || []).forEach(c => {
+                const statusBadge = c.pass 
+                    ? `<span style="color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</span>`
+                    : `<span style="color: #888;">Chưa học</span>`;
+                courseRows += `
                     <tr>
-                        <td style="text-align: center;">${idx + 1}</td>
-                        <td style="text-align: center; font-weight: bold;">${g.maHP}</td>
-                        <td>${g.tenHP}</td>
-                        <td style="text-align: center;">${g.soTC}</td>
-                        <td style="text-align: center;">${g.diemCC}</td>
-                        <td style="text-align: center;">${g.diemGK}</td>
-                        <td style="text-align: center;">${g.diemCK}</td>
-                        <td style="text-align: center; font-weight: bold;">${g.diem10}</td>
-                        <td style="text-align: center; font-weight: bold; color: #2e7d32;">${g.diemChu}</td>
-                        <td style="text-align: center;">${g.diem4}</td>
+                        <td style="text-align: center;">${c.tt}</td>
+                        <td style="text-align: center; font-weight: bold; color: #004b63;">${c.maHP}</td>
+                        <td>${c.tenHP}</td>
+                        <td style="text-align: center;">${c.soTC}</td>
+                        <td style="text-align: center;">${c.soTiet || ""}</td>
+                        <td style="text-align: center;">${c.tienQuyet || ""}</td>
+                        <td style="text-align: center;">${c.hocTruoc || ""}</td>
+                        <td style="text-align: center;">${c.tuongDuong || ""}</td>
+                        <td>${c.khoa || ""}</td>
+                        <td style="text-align: center;">${statusBadge}</td>
                     </tr>
                 `;
             });
+
+            html += `
+                <div style="font-weight: bold; font-size: 13.5px; color: #004b63; margin: 15px 0 6px 0; display: flex; align-items: center; gap: 6px;">
+                    <i class="glyphicon glyphicon-folder-open"></i> ${block.semester}
+                </div>
+                <div class="table-responsive">
+                    <table class="portal-table-hvnh">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">TT</th>
+                                <th style="width: 80px;">Mã HP</th>
+                                <th>Tên học phần</th>
+                                <th style="width: 45px;">STC</th>
+                                <th style="width: 55px;">Số tiết</th>
+                                <th style="width: 70px;">Tiên quyết</th>
+                                <th style="width: 70px;">Học trước</th>
+                                <th style="width: 75px;">Tương đương</th>
+                                <th style="width: 200px;">Khoa/Bộ môn</th>
+                                <th style="width: 75px;">Tình trạng</th>
+                            </tr>
+                        </thead>
+                        <tbody>${courseRows}</tbody>
+                    </table>
+                </div>
+            `;
+        });
+
+        return html;
+    },
+
+    // 4. Chuyên cần (Photos 9-10)
+    renderPortalDiemDanh: function (u) {
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-weight: bold; color: #004b63; font-size: 13.5px;">
+                    <i class="glyphicon glyphicon-calendar"></i> BẢNG THEO DÕI CHUYÊN CẦN - HỌC KỲ 1 NĂM HỌC 2026 - 2027
+                </div>
+                <div>
+                    <span class="label label-success" style="font-size: 12px; padding: 4px 8px;">Tỷ lệ chuyên cần toàn khóa: 100%</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th style="width: 110px;">Mã LHP</th>
+                            <th>Tên học phần</th>
+                            <th style="width: 50px;">Số TC</th>
+                            <th style="width: 80px;">Vắng có phép</th>
+                            <th style="width: 85px;">Vắng K.phép</th>
+                            <th style="width: 75px;">Tổng vắng</th>
+                            <th style="width: 85px;">Chuyên cần</th>
+                            <th style="width: 100px;">Đủ ĐK thi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">261FIN22H04</td><td>Tài chính - Tiền tệ</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">2</td><td style="text-align: center; font-weight: bold;">261LAW02H03</td><td>Luật kinh tế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">3</td><td style="text-align: center; font-weight: bold;">261MAT16H01</td><td>Phân tích định lượng trong kinh tế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">4</td><td style="text-align: center; font-weight: bold;">261FIN01H04</td><td>Tài chính doanh nghiệp I</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">5</td><td style="text-align: center; font-weight: bold;">261FIN03H01</td><td>Thuế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">6</td><td style="text-align: center; font-weight: bold;">261PLT05H40</td><td>Chủ nghĩa xã hội khoa học</td><td style="text-align: center;">2.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr><td style="text-align: center;">7</td><td style="text-align: center; font-weight: bold;">261SPT04H03</td><td>Giáo dục thể chất IV (Cầu lông)</td><td style="text-align: center;">1.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="font-size: 12.5px; color: #666; font-style: italic; margin-top: 5px;">
+                * Quy chế: Sinh viên nghỉ học quá 20% tổng số tiết của học phần sẽ bị cấm thi kết thúc học phần và nhận điểm 0.
+            </div>
+        `;
+    },
+
+    // 5. Kết quả rèn luyện (Photo 11)
+    renderPortalRenLuyen: function (u) {
+        const list = u.renLuyen || [
+            { stt: 1, hocKy: "HK01", tongDiem: 67, xepLoai: "Khá" },
+            { stt: 2, hocKy: "HK02", tongDiem: 76, xepLoai: "Khá" }
+        ];
+
+        let rows = "";
+        list.forEach(r => {
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 50px;">${r.stt}</td>
+                    <td style="text-align: center; font-weight: bold;">${r.hocKy}</td>
+                    <td style="text-align: center;">2025-2026</td>
+                    <td style="text-align: center; font-weight: bold; font-size: 14px; color: #004b63;">${r.tongDiem}</td>
+                    <td style="text-align: center; font-weight: bold; color: #2e7d32;">${r.xepLoai}</td>
+                    <td>Đã được Hội đồng đánh giá ĐRL phê duyệt chính thức</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th style="width: 100px;">Học kỳ</th>
+                            <th style="width: 130px;">Năm học</th>
+                            <th style="width: 110px;">Tổng điểm</th>
+                            <th style="width: 110px;">Xếp loại</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 6. Kết quả học tập (Photos 12-13)
+    renderPortalMarks: function (u) {
+        const semesters = u.marksSemesters || [];
+        if (semesters.length === 0) {
+            return `<div class="alert alert-info">Chưa có dữ liệu bảng điểm.</div>`;
         }
 
-        const html = `
-            <div class="divmain">
-                <div class="bgtitle">
-                    <span>CỔNG THÔNG TIN SINH VIÊN - HỌC VIỆN NGÂN HÀNG</span>
-                    <button class="btn btn-xs btn-danger" onclick="HVNH.logout()">
-                        <i class="glyphicon glyphicon-log-out"></i> Đăng xuất
-                    </button>
+        let html = `
+            <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-weight: bold; color: #004b63; font-size: 13.5px;">
+                    <i class="glyphicon glyphicon-education"></i> BẢNG ĐIỂM TỔNG HỢP TOÀN KHÓA
                 </div>
+                <button type="button" class="btn btn-sm btn-default" onclick="window.print()">
+                    <i class="glyphicon glyphicon-print"></i> In bảng điểm
+                </button>
+            </div>
+        `;
 
-                <div style="padding: 20px;">
-                    <!-- Student Header Profile Card -->
-                    <div class="portal-profile-header">
-                        <img src="${u.avatar}" class="portal-avatar" alt="Avatar">
+        semesters.forEach(s => {
+            let courseRows = "";
+            (s.courses || []).forEach(c => {
+                courseRows += `
+                    <tr>
+                        <td style="text-align: center;">${c.stt}</td>
+                        <td style="text-align: center; font-weight: bold; color: #004b63;">${c.maHP}</td>
+                        <td>${c.tenHP}</td>
+                        <td style="text-align: center;">${c.tc}</td>
+                        <td style="text-align: center;">${c.ptKT || ""}</td>
+                        <td style="text-align: center;">${c.ptCC || ""}</td>
+                        <td style="text-align: center;">${c.ptThi || ""}</td>
+                        <td style="text-align: center;">${c.diemCC !== "" && c.diemCC !== undefined ? Number(c.diemCC).toFixed(2) : ""}</td>
+                        <td style="text-align: center;">${c.kt1 !== "" && c.kt1 !== undefined ? Number(c.kt1).toFixed(2) : ""}</td>
+                        <td style="text-align: center;">${c.kt2 !== "" && c.kt2 !== undefined ? Number(c.kt2).toFixed(2) : ""}</td>
+                        <td style="text-align: center;">${c.thiL1 !== "" && c.thiL1 !== undefined ? Number(c.thiL1).toFixed(2) : ""}</td>
+                        <td style="text-align: center; font-weight: bold;">${c.tk10 !== "" && c.tk10 !== undefined ? Number(c.tk10).toFixed(2) : ""}</td>
+                        <td style="text-align: center; font-weight: bold; color: #004b63;">${c.tkChu || ""}</td>
+                        <td style="text-align: center; font-weight: bold; color: #2e7d32;">${c.xepLoai || ""}</td>
+                    </tr>
+                `;
+            });
+
+            const sm = s.summary;
+            let summaryBox = "";
+            if (sm) {
+                summaryBox = `
+                    <div style="background: #fdfaf3; border: 1px solid #faebcc; padding: 12px 16px; margin: -5px 0 20px 0; display: flex; font-size: 13px; line-height: 1.8;">
                         <div style="flex: 1;">
-                            <h3 style="margin: 0 0 5px 0; color: #056382; font-weight: bold;">
-                                ${u.hoTen} <span style="font-size: 14px; font-weight: normal; color: #666;">(${u.username})</span>
-                            </h3>
-                            <div style="font-size: 13.5px; color: #444; line-height: 1.6;">
-                                <span>Lớp: <strong>${u.lop}</strong></span> | 
-                                <span>Khoa: <strong>${u.khoa}</strong></span> | 
-                                <span>Chuyên ngành: <strong>${u.chuyenNganh || u.nganh}</strong></span>
-                            </div>
+                            <div>- Điểm trung bình học kỳ hệ 10/100: <strong>${sm.dtb10}</strong></div>
+                            <div>- Điểm trung bình học kỳ hệ 4: <strong>${sm.dtb4}</strong></div>
+                            <div>- Điểm trung bình tích lũy: <strong>${sm.dtbTL10}</strong></div>
+                            <div>- Điểm trung bình tích lũy (hệ 4): <strong>${sm.dtbTL4}</strong></div>
                         </div>
-                        <div style="text-align: right; background: #eef6fa; padding: 10px 15px; border-radius: 4px; border: 1px solid #c9e1ef;">
-                            <div style="font-size: 12px; color: #666;">Điểm trung bình (GPA):</div>
-                            <div style="font-size: 22px; font-weight: bold; color: #056382;">${u.gpa}/4.0</div>
-                            <div style="font-size: 11px; color: #2e7d32; font-weight: 500;">Xếp loại: ${u.xepLoai}</div>
+                        <div style="flex: 1;">
+                            <div>- Số tín chỉ đạt: <strong>${sm.stcDat}</strong></div>
+                            <div>- Số tín chỉ tích lũy: <strong>${sm.stcTL}</strong></div>
+                            <div>- Phân loại ĐTB HK: <strong>${sm.xepLoaiDTB}</strong></div>
+                            <div>- Điểm trung bình rèn luyện HK: <strong>${sm.dtbRL}</strong></div>
+                            <div>- Phân loại ĐTBRL HK: <strong>${sm.xepLoaiDRL}</strong></div>
                         </div>
                     </div>
+                `;
+            }
 
-                    <!-- Navigation Tabs -->
-                    <div class="portal-nav-tabs">
-                        <button class="portal-tab-btn active" onclick="HVNH.switchPortalTab('tabInfo', this)">
-                            <i class="glyphicon glyphicon-user"></i> Hồ sơ sinh viên
-                        </button>
-                        <button class="portal-tab-btn" onclick="HVNH.switchPortalTab('tabDiem', this)">
-                            <i class="glyphicon glyphicon-list-alt"></i> Bảng điểm tích lũy
-                        </button>
-                        <button class="portal-tab-btn" onclick="HVNH.switchPortalTab('tabDangKy', this)">
-                            <i class="glyphicon glyphicon-edit"></i> Đăng ký học phần
-                        </button>
-                        <button class="portal-tab-btn" onclick="HVNH.switchPortalTab('tabHocPhi', this)">
-                            <i class="glyphicon glyphicon-credit-card"></i> Tra cứu học phí
-                        </button>
-                    </div>
+            html += `
+                <div style="font-weight: bold; font-size: 13.5px; color: #004b63; margin: 15px 0 6px 0;">
+                    ${s.title}
+                </div>
+                <div class="table-responsive">
+                    <table class="portal-table-hvnh">
+                        <thead>
+                            <tr>
+                                <th style="width: 35px;">STT</th>
+                                <th style="width: 75px;">Mã HP</th>
+                                <th>Tên môn học</th>
+                                <th style="width: 35px;">TC</th>
+                                <th style="width: 40px;">%KT</th>
+                                <th style="width: 40px;">%CC</th>
+                                <th style="width: 40px;">%Thi</th>
+                                <th style="width: 55px;">Điểm CC</th>
+                                <th style="width: 50px;">KT 1</th>
+                                <th style="width: 50px;">KT 2</th>
+                                <th style="width: 55px;">Thi L1</th>
+                                <th style="width: 55px;">TK(10)</th>
+                                <th style="width: 50px;">TK(CH)</th>
+                                <th style="width: 55px;">Xếp loại</th>
+                            </tr>
+                        </thead>
+                        <tbody>${courseRows}</tbody>
+                    </table>
+                </div>
+                ${summaryBox}
+            `;
+        });
 
-                    <!-- Tab 1: Hồ sơ sinh viên -->
-                    <div id="tabInfo" class="portal-tab-content">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-bordered">
-                                    <tr><td style="width: 160px; font-weight: 600;">Mã số sinh viên:</td><td>${u.username}</td></tr>
-                                    <tr><td style="font-weight: 600;">Họ và tên:</td><td>${u.hoTen}</td></tr>
-                                    <tr><td style="font-weight: 600;">Lớp sinh hoạt:</td><td>${u.lop}</td></tr>
-                                    <tr><td style="font-weight: 600;">Khoa quản lý:</td><td>${u.khoa}</td></tr>
-                                    <tr><td style="font-weight: 600;">Chương trình đào tạo:</td><td>Đại học chính quy tín chỉ</td></tr>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <table class="table table-bordered">
-                                    <tr><td style="width: 160px; font-weight: 600;">Khóa học:</td><td>${u.khoaHoc || "2021 - 2025"}</td></tr>
-                                    <tr><td style="font-weight: 600;">Trạng thái học tập:</td><td><span class="label label-success">${u.tinhTrang}</span></td></tr>
-                                    <tr><td style="font-weight: 600;">Email học viện:</td><td>${u.email}</td></tr>
-                                    <tr><td style="font-weight: 600;">Số tín chỉ tích lũy:</td><td><strong>${u.tinChiTichLuy}</strong> tín chỉ</td></tr>
-                                    <tr><td style="font-weight: 600;">Điểm rèn luyện toàn khóa:</td><td><strong>92/100 (Xuất sắc)</strong></td></tr>
-                                </table>
-                            </div>
+        return html;
+    },
+
+    // 7. Tài chính sinh viên (Photos 14-15)
+    renderPortalTaiChinh: function (u) {
+        const tc = u.taiChinh || {};
+        const cur = tc.namHocHienTai || [];
+        const prev = tc.namHocTruoc || [];
+
+        let curRows = "";
+        cur.forEach(item => {
+            curRows += `
+                <tr>
+                    <td style="font-weight: 500;">${item.maPhi}</td>
+                    <td>${item.tenPhi}</td>
+                    <td style="text-align: right; font-weight: bold;">${item.phaiDong}</td>
+                    <td style="text-align: right;">${item.daDong}</td>
+                    <td style="text-align: center;">${item.ngayDong || ""}</td>
+                    <td style="text-align: right; font-weight: bold; color: #c62828;">${item.conNo}</td>
+                    <td style="text-align: center;">${item.ngayGhiNo || ""}</td>
+                </tr>
+            `;
+        });
+
+        let prevRows = "";
+        prev.forEach(item => {
+            prevRows += `
+                <tr>
+                    <td style="font-weight: 500;">${item.maPhi}</td>
+                    <td>${item.tenPhi}</td>
+                    <td style="text-align: right;">${item.phaiDong}</td>
+                    <td style="text-align: right; color: #2e7d32; font-weight: bold;">${item.daDong}</td>
+                    <td style="text-align: center;">${item.ngayDong || ""}</td>
+                    <td style="text-align: right; font-weight: bold;">${item.conNo}</td>
+                    <td style="text-align: center;">${item.ngayGhiNo || ""}</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center;">
+                <button type="button" class="portal-action-btn btn-green" onclick="HVNH.thanhToanTrucTuyen()">
+                    <i class="glyphicon glyphicon-credit-card"></i> Thanh toán trực tuyến
+                </button>
+                <button type="button" class="portal-action-btn btn-orange" onclick="HVNH.phuongThucDongHocPhi()">
+                    <i class="glyphicon glyphicon-list"></i> Chọn phương thức đóng học phí
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 130px;">Mã phí</th>
+                            <th>Tên phí</th>
+                            <th style="width: 100px;">Phải đóng</th>
+                            <th style="width: 100px;">Đã đóng</th>
+                            <th style="width: 95px;">Ngày đóng</th>
+                            <th style="width: 100px;">Còn nợ</th>
+                            <th style="width: 95px;">Ngày ghi nợ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="semester-row"><td colspan="7">Năm học : 2026-2027, Học kỳ: HK01</td></tr>
+                        ${curRows}
+                        <tr class="semester-row"><td colspan="7">Năm học : 2025-2026, Học kỳ: HK02</td></tr>
+                        ${prevRows}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="total-debt-row" style="background-color: #fce8a6; color: #843b00; font-weight: bold; font-size: 14px; padding: 10px 14px; border: 1px solid #faebcc; border-radius: 4px;">
+                Tổng học phí còn nợ : <span style="font-size: 16px; color: #b71c1c;">${tc.tongNo || "22,109,000"} VNĐ</span>
+            </div>
+        `;
+    },
+
+    // 8. Chi tiết hóa đơn (Photo 16)
+    renderPortalHoaDon: function (u) {
+        const invoices = u.hoaDon || [];
+        let rows = "";
+        invoices.forEach((hd, idx) => {
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 45px;">${idx + 1}</td>
+                    <td style="font-weight: bold; color: #004b63;">${hd.soSeries}</td>
+                    <td style="text-align: center;">${hd.soHoaDon}</td>
+                    <td style="text-align: center;">${hd.hinhThuc}</td>
+                    <td style="text-align: center;">${hd.ngayDong}</td>
+                    <td style="text-align: center;">${hd.ngayCapNhat}</td>
+                    <td style="text-align: right; font-weight: bold; color: #2e7d32;">${hd.thanhTien} đ</td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-xs btn-default" onclick="HVNH.xemChiTietHoaDon('${hd.soSeries}')" style="color: #004b63; font-weight: 500;">
+                            <i class="glyphicon glyphicon-eye-open"></i> Xem chi tiết
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th>Số Series</th>
+                            <th style="width: 90px;">Số HĐ</th>
+                            <th style="width: 100px;">Hình thức</th>
+                            <th style="width: 100px;">Ngày đóng</th>
+                            <th style="width: 110px;">Ngày cập nhật</th>
+                            <th style="width: 110px;">Thành tiền</th>
+                            <th style="width: 110px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 9. Xem kết quả đăng ký học phần (Photo 17)
+    renderPortalKetQuaDangKy: function (u) {
+        const list = u.ketQuaDangKy || [];
+        let rows = "";
+        let totalCredits = 0;
+        list.forEach(item => {
+            totalCredits += parseFloat(item.stc) || 0;
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 45px;">${item.stt}</td>
+                    <td style="text-align: center; font-weight: bold; color: #004b63;">${item.maLHP}</td>
+                    <td>${item.tenHP}</td>
+                    <td style="text-align: center; font-weight: bold;">${item.stc}</td>
+                    <td style="text-align: center;">${item.ngayDK}</td>
+                    <td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đăng ký thành công</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div style="background: #f4f8fa; padding: 10px 14px; border-left: 4px solid #004b63; margin-bottom: 12px; font-size: 13px;">
+                <strong>Học kỳ:</strong> Học kỳ 1 - Năm học 2026 - 2027 | <strong>Tổng số tín chỉ đã đăng ký:</strong> <strong style="color: #c62828;">${totalCredits.toFixed(1)}</strong> tín chỉ
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th style="width: 130px;">Mã LHP</th>
+                            <th>Tên học phần</th>
+                            <th style="width: 70px;">STC</th>
+                            <th style="width: 160px;">Ngày ĐK</th>
+                            <th style="width: 160px;">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 10. Chứng chỉ (Photo 18)
+    renderPortalChungChi: function (u) {
+        const certs = u.chungChi || [
+            { stt: 1, tenChungChi: "Chứng chỉ ngoại ngữ", daNop: true },
+            { stt: 2, tenChungChi: "Chứng chỉ tin học", daNop: false },
+            { stt: 3, tenChungChi: "Chuẩn đầu ra NCKH chương trình CLC", daNop: false }
+        ];
+
+        let rows = "";
+        certs.forEach(c => {
+            const badge = c.daNop 
+                ? `<span class="label label-success" style="font-size: 12px;"><i class="glyphicon glyphicon-ok"></i> Đã hoàn thành (IELTS 5.5)</span>`
+                : `<span class="label label-warning" style="font-size: 12px;"><i class="glyphicon glyphicon-time"></i> Chưa hoàn thành</span>`;
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 50px;">${c.stt}</td>
+                    <td style="font-weight: bold; color: #004b63;">${c.tenChungChi}</td>
+                    <td style="text-align: center; width: 220px;">${badge}</td>
+                    <td>${c.daNop ? "Đã được Phòng Đào tạo thẩm định và công nhận chuẩn đầu ra" : "Sinh viên hoàn thiện trước kỳ xét tốt nghiệp chính thức"}</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">STT</th>
+                            <th>Tên chứng chỉ / Chuẩn đầu ra</th>
+                            <th style="width: 220px;">Tình trạng thẩm định</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 11. Nộp chứng chỉ (Photo 21)
+    renderPortalNopChungChi: function (u) {
+        const submitted = u.nopChungChi || [
+            { stt: 1, loaiChungChi: "Chứng chỉ IELTS từ 5.5 trở lên - Quy đổi bậc 4/6", diem: "5.5", nghe: "5.5", noi: "5.0", doc: "5.0", viet: "6.0", ngayThi: "25/01/2025", idChungChi: "IELTS-250125-88", tinhTrang: "Đã kiểm tra, Chứng chỉ hợp lệ", ghiChu: "", dangKyChuyenDiem: true }
+        ];
+
+        let rows = "";
+        submitted.forEach(s => {
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 45px;">${s.stt}</td>
+                    <td style="font-weight: bold; color: #004b63;">${s.loaiChungChi}</td>
+                    <td style="text-align: center; font-weight: bold; color: #2e7d32;">${s.diem}</td>
+                    <td style="text-align: center;">${s.nghe}</td>
+                    <td style="text-align: center;">${s.noi}</td>
+                    <td style="text-align: center;">${s.doc}</td>
+                    <td style="text-align: center;">${s.viet}</td>
+                    <td style="text-align: center;">${s.ngayThi}</td>
+                    <td style="text-align: center;"><strong>${s.idChungChi}</strong></td>
+                    <td style="text-align: center;"><span class="label label-success">${s.tinhTrang}</span></td>
+                    <td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đã miễn 15 TC</td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div style="margin-bottom: 12px; font-weight: bold; color: #004b63; font-size: 13.5px;">
+                <i class="glyphicon glyphicon-list-alt"></i> DANH SÁCH CHỨNG CHỈ QUỐC TẾ ĐÃ NỘP
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 35px;">STT</th>
+                            <th>Loại chứng chỉ</th>
+                            <th style="width: 50px;">Điểm</th>
+                            <th style="width: 50px;">Nghe</th>
+                            <th style="width: 50px;">Nói</th>
+                            <th style="width: 50px;">Đọc</th>
+                            <th style="width: 50px;">Viết</th>
+                            <th style="width: 85px;">Ngày thi</th>
+                            <th style="width: 120px;">Mã tra cứu / ID</th>
+                            <th style="width: 160px;">Tình trạng</th>
+                            <th style="width: 110px;">Chuyển điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 20px; border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe;">
+                <div style="font-weight: bold; color: #004b63; margin-bottom: 10px;">
+                    <i class="glyphicon glyphicon-cloud-upload"></i> NỘP CHỨNG CHỈ MỚI (TIN HỌC / NGOẠI NGỮ KHÁC)
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 12.5px;">Loại chứng chỉ:</label>
+                            <select class="form-control input-sm" id="selCertType">
+                                <option>Chứng chỉ Chuẩn kỹ năng CNTT cơ bản</option>
+                                <option>Chứng chỉ MOS (Word, Excel, PowerPoint)</option>
+                                <option>Chứng chỉ Ngoại ngữ 2 (Tiếng Trung, Tiếng Nhật)</option>
+                            </select>
                         </div>
                     </div>
-
-                    <!-- Tab 2: Bảng điểm tích lũy -->
-                    <div id="tabDiem" class="portal-tab-content" style="display: none;">
-                        <div style="margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                            <h4 style="margin: 0; color: #056382; font-weight: bold;">KẾT QUẢ HỌC TẬP HỌC KỲ GẦN NHẤT</h4>
-                            <button class="btn btn-sm btn-default" onclick="window.print()">
-                                <i class="glyphicon glyphicon-print"></i> In bảng điểm
-                            </button>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="portal-table">
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã HP</th>
-                                        <th>Tên học phần</th>
-                                        <th>Số TC</th>
-                                        <th>Chuyên cần</th>
-                                        <th>Giữa kỳ</th>
-                                        <th>Cuối kỳ</th>
-                                        <th>Thang 10</th>
-                                        <th>Điểm chữ</th>
-                                        <th>Thang 4</th>
-                                    </tr>
-                                </thead>
-                                <tbody>${gradesRows}</tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Tab 3: Đăng ký học phần -->
-                    <div id="tabDangKy" class="portal-tab-content" style="display: none;">
-                        <div class="alert alert-info">
-                            <strong>Đợt đăng ký:</strong> Học kỳ 1 năm học 2026-2027. Hệ thống đang mở cho sinh viên đăng ký môn học bổ sung.
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead style="background: #056382; color: #fff;">
-                                    <tr>
-                                        <th style="text-align: center; width: 40px;">Chọn</th>
-                                        <th>Mã HP</th>
-                                        <th>Tên học phần</th>
-                                        <th style="text-align: center;">Số TC</th>
-                                        <th>Giảng viên</th>
-                                        <th>Lịch học</th>
-                                        <th>Phòng</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td style="text-align: center;"><input type="checkbox" checked></td>
-                                        <td>BNK402</td>
-                                        <td>Quản trị rủi ro Ngân hàng</td>
-                                        <td style="text-align: center;">3</td>
-                                        <td>PGS.TS. Lê Đình Hoàng</td>
-                                        <td>Thứ 3 (Tiết 1 - 3)</td>
-                                        <td>D2.304</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center;"><input type="checkbox" checked></td>
-                                        <td>FIN305</td>
-                                        <td>Thẩm định dự án đầu tư</td>
-                                        <td style="text-align: center;">3</td>
-                                        <td>TS. Nguyễn Văn Hùng</td>
-                                        <td>Thứ 5 (Tiết 7 - 9)</td>
-                                        <td>D1.201</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center;"><input type="checkbox"></td>
-                                        <td>MKT201</td>
-                                        <td>Marketing Ngân hàng hiện đại</td>
-                                        <td style="text-align: center;">2</td>
-                                        <td>ThS. Trần Thị Mai Phương</td>
-                                        <td>Thứ 6 (Tiết 4 - 5)</td>
-                                        <td>D2.508</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <button type="button" class="btn btn-primary" style="background-color: #056382;" onclick="HVNH.saveRegistration()">
-                            <i class="glyphicon glyphicon-floppy-disk"></i> Lưu đăng ký học phần
-                        </button>
-                    </div>
-
-                    <!-- Tab 4: Học phí -->
-                    <div id="tabHocPhi" class="portal-tab-content" style="display: none;">
-                        <div class="well" style="background: #fff; border: 1px solid #ddd;">
-                            <h4 style="color: #056382; font-weight: bold; margin-top: 0;">THÔNG TIN CÔNG NỢ & HỌC PHÍ</h4>
-                            <div class="row" style="font-size: 14px; line-height: 2;">
-                                <div class="col-md-6">
-                                    Học kỳ: <strong>${u.tuition ? u.tuition.hocKy : "Học kỳ 1 năm học 2026-2027"}</strong><br/>
-                                    Tổng học phí phải nộp: <strong>${u.tuition ? u.tuition.tongHocPhi : "9,800,000 VNĐ"}</strong><br/>
-                                    Số tiền đã thanh toán: <strong style="color: #2e7d32;">${u.tuition ? u.tuition.daDong : "9,800,000 VNĐ"}</strong>
-                                </div>
-                                <div class="col-md-6">
-                                    Công nợ còn lại: <strong style="color: #c62828;">${u.tuition ? u.tuition.conNo : "0 VNĐ"}</strong><br/>
-                                    Trạng thái: <span class="label label-success">${u.tuition ? u.tuition.trangThai : "Đã hoàn thành"}</span><br/>
-                                    Mã số hóa đơn: <strong>${u.tuition ? u.tuition.soHoaDon : "HD-HVNH-8841"}</strong>
-                                </div>
-                            </div>
-                            <div style="margin-top: 15px;">
-                                <button type="button" class="btn btn-success" onclick="HVNH.showTuitionReceipt()">
-                                    <i class="glyphicon glyphicon-print"></i> Xem biên lai điện tử
-                                </button>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label style="font-size: 12.5px;">Tải tệp đính kèm (Ảnh scan / PDF):</label>
+                            <input type="file" class="form-control input-sm" id="fileCertUpload">
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-sm btn-primary" style="background-color: #004b63;" onclick="HVNH.showToast('Đã tiếp nhận yêu cầu nộp chứng chỉ mới!', 'success')">
+                    <i class="glyphicon glyphicon-send"></i> Gửi hồ sơ chứng chỉ
+                </button>
             </div>
         `;
-
-        document.getElementById("mainContent").innerHTML = html;
     },
 
-    switchPortalTab: function (tabId, btn) {
-        document.querySelectorAll(".portal-tab-content").forEach(el => el.style.display = "none");
-        document.querySelectorAll(".portal-tab-btn").forEach(el => el.classList.remove("active"));
-        const target = document.getElementById(tabId);
-        if (target) target.style.display = "block";
-        if (btn) btn.classList.add("active");
+    // 12. Xét tốt nghiệp (Photo 20)
+    renderPortalXetTotNghiep: function (u) {
+        return `
+            <div style="background: #fff8e1; border: 1px solid #ffe082; padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
+                <h4 style="margin: 0 0 6px 0; color: #b78103; font-weight: bold;">
+                    <i class="glyphicon glyphicon-info-sign"></i> THÔNG TIN XÉT TỐT NGHIỆP DỰ KIẾN
+                </h4>
+                <p style="margin: 0; font-size: 13px; color: #5d4037;">
+                    Sinh viên <strong>${u.hoTen}</strong> (Mã SV: <strong>${u.username}</strong>) hiện đang theo học năm thứ 2, Học kỳ 1 năm học 2026-2027.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered" style="font-size: 13px;">
+                        <tr><td style="font-weight: 600; width: 220px;">Tổng số tín chỉ tích lũy:</td><td><strong style="color: #004b63; font-size: 15px;">57 / 130 tín chỉ</strong> (Đạt 43.8%)</td></tr>
+                        <tr><td style="font-weight: 600;">Điểm TBTL hiện tại (hệ 4):</td><td><strong style="color: #2e7d32; font-size: 15px;">2.82 / 4.0</strong> (Khá)</td></tr>
+                        <tr><td style="font-weight: 600;">Điểm TBTL hiện tại (hệ 10):</td><td><strong>7.18 / 10</strong></td></tr>
+                        <tr><td style="font-weight: 600;">Học phần còn nợ / Cần hoàn thành:</td><td><strong>73 tín chỉ</strong></td></tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered" style="font-size: 13px;">
+                        <tr><td style="font-weight: 600; width: 220px;">Chuẩn đầu ra Ngoại ngữ:</td><td><span class="label label-success">✓ Đạt (IELTS 5.5)</span></td></tr>
+                        <tr><td style="font-weight: 600;">Chuẩn đầu ra Tin học:</td><td><span class="label label-warning">Chưa nộp</span></td></tr>
+                        <tr><td style="font-weight: 600;">Chứng chỉ GDQPAN:</td><td><span class="label label-success">✓ Đã hoàn thành</span></td></tr>
+                        <tr><td style="font-weight: 600;">Chứng chỉ Giáo dục thể chất:</td><td><span class="label label-success">✓ Đã hoàn thành</span></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="alert alert-info" style="font-size: 13px; margin-top: 10px;">
+                <strong>Kết luận:</strong> Sinh viên đang thực hiện đúng tiến độ đào tạo chuẩn của Học viện Ngân hàng. Đợt xét tốt nghiệp chính thức dự kiến diễn ra vào tháng 06/2029.
+            </div>
+        `;
     },
 
-    saveRegistration: function () {
-        this.showToast("Lưu kết quả đăng ký học phần thành công!", "success");
+    // 13. Đăng ký phúc khảo (Photo 22)
+    renderPortalPhucKhao: function (u) {
+        return `
+            <div style="border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe; margin-bottom: 20px;">
+                <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
+                    <i class="glyphicon glyphicon-edit"></i> ĐĂNG KÝ PHÚC KHẢO ĐIỂM THI
+                </div>
+                <form onsubmit="HVNH.submitPhucKhao(event)">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Học kỳ phúc khảo:</label>
+                                <select class="form-control input-sm">
+                                    <option>Học kỳ 2 năm học 2025 - 2026</option>
+                                    <option>Học kỳ 1 năm học 2025 - 2026</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Chọn học phần đề nghị phúc khảo:</label>
+                                <select class="form-control input-sm" id="selSubjectPhucKhao">
+                                    <option value="ACT01H">ACT01H - Nguyên lý kế toán (Điểm thi: 5.50)</option>
+                                    <option value="ECO01H">ECO01H - Kinh tế vi mô (Điểm thi: 8.10)</option>
+                                    <option value="LAW01H">LAW01H - Pháp luật đại cương (Điểm thi: 5.10)</option>
+                                    <option value="MGT41H">MGT41H - Nghệ thuật lãnh đạo (Điểm thi: 5.80)</option>
+                                    <option value="PLT02H">PLT02H - Kinh tế chính trị Mác - Lênin (Điểm thi: 6.80)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Lý do phúc khảo:</label>
+                                <input type="text" class="form-control input-sm" id="txtReasonPhucKhao" placeholder="Nhập lý do đề nghị chấm lại..." required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary" style="background-color: #004b63;">
+                        <i class="glyphicon glyphicon-send"></i> Gửi đơn phúc khảo
+                    </button>
+                </form>
+            </div>
+
+            <div style="font-weight: bold; color: #004b63; margin-bottom: 10px;">
+                <i class="glyphicon glyphicon-list"></i> LỊCH SỬ CÁC ĐƠN PHÚC KHẢO ĐÃ GỬI
+            </div>
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th>Học phần</th>
+                            <th style="width: 100px;">Ngày nộp đơn</th>
+                            <th style="width: 90px;">Điểm cũ</th>
+                            <th style="width: 90px;">Điểm mới</th>
+                            <th style="width: 140px;">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #888; padding: 15px;">Chưa có đơn phúc khảo nào trong hệ thống.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
     },
 
-    showTuitionReceipt: function () {
+    // 14. Đăng ký vắng thi (Photo 23)
+    renderPortalVangThi: function (u) {
+        const list = u.dangKyVangThi || [
+            { stt: 1, lopHP: "261FIN03H01", maHP: "FIN03H", tenHP: "Thuế", stc: 3 },
+            { stt: 2, lopHP: "261SPT04H03", maHP: "SPT04H", tenHP: "Giáo dục thể chất IV (Cầu lông)", stc: 1 },
+            { stt: 3, lopHP: "261FIN22H04", maHP: "FIN22H", tenHP: "Tài chính - Tiền tệ", stc: 3 },
+            { stt: 4, lopHP: "261MAT16H01", maHP: "MAT16H", tenHP: "Phân tích định lượng trong kinh tế", stc: 3 },
+            { stt: 5, lopHP: "261LAW02H03", maHP: "LAW02H", tenHP: "Luật kinh tế", stc: 3 },
+            { stt: 6, lopHP: "261PLT05H40", maHP: "PLT05H", tenHP: "Chủ nghĩa xã hội khoa học", stc: 2 },
+            { stt: 7, lopHP: "261FIN01H04", maHP: "FIN01H", tenHP: "Tài chính doanh nghiệp I", stc: 3 }
+        ];
+
+        let rows = "";
+        list.forEach(item => {
+            rows += `
+                <tr>
+                    <td style="text-align: center; width: 45px;">${item.stt}</td>
+                    <td style="text-align: center; font-weight: bold; color: #004b63;">${item.lopHP}</td>
+                    <td style="text-align: center;">${item.maHP}</td>
+                    <td>${item.tenHP}</td>
+                    <td style="text-align: center; font-weight: bold;">${item.stc}</td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-xs btn-default" onclick="HVNH.submitVangThi('${item.tenHP}')" style="color: #c62828;">
+                            <i class="glyphicon glyphicon-edit"></i> Đăng ký vắng thi
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div style="background: #f4f8fa; padding: 10px 14px; border-left: 4px solid #004b63; margin-bottom: 15px; font-size: 13px;">
+                <strong>Học kỳ hiện tại:</strong> Học kỳ 1 năm học 2026 - 2027. Sinh viên có lý do chính đáng (ốm đau đột xuất có xác nhận của bệnh viện từ tuyến huyện trở lên, trùng lịch thi,...) cần nộp đơn và minh chứng trước giờ thi.
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th style="width: 140px;">Lớp học phần</th>
+                            <th style="width: 90px;">Mã HP</th>
+                            <th>Tên học phần</th>
+                            <th style="width: 60px;">STC</th>
+                            <th style="width: 140px;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 15. Lịch học
+    renderPortalLichHoc: function (u) {
+        return `
+            <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
+                <i class="glyphicon glyphicon-calendar"></i> THỜI KHÓA BIỂU CÁ NHÂN TUẦN HIỆN TẠI (LỚP: ${u.lop || "CLC - Hoạch định và Tư vấn tài chính 01"})
+            </div>
+            <div class="table-responsive">
+                <table class="maindivtb">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Thứ</th>
+                            <th style="width: 32%;">Sáng (Tiết 1 - 6)</th>
+                            <th style="width: 32%;">Chiều (Tiết 7 - 12)</th>
+                            <th style="width: 32%;">Tối (Tiết 13 - 15)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="thu">Thứ 2</td><td><div class="divcontent"><b style="color:#056382;">Tài chính - Tiền tệ</b><br>Phòng: D2.304 | Giảng viên: TS. Đỗ Đức Minh</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Thứ 3</td><td><div class="slot-empty">—</div></td><td><div class="divcontent"><b style="color:#056382;">Luật kinh tế</b><br>Phòng: D1.201 | Giảng viên: ThS. Hoàng Mai Chi</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Thứ 4</td><td><div class="divcontent"><b style="color:#056382;">Thuế</b><br>Phòng: D2.508 | Giảng viên: PGS.TS. Lê Đình Hoàng</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Thứ 5</td><td><div class="slot-empty">—</div></td><td><div class="divcontent"><b style="color:#056382;">Phân tích định lượng trong kinh tế</b><br>Phòng: D3.101 | Giảng viên: TS. Vũ Hoàng Long</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Thứ 6</td><td><div class="divcontent"><b style="color:#056382;">Tài chính doanh nghiệp I</b><br>Phòng: D2.304 | Giảng viên: TS. Nguyễn Văn Hùng</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Thứ 7</td><td><div class="divcontent"><b style="color:#056382;">Giáo dục thể chất IV (Cầu lông)</b><br>Nhà đa năng HVNH | Giảng viên: ThS. Lê Tuấn Anh</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
+                        <tr><td class="thu">Chủ nhật</td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 16. Lịch thi
+    renderPortalLichThi: function (u) {
+        return `
+            <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
+                <i class="glyphicon glyphicon-time"></i> LỊCH THI KẾT THÚC HỌC PHẦN DỰ KIẾN (HK1 2026-2027)
+            </div>
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã LHP</th>
+                            <th>Tên học phần</th>
+                            <th>Ngày thi</th>
+                            <th>Ca thi / Giờ thi</th>
+                            <th>Phòng thi</th>
+                            <th>Số báo danh</th>
+                            <th>Hình thức thi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="text-align:center;">1</td><td style="text-align:center; font-weight:bold;">261FIN22H04</td><td>Tài chính - Tiền tệ</td><td style="text-align:center;">18/12/2026</td><td style="text-align:center;">Ca 1 (07:30)</td><td style="text-align:center;">D2.301</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
+                        <tr><td style="text-align:center;">2</td><td style="text-align:center; font-weight:bold;">261LAW02H03</td><td>Luật kinh tế</td><td style="text-align:center;">21/12/2026</td><td style="text-align:center;">Ca 2 (09:45)</td><td style="text-align:center;">D2.302</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
+                        <tr><td style="text-align:center;">3</td><td style="text-align:center; font-weight:bold;">261FIN03H01</td><td>Thuế</td><td style="text-align:center;">24/12/2026</td><td style="text-align:center;">Ca 1 (07:30)</td><td style="text-align:center;">D1.204</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
+                        <tr><td style="text-align:center;">4</td><td style="text-align:center; font-weight:bold;">261MAT16H01</td><td>Phân tích định lượng trong kinh tế</td><td style="text-align:center;">27/12/2026</td><td style="text-align:center;">Ca 3 (13:15)</td><td style="text-align:center;">D3.PM01</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Trắc nghiệm máy tính</td></tr>
+                        <tr><td style="text-align:center;">5</td><td style="text-align:center; font-weight:bold;">261FIN01H04</td><td>Tài chính doanh nghiệp I</td><td style="text-align:center;">30/12/2026</td><td style="text-align:center;">Ca 2 (09:45)</td><td style="text-align:center;">D2.301</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 17. Quyết định sinh viên
+    renderPortalQuyetDinh: function (u) {
+        return `
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">STT</th>
+                            <th style="width: 140px;">Số quyết định</th>
+                            <th style="width: 110px;">Ngày ký</th>
+                            <th>Nội dung quyết định</th>
+                            <th style="width: 120px;">Cơ quan ban hành</th>
+                            <th style="width: 90px;">Tệp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;">1</td>
+                            <td style="text-align:center; font-weight:bold;">1240/QĐ-HVNH</td>
+                            <td style="text-align:center;">25/08/2025</td>
+                            <td>Quyết định về việc công nhận trúng tuyển và nhập học hệ Đại học chính quy Chất lượng cao Khóa 28 năm học 2025 - 2029</td>
+                            <td style="text-align:center;">Giám đốc HVNH</td>
+                            <td style="text-align:center;"><a href="javascript:void(0)" class="btn btn-xs btn-default" onclick="HVNH.downloadDummy('QD_1240_CongNhanTrungTuyen_K28.pdf')"><i class="glyphicon glyphicon-download-alt"></i> Tải</a></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;">2</td>
+                            <td style="text-align:center; font-weight:bold;">342/QĐ-HVNH</td>
+                            <td style="text-align:center;">15/02/2026</td>
+                            <td>Quyết định về việc công nhận kết quả miễn học và chuyển đổi 15 tín chỉ các học phần Ngoại ngữ cho sinh viên nộp chứng chỉ quốc tế IELTS</td>
+                            <td style="text-align:center;">Giám đốc HVNH</td>
+                            <td style="text-align:center;"><a href="javascript:void(0)" class="btn btn-xs btn-default" onclick="HVNH.downloadDummy('QD_342_MienHocPhanTiengAnh.pdf')"><i class="glyphicon glyphicon-download-alt"></i> Tải</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 18. Đăng ký học phần
+    renderPortalDangKyHocPhan: function (u) {
+        return `
+            <div class="alert alert-info">
+                <strong>Thông báo:</strong> Cổng đăng ký học phần bổ sung Học kỳ 1 năm học 2026 - 2027 đang mở cho sinh viên Khóa 28.
+            </div>
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">Chọn</th>
+                            <th>Mã LHP</th>
+                            <th>Tên môn học</th>
+                            <th>STC</th>
+                            <th>Giảng viên</th>
+                            <th>Thời gian</th>
+                            <th>Phòng</th>
+                            <th>Sĩ số</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center;"><input type="checkbox" checked disabled></td>
+                            <td style="text-align:center; font-weight:bold;">261FIN22H04</td>
+                            <td>Tài chính - Tiền tệ</td>
+                            <td style="text-align:center;">3.0</td>
+                            <td>TS. Đỗ Đức Minh</td>
+                            <td>Thứ 2 (Tiết 1 - 3)</td>
+                            <td>D2.304</td>
+                            <td style="text-align:center;">65/70</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;"><input type="checkbox" checked disabled></td>
+                            <td style="text-align:center; font-weight:bold;">261LAW02H03</td>
+                            <td>Luật kinh tế</td>
+                            <td style="text-align:center;">3.0</td>
+                            <td>ThS. Hoàng Mai Chi</td>
+                            <td>Thứ 3 (Tiết 7 - 9)</td>
+                            <td>D1.201</td>
+                            <td style="text-align:center;">60/70</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary" style="background-color: #004b63;" onclick="HVNH.showToast('Lưu nguyện vọng đăng ký học phần thành công!', 'success')">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Lưu kết quả đăng ký
+            </button>
+        `;
+    },
+
+    // 19. Xin giấy xác nhận
+    renderPortalXinGiayXacNhan: function (u) {
+        return `
+            <div style="border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe; margin-bottom: 20px;">
+                <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
+                    <i class="glyphicon glyphicon-file"></i> ĐĂNG KÝ CẤP GIẤY XÁC NHẬN SINH VIÊN TRỰC TUYẾN
+                </div>
+                <form onsubmit="HVNH.nopDonXacNhan(event)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Loại giấy xác nhận:</label>
+                                <select class="form-control input-sm" id="selGiayXacNhan">
+                                    <option>Giấy xác nhận sinh viên (Vay vốn ngân hàng chính sách)</option>
+                                    <option>Giấy xác nhận sinh viên (Tạm hoãn nghĩa vụ quân sự)</option>
+                                    <option>Giấy xác nhận sinh viên (Làm vé xe buýt / Thẻ sinh viên)</option>
+                                    <option>Giấy giới thiệu thực tập tại doanh nghiệp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Số lượng bản in:</label>
+                                <input type="number" class="form-control input-sm" value="1" min="1" max="5">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label style="font-size: 12.5px;">Hình thức nhận:</label>
+                                <select class="form-control input-sm">
+                                    <option>Bản điện tử ký số (Email)</option>
+                                    <option>Bản giấy (Tại Bộ phận Một cửa)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary" style="background-color: #004b63;">
+                        <i class="glyphicon glyphicon-send"></i> Gửi yêu cầu xác nhận
+                    </button>
+                </form>
+            </div>
+        `;
+    },
+
+    // 20. Liên hệ - góp ý
+    renderPortalLienHe: function (u) {
+        return `
+            <div style="border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe;">
+                <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
+                    <i class="glyphicon glyphicon-envelope"></i> HÒM THƯ GÓP Ý & HỖ TRỢ SINH VIÊN
+                </div>
+                <form onsubmit="HVNH.guiGopY(event)">
+                    <div class="form-group">
+                        <label style="font-size: 12.5px;">Chủ đề tiếp nhận:</label>
+                        <select class="form-control input-sm">
+                            <option>Phòng Quản lý Đào tạo (Kế hoạch học tập, thời khóa biểu)</option>
+                            <option>Phòng Tài chính - Kế toán (Học phí, hóa đơn điện tử)</option>
+                            <option>Phòng Công tác sinh viên (Rèn luyện, học bổng, ký túc xá)</option>
+                            <option>Trung tâm CNTT (Tài khoản, phần mềm, cổng đăng ký)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 12.5px;">Nội dung phản ánh / góp ý:</label>
+                        <textarea class="form-control" rows="4" placeholder="Nhập chi tiết ý kiến đóng góp hoặc thắc mắc của bạn..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary" style="background-color: #004b63;">
+                        <i class="glyphicon glyphicon-send"></i> Gửi ý kiến
+                    </button>
+                </form>
+            </div>
+        `;
+    },
+
+    // 21. Khai báo BHYT
+    renderPortalBaoHiem: function (u) {
+        return `
+            <div class="table-responsive">
+                <table class="table table-bordered" style="font-size: 13px;">
+                    <tr><td style="width: 220px; font-weight: 600;">Mã số thẻ BHYT:</td><td><strong>GD401008307000</strong></td></tr>
+                    <tr><td style="font-weight: 600;">Nơi đăng ký KCB ban đầu:</td><td>Bệnh viện Đa khoa Đống Đa, Hà Nội (Mã: 01-012)</td></tr>
+                    <tr><td style="font-weight: 600;">Giá trị sử dụng:</td><td>Từ ngày 01/10/2025 đến ngày 31/12/2026</td></tr>
+                    <tr><td style="font-weight: 600;">Tình trạng nộp phí BHYT:</td><td><span class="label label-success">Đã hoàn thành</span></td></tr>
+                </table>
+            </div>
+        `;
+    },
+
+    // 22. Đăng ký lệ phí
+    renderPortalLePhi: function (u) {
+        return `
+            <div class="alert alert-info" style="font-size: 13px;">
+                Hiện tại không có đợt thu lệ phí nào mở cho sinh viên Khóa 28. Mọi chi phí đào tạo được tổng hợp tại mục <strong>Tài chính sinh viên</strong>.
+            </div>
+        `;
+    },
+
+    // 23. Hướng dẫn sử dụng
+    renderPortalHuongDan: function (u) {
+        return `
+            <div style="line-height: 1.8; font-size: 13.5px;">
+                <h4 style="color: #004b63; font-weight: bold;">HƯỚNG DẪN SỬ DỤNG CỔNG THÔNG TIN ĐÀO TẠO HỌC VIỆN NGÂN HÀNG</h4>
+                <p>1. <strong>Đăng ký học phần:</strong> Sinh viên truy cập vào mục "Đăng ký học phần" theo đúng khung giờ quy định cho từng khóa để đăng ký môn học và lớp tín chỉ.</p>
+                <p>2. <strong>Học phí & Hóa đơn:</strong> Toàn bộ học phí phát sinh trong học kỳ được cập nhật tại mục "Tài chính sinh viên". Sau khi hoàn thành nghĩa vụ, hóa đơn điện tử sẽ được cấp phát tại "Chi tiết hóa đơn".</p>
+                <p>3. <strong>Minh chứng chứng chỉ quốc tế:</strong> Sinh viên nộp chứng chỉ IELTS/MOS qua chức năng "Nộp chứng chỉ" để được thẩm định và công nhận miễn môn tương đương.</p>
+            </div>
+        `;
+    },
+
+    /* ==========================================================================
+       MODAL POPUPS & ACTIONS
+       ========================================================================== */
+    capNhatThongTin: function () {
         const u = this.state.currentUser;
-        const content = `
-            <div style="border: 1px solid #ddd; padding: 25px; background: #fafafa;">
-                <div style="text-align: center; border-bottom: 2px solid #056382; padding-bottom: 10px; margin-bottom: 15px;">
-                    <h4 style="margin: 0; color: #056382; font-weight: bold;">HỌC VIỆN NGÂN HÀNG - PHÒNG TÀI CHÍNH KẾ TOÁN</h4>
-                    <p style="margin: 3px 0 0 0; font-size: 13px;">BIÊN LAI THU HỌC PHÍ ĐIỆN TỬ</p>
+        const body = `
+            <div style="font-size: 13px;">
+                <p>Cập nhật số điện thoại cá nhân và địa chỉ liên lạc:</p>
+                <div class="form-group">
+                    <label>Số điện thoại di động:</label>
+                    <input type="text" class="form-control input-sm" id="editPhone" value="${u.diDong || '0968 554 219'}">
                 </div>
-                <p>Sinh viên: <strong>${u.hoTen}</strong> (Mã SV: ${u.username})</p>
-                <p>Lớp: <strong>${u.lop}</strong> | Học kỳ: <strong>Học kỳ 1 năm học 2026-2027</strong></p>
-                <p>Số tiền đã nộp: <strong style="color: #2e7d32; font-size: 16px;">9,800,000 VNĐ</strong> (Chín triệu tám trăm nghìn đồng)</p>
-                <p>Hình thức thanh toán: <strong>Chuyển khoản trực tuyến qua Ngân hàng số</strong></p>
-                <p>Thời gian giao dịch: <strong>28/08/2026 09:42:15</strong></p>
-                <p>Mã hóa đơn tra cứu: <strong>HD-HVNH-2026-8841</strong></p>
+                <div class="form-group">
+                    <label>Email cá nhân:</label>
+                    <input type="email" class="form-control input-sm" id="editEmail" value="${u.emailCaNhan || 'huynhthuthuha@gmail.com'}">
+                </div>
+                <div class="form-group">
+                    <label>Địa chỉ liên lạc hiện tại:</label>
+                    <input type="text" class="form-control input-sm" id="editAddress" value="${u.diaChi || 'Số 36 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội'}">
+                </div>
             </div>
         `;
-        this.showModal("Biên lai thu học phí điện tử", content, `
-            <button class="btn btn-default" onclick="window.print()"><i class="glyphicon glyphicon-print"></i> In biên lai</button>
-            <button class="btn btn-primary" data-dismiss="modal">Đóng</button>
+        this.showModal("Cập nhật thông tin cá nhân", body, `
+            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-primary" style="background-color: #004b63;" onclick="HVNH.saveUpdatedInfo()">Lưu thay đổi</button>
         `);
+    },
+
+    saveUpdatedInfo: function () {
+        const p = document.getElementById("editPhone").value.trim();
+        const em = document.getElementById("editEmail").value.trim();
+        const addr = document.getElementById("editAddress").value.trim();
+        if (this.state.currentUser) {
+            this.state.currentUser.diDong = p;
+            this.state.currentUser.emailCaNhan = em;
+            this.state.currentUser.diaChi = addr;
+            localStorage.setItem("hvnh_user", JSON.stringify(this.state.currentUser));
+        }
+        $("#myAlert").modal("hide");
+        this.showToast("Cập nhật thông tin cá nhân thành công!", "success");
+        this.switchPortalSection("info");
+    },
+
+    capNhatNganHang: function () {
+        const body = `
+            <div style="font-size: 13px;">
+                <p>Thông tin tài khoản Ngân hàng liên kết chi trả học bổng / hoàn phí:</p>
+                <div class="form-group">
+                    <label>Ngân hàng:</label>
+                    <input type="text" class="form-control input-sm" value="Ngân hàng TMCP Công thương Việt Nam (VietinBank)" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Số tài khoản:</label>
+                    <input type="text" class="form-control input-sm" id="txtBankNumber" value="103874928120">
+                </div>
+                <div class="form-group">
+                    <label>Chủ tài khoản:</label>
+                    <input type="text" class="form-control input-sm" value="${this.state.currentUser.hoTen}" readonly>
+                </div>
+            </div>
+        `;
+        this.showModal("Cập nhật thông tin tài khoản ngân hàng", body, `
+            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary" style="background-color: #004b63;" onclick="$('#myAlert').modal('hide'); HVNH.showToast('Lưu thông tin ngân hàng thành công!', 'success');">Lưu tài khoản</button>
+        `);
+    },
+
+    thanhToanTrucTuyen: function () {
+        const u = this.state.currentUser;
+        const body = `
+            <div style="text-align: center; padding: 15px; font-size: 13.5px;">
+                <h4 style="color: #004b63; font-weight: bold; margin-top: 0;">THANH TOÁN HỌC PHÍ TRỰC TUYẾN QUA VIETQR</h4>
+                <p>Học kỳ: <strong>Học kỳ 1 năm học 2026 - 2027</strong> | Số tiền: <strong style="color: #c62828; font-size: 18px;">22,109,000 VNĐ</strong></p>
+                
+                <div style="border: 2px solid #004b63; display: inline-block; padding: 15px; border-radius: 8px; background: #ffffff; margin: 10px 0;">
+                    <!-- Realistic VietQR code simulator -->
+                    <div style="width: 180px; height: 180px; background: #f0f4f8; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #ccd; border-radius: 4px; margin: 0 auto;">
+                        <i class="glyphicon glyphicon-qrcode" style="font-size: 90px; color: #002d4f;"></i>
+                        <span style="font-size: 11px; color: #444; font-weight: bold; margin-top: 5px;">VIETQR - NAPAS 247</span>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12.5px; text-align: left; line-height: 1.6;">
+                        <div>Tài khoản nhận: <strong>110000008307</strong></div>
+                        <div>Ngân hàng: <strong>VietinBank - CN Đống Đa</strong></div>
+                        <div>Đơn vị: <strong>Học viện Ngân hàng</strong></div>
+                        <div>Nội dung: <strong style="color: #004b63;">${u.username} ${u.hoTen.replace(/ /g, "")} HP HK1 26-27</strong></div>
+                    </div>
+                </div>
+                <div class="alert alert-warning" style="font-size: 12px; margin-top: 10px; text-align: left;">
+                    Hệ thống sẽ tự động gạch nợ trong vòng 15 phút sau khi giao dịch thành công. Vui lòng giữ lại biên lai chuyển khoản.
+                </div>
+            </div>
+        `;
+        this.showModal("Cổng thanh toán học phí trực tuyến", body, `
+            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-success" onclick="$('#myAlert').modal('hide'); HVNH.showToast('Giao dịch đã được ghi nhận vào hệ thống xác thực!', 'success');"><i class="glyphicon glyphicon-ok"></i> Đã hoàn tất chuyển khoản</button>
+        `);
+    },
+
+    phuongThucDongHocPhi: function () {
+        const body = `
+            <div style="font-size: 13px; line-height: 1.8;">
+                <h4 style="color: #004b63; font-weight: bold; margin-top: 0;">CÁC PHƯƠNG THỨC NỘP HỌC PHÍ TẠI HỌC VIỆN NGÂN HÀNG</h4>
+                <ol style="padding-left: 20px;">
+                    <li><strong>Phương thức 1 - Cổng thanh toán VietQR / Napas:</strong> Quét mã QR tự động trên Cổng thông tin sinh viên bằng ứng dụng SmartBanking của bất kỳ ngân hàng nào.</li>
+                    <li><strong>Phương thức 2 - Chuyển khoản trực tiếp:</strong> Chuyển tiền vào tài khoản chuyên thu học phí của Học viện Ngân hàng tại VietinBank theo đúng cú pháp [Mã SV] [Họ tên] [Học kỳ].</li>
+                    <li><strong>Phương thức 3 - Nộp tại quầy giao dịch:</strong> Nộp trực tiếp tại Phòng Tài chính - Kế toán (Tầng 1 Nhà A1, Học viện Ngân hàng, 12 Chùa Bộc, Đống Đa, Hà Nội).</li>
+                </ol>
+            </div>
+        `;
+        this.showModal("Hướng dẫn phương thức nộp học phí", body);
+    },
+
+    xemChiTietHoaDon: function (soSeries) {
+        const u = this.state.currentUser;
+        const body = `
+            <div style="border: 2px solid #004b63; padding: 25px; background: #fdfdfd; font-family: 'Times New Roman', serif;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #004b63; padding-bottom: 12px; margin-bottom: 15px;">
+                    <div>
+                        <div style="font-weight: bold; font-size: 15px; color: #004b63;">HỌC VIỆN NGÂN HÀNG</div>
+                        <div style="font-size: 13px;">Địa chỉ: 12 Chùa Bộc, Quận Đống Đa, Hà Nội</div>
+                        <div style="font-size: 13px;">Mã số thuế: <strong>0100779841</strong></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; font-size: 15px; color: #c62828;">HÓA ĐƠN ĐIỆN TỬ</div>
+                        <div style="font-size: 12.5px;">Mẫu số: <strong>01GTKT0/001</strong></div>
+                        <div style="font-size: 12.5px;">Ký hiệu: <strong>HVNH/25E</strong></div>
+                        <div style="font-size: 12.5px;">Số Series: <strong>${soSeries || "0429914043"}</strong></div>
+                    </div>
+                </div>
+
+                <div style="font-size: 13.5px; line-height: 1.8; margin-bottom: 15px;">
+                    <div>Họ tên người nộp tiền: <strong>${u.hoTen}</strong></div>
+                    <div>Mã số sinh viên: <strong>${u.username}</strong> | Lớp: <strong>${u.lop}</strong></div>
+                    <div>Chuyên ngành: <strong>${u.chuongTrinhDaoTao || "CLC - Hoạch định và Tư vấn tài chính"}</strong></div>
+                    <div>Hình thức thanh toán: <strong>Chuyển khoản liên ngân hàng số</strong></div>
+                </div>
+
+                <table class="table table-bordered" style="font-size: 13px; margin-bottom: 15px;">
+                    <thead style="background: #f0f4f8;">
+                        <tr>
+                            <th style="text-align: center; width: 40px;">STT</th>
+                            <th>Nội dung các khoản thu</th>
+                            <th style="text-align: center; width: 60px;">ĐVT</th>
+                            <th style="text-align: center; width: 60px;">SL</th>
+                            <th style="text-align: right; width: 120px;">Đơn giá</th>
+                            <th style="text-align: right; width: 130px;">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">1</td>
+                            <td>Học phí các môn học tín chỉ Đại học chính quy Chất lượng cao</td>
+                            <td style="text-align: center;">Kỳ</td>
+                            <td style="text-align: center;">1</td>
+                            <td style="text-align: right;">20,034,000</td>
+                            <td style="text-align: right; font-weight: bold;">20,034,000 đ</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5" style="text-align: right; font-weight: bold;">Tổng cộng tiền thanh toán:</td>
+                            <td style="text-align: right; font-weight: bold; color: #c62828;">20,034,000 đ</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 13px;">
+                    <div style="text-align: center; width: 200px;">
+                        <strong>NGƯỜI NỘP TIỀN</strong><br>
+                        <em>(Ký, ghi rõ họ tên)</em>
+                    </div>
+                    <div style="text-align: center; width: 250px;">
+                        <em>Hà Nội, ngày 13 tháng 09 năm 2025</em><br>
+                        <strong>THỦ TRƯỞNG ĐƠN VỊ</strong><br>
+                        <div style="margin-top: 15px; color: #c62828; font-weight: bold; border: 2px dashed #c62828; padding: 6px; display: inline-block; border-radius: 4px;">
+                            ✓ KÝ SỐ BỞI HỌC VIỆN NGÂN HÀNG<br>
+                            <span style="font-size: 11px;">Ngày ký: 13/09/2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        this.showModal("Chi tiết biên lai - Hóa đơn điện tử", body, `
+            <button type="button" class="btn btn-default" onclick="window.print()"><i class="glyphicon glyphicon-print"></i> In hóa đơn</button>
+            <button type="button" class="btn btn-primary" style="background-color: #004b63;" data-dismiss="modal">Đóng</button>
+        `);
+    },
+
+    submitPhucKhao: function (e) {
+        if (e) e.preventDefault();
+        const s = document.getElementById("selSubjectPhucKhao").value;
+        const r = document.getElementById("txtReasonPhucKhao").value.trim();
+        this.showToast(`Đã tiếp nhận yêu cầu phúc khảo môn ${s}!`, "success");
+        if (document.getElementById("txtReasonPhucKhao")) document.getElementById("txtReasonPhucKhao").value = "";
+    },
+
+    submitVangThi: function (subject) {
+        const body = `
+            <div style="font-size: 13px;">
+                <p>Đăng ký vắng thi kết thúc học phần: <strong>${subject}</strong></p>
+                <div class="form-group">
+                    <label>Lý do xin vắng thi:</label>
+                    <textarea class="form-control" rows="3" placeholder="Ghi rõ lý do (Ví dụ: Ốm đau, tai nạn, lý do bất khả kháng...)" required id="txtVangThiReason"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Tệp minh chứng đính kèm (Giấy nhập viện / Giấy xác nhận y tế):</label>
+                    <input type="file" class="form-control input-sm">
+                </div>
+            </div>
+        `;
+        this.showModal("Đăng ký vắng thi học phần", body, `
+            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger" onclick="$('#myAlert').modal('hide'); HVNH.showToast('Gửi đơn xin vắng thi thành công!', 'success');">Gửi đăng ký</button>
+        `);
+    },
+
+    nopDonXacNhan: function (e) {
+        if (e) e.preventDefault();
+        this.showToast("Đã gửi đơn xin giấy xác nhận sinh viên thành công!", "success");
+    },
+
+    guiGopY: function (e) {
+        if (e) e.preventDefault();
+        this.showToast("Cảm ơn bạn! Ý kiến đóng góp đã được gửi tới Ban Giám đốc.", "success");
     },
 
     /* ==========================================================================

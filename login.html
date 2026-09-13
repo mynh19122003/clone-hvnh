@@ -3,155 +3,290 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập - Học viện Ngân hàng</title>
+    <title>Đăng ký học phần - Học viện Ngân hàng</title>
     <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon" />
-
-    <!-- Bootstrap 3 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        }
+
         body {
-            background-color: #f4f6f9;
+            background-color: #f2f4f7;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            margin: 0;
             padding: 20px;
         }
-        .login-wrapper {
+
+        .login-card {
+            background: #ffffff;
             width: 100%;
-            max-width: 420px;
+            max-width: 380px;
+            padding: 36px 32px 30px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .logo-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .login-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #2b3648;
+            margin-bottom: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .login-divider {
+            position: relative;
+            margin: 0 0 20px 0;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .login-divider::after {
+            content: "*";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            padding: 0 6px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 38px;
+            padding: 8px 12px;
+            font-size: 13.5px;
+            color: #1f2937;
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #9ca3af;
+            font-size: 13.5px;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .btn-login {
+            width: 100%;
+            height: 38px;
+            background-color: #1877f2;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            margin-top: 6px;
+        }
+
+        .btn-login:hover {
+            background-color: #166fe5;
+        }
+
+        .btn-login:active {
+            background-color: #0e5aab;
+        }
+
+        .alert-box {
+            margin-bottom: 14px;
+            padding: 9px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: left;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background-color: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .test-helper {
+            margin-top: 22px;
+            padding-top: 14px;
+            border-top: 1px dashed #e5e7eb;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .test-btn {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #0284c7;
+            font-weight: 600;
+            font-size: 11.5px;
+            cursor: pointer;
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        .test-btn:hover {
+            background: #f0f9ff;
+            border-color: #0284c7;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            color: #1877f2;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="login-wrapper">
-        <div class="loginbox">
-            <div class="loginbox-social">
-                <div class="logo">
-                    <a href="index.html#/"><img src="assets/logo/logo.png" alt="Học viện Ngân hàng" style="width: 140px;"></a>
-                </div>
-                <div class="uni-name" style="margin-top: 10px; font-weight: bold; color: #056382; font-size: 17px;">
-                    HỌC VIỆN NGÂN HÀNG
-                </div>
-                <div class="social-title" style="color: #056382; font-size: 14px;">Cổng thông tin đào tạo</div>
+    <div class="login-card">
+        <!-- Shield Logo replicating regist.hvnh.edu.vn/Login -->
+        <div class="logo-box">
+            <svg width="74" height="88" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Shield navy background -->
+                <path d="M50 4 L93 20 C93 78 50 114 50 116 C50 114 7 78 7 20 Z" fill="#002d4f" stroke="#002d4f" stroke-width="1.5"/>
+                <!-- Inner white contour -->
+                <path d="M50 8 L89 23 C89 74 50 108 50 111 C50 108 11 74 11 23 Z" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+                <!-- BAV text -->
+                <text x="50" y="44" font-family="'Arial Black', Arial, sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">BAV</text>
+                <!-- Book and rays -->
+                <g transform="translate(26, 49)">
+                    <!-- Book pages -->
+                    <path d="M24 16 C16 13 4 14 0 17 L0 31 C6 28 16 27 24 30 Z" fill="#ffffff"/>
+                    <path d="M24 16 C32 13 44 14 48 17 L48 31 C42 28 32 27 24 30 Z" fill="#ffffff"/>
+                    <line x1="24" y1="16" x2="24" y2="30" stroke="#002d4f" stroke-width="2"/>
+                    <!-- Star -->
+                    <path d="M24 4 L26 10 L32 12 L26 14 L24 20 L22 14 L16 12 L22 10 Z" fill="#ffc107"/>
+                    <!-- Yellow dot lines -->
+                    <rect x="36" y="19" width="7" height="2" fill="#ffc107" rx="1"/>
+                    <rect x="36" y="23" width="5" height="2" fill="#ffc107" rx="1"/>
+                </g>
+                <!-- Year 1961 -->
+                <text x="50" y="100" font-family="'Arial', sans-serif" font-size="12" font-weight="bold" fill="#ffc107" text-anchor="middle" letter-spacing="1.5">1961</text>
+            </svg>
+        </div>
+
+        <div class="login-title">Đăng ký học phần</div>
+        <div class="login-divider"></div>
+
+        <div id="loginAlert" class="alert-box"></div>
+
+        <form id="frmLogin" onsubmit="handleLoginSubmit(event)">
+            <div class="form-group">
+                <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" required autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password">
             </div>
 
-            <div class="loginbox-or">
-                <div class="or-line"></div>
-                <div class="or">-*-</div>
-            </div>
+            <button type="submit" class="btn-login" id="btnLogin">Đăng nhập</button>
+        </form>
 
-            <div id="loginAlert"></div>
-
-            <form id="frmLogin" onsubmit="handleLoginSubmit(event)">
-                <div class="loginbox-textbox">
-                    <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập (Mã SV)" required>
-                </div>
-                <div class="loginbox-textbox">
-                    <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required>
-                </div>
-
-                <div class="loginbox-forgot">
-                    <div style="font-size: 13px; margin-bottom: 4px; font-weight: 500;">Nhập mã bảo vệ:</div>
-                    <div class="captcha-box">
-                        <canvas id="captchaCanvas" width="140" height="38"></canvas>
-                        <button type="button" class="btn-refresh-captcha" onclick="drawCaptcha()" title="Đổi mã khác">
-                            <i class="glyphicon glyphicon-refresh"></i> Đổi mã
-                        </button>
-                    </div>
-                    <input type="text" class="form-control" id="txtCaptcha" placeholder="Nhập mã bảo vệ..." style="max-width: 220px;" required>
-                </div>
-
-                <div style="margin-top: 20px;">
-                    <button type="submit" class="btn btn-info btn-block" style="background-color: #056382 !important; border-color: #056382; font-weight: bold; padding: 10px;">
-                        Đăng nhập
-                    </button>
-                </div>
-
-                <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 12.5px;">
-                    <a href="javascript:void(0)" onclick="quickDemo()" style="color: #056382; font-weight: bold;">
-                        <i class="glyphicon glyphicon-user"></i> Tài khoản mẫu
-                    </a>
-                    <a href="index.html#/" style="color: #666;">
-                        <i class="glyphicon glyphicon-home"></i> Về trang chủ
-                    </a>
-                </div>
-            </form>
+        <div class="test-helper">
+            <div>Tài khoản test: <strong>008307000568</strong> | Mật khẩu: <strong>12351235</strong></div>
+            <button type="button" class="test-btn" onclick="fillTestAccount()">
+                ⚡ Điền tài khoản test
+            </button>
+            <br>
+            <a href="index.html#/" class="back-home">← Cổng thông tin đào tạo HVNH</a>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Application Data -->
     <script src="assets/js/data.js"></script>
     <script>
-        let currentCaptcha = "";
-
-        function drawCaptcha() {
-            const canvas = document.getElementById("captchaCanvas");
-            if (!canvas) return;
-            const ctx = canvas.getContext("2d");
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let code = "";
-            for (let i = 0; i < 5; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            currentCaptcha = code;
-
-            ctx.fillStyle = "#eef4f8";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < 4; i++) {
-                ctx.strokeStyle = `rgba(5, 99, 130, ${Math.random() * 0.4 + 0.2})`;
-                ctx.beginPath();
-                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-                ctx.stroke();
-            }
-
-            ctx.font = "bold 22px Courier, monospace";
-            ctx.fillStyle = "#056382";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(code, canvas.width / 2, canvas.height / 2);
+        function fillTestAccount() {
+            document.getElementById("txtUsername").value = "008307000568";
+            document.getElementById("txtPassword").value = "12351235";
+            showAlert("", "");
         }
 
-        function quickDemo() {
-            document.getElementById("txtUsername").value = "21A4010123";
-            document.getElementById("txtPassword").value = "123";
-            document.getElementById("txtCaptcha").value = currentCaptcha;
+        function showAlert(msg, type) {
+            const alertBox = document.getElementById("loginAlert");
+            if (!msg) {
+                alertBox.style.display = "none";
+                alertBox.innerHTML = "";
+                return;
+            }
+            alertBox.className = "alert-box " + (type === "success" ? "alert-success" : "alert-error");
+            alertBox.innerHTML = msg;
+            alertBox.style.display = "block";
         }
 
         function handleLoginSubmit(e) {
             e.preventDefault();
             const u = document.getElementById("txtUsername").value.trim();
             const p = document.getElementById("txtPassword").value.trim();
-            const c = document.getElementById("txtCaptcha").value.trim().toUpperCase();
-            const alertBox = document.getElementById("loginAlert");
 
-            if (c !== currentCaptcha) {
-                alertBox.innerHTML = `<div class="alert alert-danger" style="padding: 8px; font-size: 13px;">Mã bảo vệ không chính xác!</div>`;
-                drawCaptcha();
+            if (!u || !p) {
+                showAlert("Vui lòng nhập tên đăng nhập và mật khẩu!", "error");
                 return;
             }
 
-            const student = HVNH_DATA.students[u];
+            const student = HVNH_DATA && HVNH_DATA.students ? HVNH_DATA.students[u] : null;
+
             if (!student || student.password !== p) {
-                alertBox.innerHTML = `<div class="alert alert-danger" style="padding: 8px; font-size: 13px;">Tên đăng nhập hoặc mật khẩu không chính xác!</div>`;
-                drawCaptcha();
+                showAlert("Tên đăng nhập hoặc mật khẩu không chính xác!", "error");
                 return;
             }
 
-            // Save user to localStorage
-            localStorage.setItem("hvnh_user", JSON.stringify(student));
-            alertBox.innerHTML = `<div class="alert alert-success" style="padding: 8px; font-size: 13px;">Đăng nhập thành công! Đang chuyển hướng...</div>`;
-            setTimeout(() => {
-                window.location.href = "index.html#/portal";
-            }, 500);
-        }
+            // Save user to localStorage (with fallback)
+            try {
+                localStorage.setItem("hvnh_user", JSON.stringify(student));
+            } catch (err) {
+                console.warn("localStorage restricted:", err);
+            }
+            showAlert("Đăng nhập thành công! Đang chuyển hướng...", "success");
 
-        window.onload = drawCaptcha;
+            setTimeout(() => {
+                window.location.href = "index.html?user=" + encodeURIComponent(u) + "#/portal";
+            }, 350);
+        }
     </script>
 </body>
 </html>
