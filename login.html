@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng ký học phần - Học viện Ngân hàng</title>
+    <title>Đăng nhập - Cổng thông tin đào tạo - Học viện Ngân hàng</title>
     <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon" />
     
     <style>
@@ -75,8 +75,8 @@
             left: 0;
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #1877f2, #38bdf8, #1877f2);
-            box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
+            background: linear-gradient(90deg, #056382, #077da5, #056382);
+            box-shadow: 0 0 10px rgba(5, 99, 130, 0.8);
             transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -111,38 +111,56 @@
         .logo-box {
             display: flex;
             justify-content: center;
-            margin-bottom: 14px;
+            margin-bottom: 6px;
             transition: transform 0.3s ease;
         }
 
         .logo-box:hover {
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
 
-        .login-title {
-            font-size: 15px;
-            font-weight: 500;
-            color: #2b3648;
+        /* Large circular logo replicating online.hvnh.edu.vn/Login (170px) */
+        .login-logo-img {
+            width: 170px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 16px rgba(5, 99, 130, 0.12);
+        }
+
+        .school-title {
+            margin-top: 9px;
+            font-size: 15.5px;
+            font-weight: bold;
+            color: #056382;
+            letter-spacing: 0.3px;
+        }
+
+        .portal-subtitle {
+            margin-top: 2px;
+            font-size: 13.5px;
+            color: #056382;
             margin-bottom: 12px;
-            letter-spacing: 0.2px;
         }
 
         .login-divider {
             position: relative;
-            margin: 0 0 20px 0;
-            border-top: 1px solid #e5e7eb;
+            margin: 0 0 16px 0;
+            border-top: 1px solid #dcdfe4;
         }
 
         .login-divider::after {
-            content: "*";
+            content: "-*-";
             position: absolute;
-            top: -10px;
+            top: -9px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffffff;
-            padding: 0 6px;
-            color: #9ca3af;
-            font-size: 13px;
+            padding: 0 8px;
+            color: #888888;
+            font-size: 12px;
         }
 
         .form-group {
@@ -169,8 +187,8 @@
         }
 
         .form-control:focus {
-            border-color: #1877f2;
-            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+            border-color: #056382;
+            box-shadow: 0 0 0 3px rgba(5, 99, 130, 0.15);
         }
 
         .form-control.input-error {
@@ -179,16 +197,67 @@
             background-color: #fffbfb;
         }
 
-        /* Submit Button with Live Animations */
+        /* Captcha Box replicating HVNH Login */
+        .captcha-wrapper {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .captcha-canvas-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        #captchaCanvas {
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            transition: opacity 0.2s ease;
+        }
+
+        #captchaCanvas:hover {
+            opacity: 0.92;
+        }
+
+        .captcha-refresh-btn {
+            background: none;
+            border: none;
+            color: #056382;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease, color 0.2s ease;
+        }
+
+        .captcha-refresh-btn:hover {
+            transform: rotate(180deg);
+            color: #03485f;
+        }
+
+        .captcha-label {
+            font-size: 13px;
+            color: #334155;
+            margin-bottom: 4px;
+            text-align: left;
+        }
+
+        /* Submit Button with HVNH Teal Blue */
         .btn-login {
             width: 100%;
             height: 40px;
-            background-color: #1877f2;
+            background-color: #056382;
             color: #ffffff;
             border: none;
             border-radius: 4px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: bold;
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -196,34 +265,35 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 6px;
+            margin-top: 4px;
             transition: background-color 0.25s ease, transform 0.12s ease, box-shadow 0.25s ease;
-            box-shadow: 0 2px 6px rgba(24, 119, 242, 0.25);
+            box-shadow: 0 2px 6px rgba(5, 99, 130, 0.25);
             user-select: none;
         }
 
         .btn-login:hover:not(:disabled) {
-            background-color: #166fe5;
-            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+            background-color: #03485f;
+            box-shadow: 0 4px 12px rgba(5, 99, 130, 0.35);
         }
 
         .btn-login:active:not(:disabled) {
-            background-color: #0e5aab;
+            background-color: #022e3d;
             transform: scale(0.985);
         }
 
         .btn-login:disabled {
             cursor: not-allowed;
+            opacity: 0.85;
         }
 
         /* Button Loading State */
         .btn-login.is-loading {
-            background: linear-gradient(90deg, #1877f2, #3b82f6, #1877f2);
+            background: linear-gradient(90deg, #056382, #077da5, #056382);
             background-size: 200% 100%;
             animation: btnShimmer 1.5s infinite;
             cursor: wait;
             pointer-events: none;
-            box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+            box-shadow: 0 4px 14px rgba(5, 99, 130, 0.35);
         }
 
         @keyframes btnShimmer {
@@ -379,7 +449,7 @@
         }
 
         .back-home:hover {
-            color: #1877f2;
+            color: #056382;
             text-decoration: underline;
         }
     </style>
@@ -391,33 +461,13 @@
             <div class="card-loader-bar" id="cardLoaderBar"></div>
         </div>
 
-        <!-- Shield Logo replicating regist.hvnh.edu.vn/Login -->
+        <!-- Logo Học viện Ngân hàng (170px như web trường online.hvnh.edu.vn) -->
         <div class="logo-box">
-            <svg width="74" height="88" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-                <!-- Shield navy background -->
-                <path d="M50 4 L93 20 C93 78 50 114 50 116 C50 114 7 78 7 20 Z" fill="#002d4f" stroke="#002d4f" stroke-width="1.5"/>
-                <!-- Inner white contour -->
-                <path d="M50 8 L89 23 C89 74 50 108 50 111 C50 108 11 74 11 23 Z" fill="none" stroke="#ffffff" stroke-width="1.8"/>
-                <!-- BAV text -->
-                <text x="50" y="44" font-family="'Arial Black', Arial, sans-serif" font-size="21" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">BAV</text>
-                <!-- Book and rays -->
-                <g transform="translate(26, 49)">
-                    <!-- Book pages -->
-                    <path d="M24 16 C16 13 4 14 0 17 L0 31 C6 28 16 27 24 30 Z" fill="#ffffff"/>
-                    <path d="M24 16 C32 13 44 14 48 17 L48 31 C42 28 32 27 24 30 Z" fill="#ffffff"/>
-                    <line x1="24" y1="16" x2="24" y2="30" stroke="#002d4f" stroke-width="2"/>
-                    <!-- Star -->
-                    <path d="M24 4 L26 10 L32 12 L26 14 L24 20 L22 14 L16 12 L22 10 Z" fill="#ffc107"/>
-                    <!-- Yellow dot lines -->
-                    <rect x="36" y="19" width="7" height="2" fill="#ffc107" rx="1"/>
-                    <rect x="36" y="23" width="5" height="2" fill="#ffc107" rx="1"/>
-                </g>
-                <!-- Year 1961 -->
-                <text x="50" y="100" font-family="'Arial', sans-serif" font-size="12" font-weight="bold" fill="#ffc107" text-anchor="middle" letter-spacing="1.5">1961</text>
-            </svg>
+            <img src="assets/logo/logo.png" alt="Học viện Ngân hàng" class="login-logo-img">
         </div>
 
-        <div class="login-title">Đăng ký học phần</div>
+        <div class="school-title">HỌC VIỆN NGÂN HÀNG</div>
+        <div class="portal-subtitle">Cổng thông tin đào tạo</div>
         <div class="login-divider"></div>
 
         <div id="loginAlert" class="alert-box"></div>
@@ -429,6 +479,16 @@
             
             <div class="form-group">
                 <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password">
+            </div>
+
+            <!-- Mã bảo vệ Captcha chuẩn web trường -->
+            <div class="captcha-wrapper">
+                <div class="captcha-canvas-box">
+                    <canvas id="captchaCanvas" width="220" height="46" onclick="generateCaptcha()" title="Nhấp để đổi mã bảo vệ"></canvas>
+                    <button type="button" class="captcha-refresh-btn" onclick="generateCaptcha()" title="Đổi mã bảo vệ">↻</button>
+                </div>
+                <div class="captcha-label">Nhập mã bảo vệ:</div>
+                <input type="text" class="form-control" id="txtCaptcha" placeholder="" autocomplete="off" required>
             </div>
 
             <button type="submit" class="btn-login" id="btnLogin">
@@ -466,12 +526,70 @@
             setTimeout(() => ripple.remove(), 550);
         });
 
+        let currentCaptcha = "";
+
+        function generateCaptcha() {
+            const canvas = document.getElementById("captchaCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            currentCaptcha = "";
+            for (let i = 0; i < 5; i++) {
+                currentCaptcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            // White background
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Blue noisy dots replicating HVNH captcha
+            for (let i = 0; i < 350; i++) {
+                ctx.fillStyle = Math.random() > 0.4 ? "rgba(0, 20, 180, 0.4)" : "rgba(0, 80, 240, 0.25)";
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 1.5, 1.5);
+            }
+
+            // Blue letters
+            ctx.font = "bold 23px 'Courier New', monospace, sans-serif";
+            ctx.fillStyle = "#0018a8";
+            ctx.textBaseline = "middle";
+            for (let i = 0; i < currentCaptcha.length; i++) {
+                const char = currentCaptcha[i];
+                const x = 20 + i * 38 + (Math.random() * 4 - 2);
+                const y = canvas.height / 2 + (Math.random() * 4 - 2);
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate((Math.random() - 0.5) * 0.18);
+                ctx.fillText(char, 0, 0);
+                ctx.restore();
+            }
+
+            // Noise lines
+            for (let i = 0; i < 4; i++) {
+                ctx.strokeStyle = "rgba(0, 50, 200, 0.25)";
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+        }
+
+        // Initialize captcha on load
+        if (document.readyState === "loading") {
+            window.addEventListener("DOMContentLoaded", generateCaptcha);
+        } else {
+            generateCaptcha();
+        }
+
         function fillTestAccount() {
             if (isLoggingIn) return;
             document.getElementById("txtUsername").value = "008307000568";
             document.getElementById("txtPassword").value = "12351235";
+            const captchaInput = document.getElementById("txtCaptcha");
+            if (captchaInput) captchaInput.value = currentCaptcha;
             document.getElementById("txtUsername").classList.remove("input-error");
             document.getElementById("txtPassword").classList.remove("input-error");
+            if (captchaInput) captchaInput.classList.remove("input-error");
             showAlert("", "");
         }
 
@@ -493,8 +611,10 @@
 
             const uInput = document.getElementById("txtUsername");
             const pInput = document.getElementById("txtPassword");
+            const cInput = document.getElementById("txtCaptcha");
             const u = uInput.value.trim();
             const p = pInput.value.trim();
+            const c = cInput ? cInput.value.trim() : "";
             const btn = document.getElementById("btnLogin");
             const card = document.getElementById("loginCard");
             const loader = document.getElementById("cardLoader");
@@ -502,6 +622,7 @@
 
             uInput.classList.remove("input-error");
             pInput.classList.remove("input-error");
+            if (cInput) cInput.classList.remove("input-error");
             card.classList.remove("shake");
             showAlert("", "");
 
@@ -511,6 +632,15 @@
                 if (!p) pInput.classList.add("input-error");
                 showAlert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!", "error");
                 setTimeout(() => card.classList.remove("shake"), 500);
+                return;
+            }
+
+            if (cInput && c.toUpperCase() !== currentCaptcha.toUpperCase()) {
+                card.classList.add("shake");
+                cInput.classList.add("input-error");
+                showAlert("Mã bảo vệ không chính xác!", "error");
+                setTimeout(() => card.classList.remove("shake"), 500);
+                generateCaptcha();
                 return;
             }
 
