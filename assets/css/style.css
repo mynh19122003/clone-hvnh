@@ -700,58 +700,156 @@ a:hover, a:focus {
     color: #03485f;
 }
 
-/* Student Portal Dashboard */
-.portal-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    padding: 20px;
+/* ========================================================
+   Authentic Student Portal (Matching online.hvnh.edu.vn)
+   ======================================================== */
+.portal-wrapper {
+    display: flex;
+    min-height: 720px;
+    background-color: #ffffff;
+    border: 1px solid #dcd8cf;
+    margin-top: 1px;
     margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
-.portal-profile-header {
+/* Left TreeView Sidebar */
+.portal-sidebar {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #edeae2; /* Exact warm beige-grey from photo */
+    border-right: 1px solid #d5d1c7;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.portal-sidebar-title {
+    background-color: #056382;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 9px 12px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #edf2f7;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 4px;
 }
 
-.portal-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    border: 3px solid var(--hvnh-blue);
-    padding: 3px;
-    object-fit: cover;
+.portal-sidebar-group {
+    margin-bottom: 2px;
 }
 
-.portal-nav-tabs {
-    display: flex;
-    gap: 5px;
-    border-bottom: 2px solid var(--hvnh-blue);
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.portal-tab-btn {
-    padding: 8px 16px;
-    background: #f1f5f9;
-    border: 1px solid #cbd5e1;
-    border-bottom: none;
-    border-radius: 4px 4px 0 0;
+/* Group Header like "> Chức năng trực tuyến" */
+.portal-sidebar-group-header {
+    background-color: #f2efe8;
+    color: #222222;
+    font-weight: bold;
+    font-size: 13.5px;
+    padding: 7px 10px;
+    border-top: 1px solid #dfdad0;
+    border-bottom: 1px solid #dfdad0;
     cursor: pointer;
-    font-weight: 500;
-    color: #475569;
-    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
 }
 
-.portal-tab-btn.active {
-    background: var(--hvnh-blue);
+.portal-sidebar-group-header .tree-chevron {
+    font-size: 10px;
+    font-weight: bold;
+    color: #222222;
+    display: inline-block;
+    line-height: 1;
+}
+
+/* TreeView Submenu with authentic dotted connecting lines */
+.portal-sidebar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 2px 0 4px 10px;
+}
+
+.portal-sidebar-nav > li {
+    position: relative;
+    padding-left: 18px;
+    line-height: 27px;
+    height: 27px;
+    list-style: none;
+}
+
+/* Vertical dotted tree line */
+.portal-sidebar-nav > li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dotted #8c8c8c;
+}
+
+/* For last item in group, cut vertical line at halfway point */
+.portal-sidebar-nav > li:last-child::before {
+    height: 14px;
+    bottom: auto;
+}
+
+/* Horizontal dotted tree branch */
+.portal-sidebar-nav > li::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 13px;
+    width: 12px;
+    height: 1px;
+    border-bottom: 1px dotted #8c8c8c;
+}
+
+.portal-sidebar-nav > li > a {
+    color: #333333;
+    text-decoration: none;
+    font-size: 13px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    line-height: 27px;
+    transition: color 0.1s ease;
+}
+
+.portal-sidebar-nav > li > a:hover {
+    color: #056382;
+    text-decoration: underline;
+}
+
+.portal-sidebar-nav > li > a.active,
+.portal-sidebar-nav > li.active > a {
+    font-weight: bold;
+    color: #056382;
+}
+
+/* Right Main Content Panel */
+.portal-main-panel {
+    flex: 1;
+    background-color: #ffffff;
+    min-width: 0;
+}
+
+.portal-header-bar {
+    background-color: #056382;
     color: #ffffff;
-    border-color: var(--hvnh-blue);
+    font-weight: bold;
+    padding: 9px 15px;
+    font-size: 14px;
+}
+
+.portal-body-inner {
+    padding: 15px 20px;
 }
 
 /* Table styles inside portal */

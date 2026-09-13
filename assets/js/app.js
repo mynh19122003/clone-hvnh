@@ -104,11 +104,7 @@ const HVNH = {
                 this.renderDichVuCong();
                 break;
             case "portal":
-                if (param === "xin-giay-xac-nhan") {
-                    this.renderDichVuCong();
-                } else {
-                    this.renderStudentPortal(param);
-                }
+                this.renderStudentPortal(param);
                 break;
             case "tin-tuc":
                 if (param) {
@@ -1232,7 +1228,7 @@ const HVNH = {
                     <!-- 1. Trang cá nhân -->
                     <div class="portal-sidebar-group">
                         <div class="portal-sidebar-group-header">
-                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Trang cá nhân
+                            <span class="tree-chevron"><i class="glyphicon glyphicon-chevron-right"></i></span> Trang cá nhân
                         </div>
                         <ul class="portal-sidebar-nav">
                             <li><a href="javascript:void(0)" id="pnav-info" onclick="HVNH.switchPortalSection('info')">Thông tin cá nhân</a></li>
@@ -1244,7 +1240,7 @@ const HVNH = {
                     <!-- 2. Tra cứu thông tin -->
                     <div class="portal-sidebar-group">
                         <div class="portal-sidebar-group-header">
-                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Tra cứu thông tin
+                            <span class="tree-chevron"><i class="glyphicon glyphicon-chevron-right"></i></span> Tra cứu thông tin
                         </div>
                         <ul class="portal-sidebar-nav">
                             <li><a href="javascript:void(0)" id="pnav-study-programs" onclick="HVNH.switchPortalSection('study-programs')">Chương trình đào tạo</a></li>
@@ -1264,11 +1260,10 @@ const HVNH = {
                     <!-- 3. Chức năng trực tuyến -->
                     <div class="portal-sidebar-group">
                         <div class="portal-sidebar-group-header">
-                            <i class="glyphicon glyphicon-chevron-right" style="font-size: 10px;"></i> Chức năng trực tuyến
+                            <span class="tree-chevron"><i class="glyphicon glyphicon-chevron-right"></i></span> Chức năng trực tuyến
                         </div>
                         <ul class="portal-sidebar-nav">
                             <li><a href="javascript:void(0)" id="pnav-dang-ky-hoc-phan" onclick="HVNH.switchPortalSection('dang-ky-hoc-phan')">Đăng ký học phần</a></li>
-                            <li><a href="javascript:void(0)" id="pnav-xin-giay-xac-nhan" onclick="HVNH.switchPortalSection('xin-giay-xac-nhan')">Xin giấy xác nhận</a></li>
                             <li><a href="javascript:void(0)" id="pnav-lien-he" onclick="HVNH.switchPortalSection('lien-he')">Liên hệ - góp ý</a></li>
                             <li><a href="javascript:void(0)" id="pnav-xet-tot-nghiep" onclick="HVNH.switchPortalSection('xet-tot-nghiep')">Xét tốt nghiệp</a></li>
                             <li><a href="javascript:void(0)" id="pnav-nop-chung-chi" onclick="HVNH.switchPortalSection('nop-chung-chi')">Nộp chứng chỉ</a></li>
@@ -1376,9 +1371,6 @@ const HVNH = {
                 headerTitle.innerText = "Đăng ký học phần";
                 bodyContent.innerHTML = this.renderPortalDangKyHocPhan(u);
                 break;
-            case "xin-giay-xac-nhan":
-                window.location.hash = "#/dich-vu-cong";
-                return;
             case "lien-he":
                 headerTitle.innerText = "Liên hệ - góp ý";
                 bodyContent.innerHTML = this.renderPortalLienHe(u);
