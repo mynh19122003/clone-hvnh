@@ -876,7 +876,12 @@ const HVNH = {
     renderLoginPage: function () {
         const html = `
             <div class="divmain" style="display: flex; justify-content: center; align-items: center; padding: 40px 15px; background: #f2f4f7; min-height: 520px;">
-                <div class="login-card" style="max-width: 380px; width: 100%; background: #ffffff; padding: 36px 32px 30px; border-radius: 6px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center;">
+                <div class="login-card" id="inAppLoginCard" style="max-width: 380px; width: 100%; background: #ffffff; padding: 36px 32px 30px; border-radius: 6px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); text-align: center; position: relative; overflow: hidden;">
+                    <!-- Top Animated Progress Bar -->
+                    <div class="card-loader" id="inAppCardLoader">
+                        <div class="card-loader-bar" id="inAppCardLoaderBar"></div>
+                    </div>
+
                     <!-- Shield Logo replicating regist.hvnh.edu.vn/Login -->
                     <div class="logo-box" style="display: flex; justify-content: center; margin-bottom: 14px;">
                         <svg width="74" height="88" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
@@ -900,7 +905,7 @@ const HVNH = {
                         <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ffffff; padding: 0 6px; color: #9ca3af; font-size: 13px;">*</span>
                     </div>
 
-                    <div id="loginAlertBox" style="display: none; margin-bottom: 14px; padding: 8px 12px; border-radius: 4px; font-size: 13px; text-align: left;"></div>
+                    <div id="loginAlertBox" style="display: none; margin-bottom: 14px; padding: 9px 12px; border-radius: 4px; font-size: 13px; text-align: left;"></div>
 
                     <form onsubmit="HVNH.submitLogin(event)">
                         <div style="margin-bottom: 14px; text-align: left;">
@@ -909,8 +914,8 @@ const HVNH = {
                         <div style="margin-bottom: 18px; text-align: left;">
                             <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password" style="height: 38px; font-size: 13.5px; border-radius: 4px;">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block" style="background-color: #1877f2; border: none; height: 38px; font-size: 14px; font-weight: 500; border-radius: 4px;">
-                            Đăng nhập
+                        <button type="submit" class="btn-login" id="inAppBtnLogin">
+                            <span id="inAppBtnContent">Đăng nhập</span>
                         </button>
                     </form>
 
@@ -925,6 +930,23 @@ const HVNH = {
         `;
 
         document.getElementById("mainContent").innerHTML = html;
+
+        // Attach ripple listener
+        const btn = document.getElementById("inAppBtnLogin");
+        if (btn) {
+            btn.addEventListener("click", function (e) {
+                if (btn.disabled) return;
+                const rect = btn.getBoundingClientRect();
+                const ripple = document.createElement("span");
+                ripple.className = "ripple-circle";
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + "px";
+                ripple.style.left = (e.clientX - rect.left - size / 2) + "px";
+                ripple.style.top = (e.clientY - rect.top - size / 2) + "px";
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 550);
+            });
+        }
     },
 
     fillTestAccount: function () {
@@ -938,26 +960,102 @@ const HVNH = {
 
     submitLogin: function (e) {
         if (e) e.preventDefault();
-        const username = (document.getElementById("txtUsername").value || "").trim();
-        const password = (document.getElementById("txtPassword").value || "").trim();
+        const uInput = document.getElementById("txtUsername");
+        const pInput = document.getElementById("txtPassword");
+        const username = (uInput.value || "").trim();
+        const password = (pInput.value || "").trim();
         const alertBox = document.getElementById("loginAlertBox");
+        const btn = document.getElementById("inAppBtnLogin");
+        const card = document.getElementById("inAppLoginCard");
+        const loader = document.getElementById("inAppCardLoader");
+        const loaderBar = document.getElementById("inAppCardLoaderBar");
 
-        const student = HVNH_DATA.students[username];
-        if (!student || student.password !== password) {
+        if (alertBox) alertBox.style.display = "none";
+        if (card) card.classList.remove("shake");
+
+        if (!username || !password) {
+            if (card) card.classList.add("shake");
             if (alertBox) {
                 alertBox.style.display = "block";
                 alertBox.className = "alert alert-danger";
-                alertBox.innerHTML = "Tên đăng nhập hoặc mật khẩu không chính xác!";
+                alertBox.innerHTML = "Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!";
             }
+            setTimeout(() => { if (card) card.classList.remove("shake"); }, 500);
             return;
         }
 
-        // Login success
-        this.state.currentUser = student;
-        localStorage.setItem("hvnh_user", JSON.stringify(student));
-        this.updateAuthUI();
-        this.showToast("Đăng nhập thành công!", "success");
-        window.location.hash = "#/portal";
+        // Button loading state with spinner
+        if (btn) {
+            btn.disabled = true;
+            btn.classList.add("is-loading");
+            btn.innerHTML = `<span class="btn-spinner"></span> <span>Đang đăng nhập...</span>`;
+        }
+
+        // Card loader active
+        if (loader) loader.classList.add("active", "indeterminate");
+
+        // Realistic verification delay
+        setTimeout(() => {
+            const student = HVNH_DATA.students[username];
+            if (!student || student.password !== password) {
+                if (loader) loader.classList.remove("indeterminate", "active");
+                if (loaderBar) loaderBar.style.width = "0%";
+
+                if (btn) {
+                    btn.classList.remove("is-loading");
+                    btn.classList.add("is-error");
+                    btn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                        <span>Sai thông tin!</span>
+                    `;
+                }
+
+                if (card) card.classList.add("shake");
+                if (alertBox) {
+                    alertBox.style.display = "block";
+                    alertBox.className = "alert alert-danger";
+                    alertBox.innerHTML = "Tên đăng nhập hoặc mật khẩu không chính xác!";
+                }
+
+                setTimeout(() => {
+                    if (btn) {
+                        btn.classList.remove("is-error");
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Đăng nhập</span>`;
+                    }
+                    if (card) card.classList.remove("shake");
+                    if (pInput) pInput.focus();
+                }, 900);
+                return;
+            }
+
+            // Success state!
+            if (loader) loader.classList.remove("indeterminate");
+            if (loaderBar) loaderBar.style.width = "100%";
+
+            if (btn) {
+                btn.classList.remove("is-loading");
+                btn.classList.add("is-success");
+                btn.innerHTML = `
+                    <svg class="btn-checkmark" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                    <span>Đăng nhập thành công!</span>
+                `;
+            }
+
+            // Login success
+            this.state.currentUser = student;
+            try {
+                localStorage.setItem("hvnh_user", JSON.stringify(student));
+            } catch (err) {}
+            this.updateAuthUI();
+
+            setTimeout(() => {
+                if (card) card.classList.add("card-exit");
+                setTimeout(() => {
+                    window.location.hash = "#/portal";
+                }, 350);
+            }, 500);
+        }, 700);
     },
 
     logout: function () {

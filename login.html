@@ -37,12 +37,86 @@
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: cardEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-card.card-exit {
+            transform: translateY(-12px) scale(0.97);
+            opacity: 0;
+        }
+
+        .login-card.shake {
+            animation: cardShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* Top Progress Bar (NProgress / PSC UI loader) */
+        .card-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #e5e7eb;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .card-loader.active {
+            opacity: 1;
+        }
+
+        .card-loader-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #1877f2, #38bdf8, #1877f2);
+            box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
+            transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-loader.indeterminate .card-loader-bar {
+            width: 45%;
+            animation: barIndeterminate 1.15s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+        }
+
+        @keyframes barIndeterminate {
+            0% { left: -45%; width: 35%; }
+            50% { left: 25%; width: 60%; }
+            100% { left: 100%; width: 45%; }
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes cardShake {
+            0%, 100% { transform: translateX(0); }
+            15%, 45%, 75% { transform: translateX(-8px); }
+            30%, 60%, 90% { transform: translateX(8px); }
         }
 
         .logo-box {
             display: flex;
             justify-content: center;
             margin-bottom: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-box:hover {
+            transform: scale(1.03);
         }
 
         .login-title {
@@ -85,7 +159,7 @@
             background-color: #ffffff;
             border: 1px solid #d1d5db;
             border-radius: 4px;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
             outline: none;
         }
 
@@ -95,13 +169,20 @@
         }
 
         .form-control:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            border-color: #1877f2;
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
         }
 
+        .form-control.input-error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+            background-color: #fffbfb;
+        }
+
+        /* Submit Button with Live Animations */
         .btn-login {
             width: 100%;
-            height: 38px;
+            height: 40px;
             background-color: #1877f2;
             color: #ffffff;
             border: none;
@@ -109,16 +190,122 @@
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             margin-top: 6px;
+            transition: background-color 0.25s ease, transform 0.12s ease, box-shadow 0.25s ease;
+            box-shadow: 0 2px 6px rgba(24, 119, 242, 0.25);
+            user-select: none;
         }
 
-        .btn-login:hover {
+        .btn-login:hover:not(:disabled) {
             background-color: #166fe5;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
         }
 
-        .btn-login:active {
+        .btn-login:active:not(:disabled) {
             background-color: #0e5aab;
+            transform: scale(0.985);
+        }
+
+        .btn-login:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Button Loading State */
+        .btn-login.is-loading {
+            background: linear-gradient(90deg, #1877f2, #3b82f6, #1877f2);
+            background-size: 200% 100%;
+            animation: btnShimmer 1.5s infinite;
+            cursor: wait;
+            pointer-events: none;
+            box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+        }
+
+        @keyframes btnShimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Button Success State */
+        .btn-login.is-success {
+            background-color: #16a34a !important;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4) !important;
+            pointer-events: none;
+            transform: scale(1.01);
+        }
+
+        /* Button Error State */
+        .btn-login.is-error {
+            background-color: #dc2626 !important;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35) !important;
+            animation: btnWiggle 0.4s ease-in-out;
+        }
+
+        @keyframes btnWiggle {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Circular Spinner Icon */
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: btnRotate 0.65s linear infinite;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        @keyframes btnRotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Checkmark Icon */
+        .btn-checkmark {
+            width: 17px;
+            height: 17px;
+            stroke: #ffffff;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .btn-checkmark path {
+            stroke-dasharray: 24;
+            stroke-dashoffset: 24;
+            animation: checkmarkDraw 0.35s ease-out forwards;
+        }
+
+        @keyframes checkmarkDraw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Ripple Effect */
+        .ripple-circle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.45);
+            transform: scale(0);
+            animation: rippleAnim 0.55s linear;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
         .alert-box {
@@ -128,6 +315,18 @@
             font-size: 13px;
             text-align: left;
             display: none;
+            animation: alertSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes alertSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-error {
@@ -161,11 +360,13 @@
             cursor: pointer;
             margin-top: 6px;
             display: inline-block;
+            transition: all 0.2s ease;
         }
 
         .test-btn:hover {
             background: #f0f9ff;
             border-color: #0284c7;
+            transform: translateY(-1px);
         }
 
         .back-home {
@@ -174,6 +375,7 @@
             color: #64748b;
             font-size: 12px;
             text-decoration: none;
+            transition: color 0.15s ease;
         }
 
         .back-home:hover {
@@ -183,7 +385,12 @@
     </style>
 </head>
 <body>
-    <div class="login-card">
+    <div class="login-card" id="loginCard">
+        <!-- Top Animated Running Progress Bar -->
+        <div class="card-loader" id="cardLoader">
+            <div class="card-loader-bar" id="cardLoaderBar"></div>
+        </div>
+
         <!-- Shield Logo replicating regist.hvnh.edu.vn/Login -->
         <div class="logo-box">
             <svg width="74" height="88" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
@@ -224,7 +431,9 @@
                 <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password">
             </div>
 
-            <button type="submit" class="btn-login" id="btnLogin">Đăng nhập</button>
+            <button type="submit" class="btn-login" id="btnLogin">
+                <span class="btn-text" id="btnText">Đăng nhập</span>
+            </button>
         </form>
 
         <div class="test-helper">
@@ -240,9 +449,29 @@
     <!-- Application Data -->
     <script src="assets/js/data.js"></script>
     <script>
+        let isLoggingIn = false;
+
+        // Ripple Effect on Button Click
+        const btnLogin = document.getElementById("btnLogin");
+        btnLogin.addEventListener("click", function (e) {
+            if (isLoggingIn) return;
+            const rect = btnLogin.getBoundingClientRect();
+            const ripple = document.createElement("span");
+            ripple.className = "ripple-circle";
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + "px";
+            ripple.style.left = (e.clientX - rect.left - size / 2) + "px";
+            ripple.style.top = (e.clientY - rect.top - size / 2) + "px";
+            btnLogin.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 550);
+        });
+
         function fillTestAccount() {
+            if (isLoggingIn) return;
             document.getElementById("txtUsername").value = "008307000568";
             document.getElementById("txtPassword").value = "12351235";
+            document.getElementById("txtUsername").classList.remove("input-error");
+            document.getElementById("txtPassword").classList.remove("input-error");
             showAlert("", "");
         }
 
@@ -260,32 +489,101 @@
 
         function handleLoginSubmit(e) {
             e.preventDefault();
-            const u = document.getElementById("txtUsername").value.trim();
-            const p = document.getElementById("txtPassword").value.trim();
+            if (isLoggingIn) return;
+
+            const uInput = document.getElementById("txtUsername");
+            const pInput = document.getElementById("txtPassword");
+            const u = uInput.value.trim();
+            const p = pInput.value.trim();
+            const btn = document.getElementById("btnLogin");
+            const card = document.getElementById("loginCard");
+            const loader = document.getElementById("cardLoader");
+            const loaderBar = document.getElementById("cardLoaderBar");
+
+            uInput.classList.remove("input-error");
+            pInput.classList.remove("input-error");
+            card.classList.remove("shake");
+            showAlert("", "");
 
             if (!u || !p) {
-                showAlert("Vui lòng nhập tên đăng nhập và mật khẩu!", "error");
+                card.classList.add("shake");
+                if (!u) uInput.classList.add("input-error");
+                if (!p) pInput.classList.add("input-error");
+                showAlert("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!", "error");
+                setTimeout(() => card.classList.remove("shake"), 500);
                 return;
             }
 
-            const student = HVNH_DATA && HVNH_DATA.students ? HVNH_DATA.students[u] : null;
+            // 1. Start loading animation
+            isLoggingIn = true;
+            btn.disabled = true;
+            btn.classList.add("is-loading");
+            btn.innerHTML = `
+                <span class="btn-spinner"></span>
+                <span>Đang đăng nhập...</span>
+            `;
 
-            if (!student || student.password !== p) {
-                showAlert("Tên đăng nhập hoặc mật khẩu không chính xác!", "error");
-                return;
-            }
+            // Trigger card top loading progress bar
+            loader.classList.add("active", "indeterminate");
 
-            // Save user to localStorage (with fallback)
-            try {
-                localStorage.setItem("hvnh_user", JSON.stringify(student));
-            } catch (err) {
-                console.warn("localStorage restricted:", err);
-            }
-            showAlert("Đăng nhập thành công! Đang chuyển hướng...", "success");
-
+            // 2. Realistic authentic server authentication delay (700ms)
             setTimeout(() => {
-                window.location.href = "index.html?user=" + encodeURIComponent(u) + "#/portal";
-            }, 350);
+                const student = HVNH_DATA && HVNH_DATA.students ? HVNH_DATA.students[u] : null;
+
+                if (!student || student.password !== p) {
+                    // Fail state: Shake card, flash red button, show error
+                    isLoggingIn = false;
+                    loader.classList.remove("indeterminate", "active");
+                    loaderBar.style.width = "0%";
+
+                    btn.classList.remove("is-loading");
+                    btn.classList.add("is-error");
+                    btn.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                        <span>Sai thông tin!</span>
+                    `;
+
+                    pInput.classList.add("input-error");
+                    card.classList.add("shake");
+                    showAlert("Tên đăng nhập hoặc mật khẩu không chính xác!", "error");
+
+                    // Reset button after 900ms
+                    setTimeout(() => {
+                        btn.classList.remove("is-error");
+                        btn.disabled = false;
+                        btn.innerHTML = `<span>Đăng nhập</span>`;
+                        card.classList.remove("shake");
+                        pInput.focus();
+                    }, 900);
+                    return;
+                }
+
+                // 3. Success state: Progress bar completes, button turns green with checkmark
+                loader.classList.remove("indeterminate");
+                loaderBar.style.width = "100%";
+
+                btn.classList.remove("is-loading");
+                btn.classList.add("is-success");
+                btn.innerHTML = `
+                    <svg class="btn-checkmark" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
+                    <span>Đăng nhập thành công!</span>
+                `;
+
+                // Save session with try/catch
+                try {
+                    localStorage.setItem("hvnh_user", JSON.stringify(student));
+                } catch (err) {
+                    console.warn("localStorage restricted:", err);
+                }
+
+                // 4. Smooth card exit transition before redirecting
+                setTimeout(() => {
+                    card.classList.add("card-exit");
+                    setTimeout(() => {
+                        window.location.href = "index.html?user=" + encodeURIComponent(u) + "#/portal";
+                    }, 350);
+                }, 500);
+            }, 700);
         }
     </script>
 </body>

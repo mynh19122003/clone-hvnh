@@ -1252,3 +1252,200 @@ a:hover, a:focus {
     background: rgba(255, 213, 79, 0.2);
     color: #fff;
 }
+
+/* ========================================================
+   Login Card & Interactive Button Animations
+   ======================================================== */
+.login-card {
+    position: relative;
+    overflow: hidden;
+    animation: cardEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card.card-exit {
+    transform: translateY(-12px) scale(0.97);
+    opacity: 0;
+}
+
+.login-card.shake {
+    animation: cardShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.card-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #e5e7eb;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.card-loader.active {
+    opacity: 1;
+}
+
+.card-loader-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #1877f2, #38bdf8, #1877f2);
+    box-shadow: 0 0 10px rgba(24, 119, 242, 0.8);
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-loader.indeterminate .card-loader-bar {
+    width: 45%;
+    animation: barIndeterminate 1.15s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+}
+
+@keyframes barIndeterminate {
+    0% { left: -45%; width: 35%; }
+    50% { left: 25%; width: 60%; }
+    100% { left: 100%; width: 45%; }
+}
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cardShake {
+    0%, 100% { transform: translateX(0); }
+    15%, 45%, 75% { transform: translateX(-8px); }
+    30%, 60%, 90% { transform: translateX(8px); }
+}
+
+.btn-login {
+    width: 100%;
+    height: 40px;
+    background-color: #1877f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    transition: background-color 0.25s ease, transform 0.12s ease, box-shadow 0.25s ease;
+    box-shadow: 0 2px 6px rgba(24, 119, 242, 0.25);
+    user-select: none;
+}
+
+.btn-login:hover:not(:disabled) {
+    background-color: #166fe5;
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+}
+
+.btn-login:active:not(:disabled) {
+    background-color: #0e5aab;
+    transform: scale(0.985);
+}
+
+.btn-login:disabled {
+    cursor: not-allowed;
+}
+
+.btn-login.is-loading {
+    background: linear-gradient(90deg, #1877f2, #3b82f6, #1877f2);
+    background-size: 200% 100%;
+    animation: btnShimmer 1.5s infinite;
+    cursor: wait;
+    pointer-events: none;
+    box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+}
+
+@keyframes btnShimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+.btn-login.is-success {
+    background-color: #16a34a !important;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.4) !important;
+    pointer-events: none;
+    transform: scale(1.01);
+}
+
+.btn-login.is-error {
+    background-color: #dc2626 !important;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35) !important;
+    animation: btnWiggle 0.4s ease-in-out;
+}
+
+@keyframes btnWiggle {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.btn-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    border-top-color: #ffffff;
+    animation: btnRotate 0.65s linear infinite;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+@keyframes btnRotate {
+    to { transform: rotate(360deg); }
+}
+
+.btn-checkmark {
+    width: 17px;
+    height: 17px;
+    stroke: #ffffff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.btn-checkmark path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: checkmarkDraw 0.35s ease-out forwards;
+}
+
+@keyframes checkmarkDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+.ripple-circle {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.45);
+    transform: scale(0);
+    animation: rippleAnim 0.55s linear;
+    pointer-events: none;
+}
+
+@keyframes rippleAnim {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
