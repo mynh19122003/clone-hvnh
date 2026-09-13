@@ -1449,3 +1449,457 @@ a:hover, a:focus {
     }
 }
 
+/* ========================================================
+   CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN - HỌC VIỆN NGÂN HÀNG
+   (dichvucong.hvnh.edu.vn - Replicating Photo 2)
+   ======================================================== */
+.dvc-page-wrapper {
+    background-color: #f1f5f9;
+    min-height: 100vh;
+    color: #1e293b;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+/* Simulated Browser Address Ribbon */
+.dvc-browser-bar {
+    background: #e2e8f0;
+    border-bottom: 1px solid #cbd5e1;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #475569;
+}
+
+.dvc-browser-url {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 4px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #334155;
+    font-family: monospace;
+    font-size: 12px;
+    max-width: 680px;
+    flex: 1;
+    margin: 0 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dvc-back-btn {
+    background: #004b63;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.15s ease;
+}
+
+.dvc-back-btn:hover {
+    background: #003647;
+    color: #ffffff !important;
+}
+
+/* Top Navigation Header */
+.dvc-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 24px;
+}
+
+.dvc-logo-box {
+    background: #163b65;
+    height: 60px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff;
+}
+
+.dvc-logo-box .title-top {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    line-height: 1.25;
+}
+
+.dvc-logo-box .title-sub {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #ffd54f;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.dvc-nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dvc-nav-item {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.dvc-nav-item:hover {
+    color: #1d4ed8;
+}
+
+.dvc-top-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.dvc-lang-flag {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+}
+
+.dvc-btn-login {
+    background: #163b65;
+    color: #ffffff !important;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.dvc-btn-login:hover {
+    background: #0f2d4e;
+}
+
+/* Breadcrumb Sub-Header Banner */
+.dvc-breadcrumb-bar {
+    background: #163b65;
+    padding: 9px 24px;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* 2-Column Body Layout */
+.dvc-content-grid {
+    display: flex;
+    gap: 20px;
+    max-width: 1460px;
+    margin: 18px auto;
+    padding: 0 20px;
+    align-items: flex-start;
+}
+
+/* Left Sidebar: Lĩnh Vực */
+.dvc-sidebar {
+    width: 290px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dvc-sidebar-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dvc-search-input {
+    width: 100%;
+    height: 35px;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 12px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dvc-search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+.dvc-category-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dvc-cat-item {
+    display: block;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #334155;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.dvc-cat-item:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+/* Active Category - Solid Orange matching Photo 2 */
+.dvc-cat-item.active {
+    background-color: #e68a00 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Right Main Content Panel */
+.dvc-main-panel {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Filter Controls Row */
+.dvc-filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.dvc-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.dvc-pill-container {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 3px;
+    border-radius: 6px;
+    gap: 2px;
+}
+
+.dvc-pill-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.dvc-pill-btn.active {
+    background: #163b65;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.dvc-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dvc-procedure-input {
+    height: 35px;
+    width: 290px;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #334155;
+    outline: none;
+}
+
+.dvc-procedure-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+/* Orange Search Button */
+.dvc-btn-search {
+    height: 35px;
+    padding: 0 16px;
+    background-color: #eab308;
+    color: #1e293b;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s ease;
+}
+
+.dvc-btn-search:hover {
+    background-color: #ca8a04;
+}
+
+/* Procedures Table matching Photo 2 */
+.dvc-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 16px;
+}
+
+.dvc-table thead th {
+    background-color: #163b65;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 11px 14px;
+    border: 1px solid #163b65;
+    text-align: left;
+}
+
+.dvc-table tbody tr {
+    transition: background-color 0.12s ease;
+}
+
+.dvc-table tbody tr:nth-child(even) {
+    background-color: #fafbfc;
+}
+
+.dvc-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.dvc-table tbody td {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+/* Badges & Action Buttons */
+.badge-online {
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.btn-nop-hoso {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn-nop-hoso:hover {
+    background: #163b65;
+    color: #ffffff;
+    border-color: #163b65;
+}
+
+/* Pagination Bar */
+.dvc-pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+    color: #64748b;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.dvc-page-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dvc-page-btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.dvc-page-btn.active {
+    background: #163b65;
+    color: #ffffff;
+    border-color: #163b65;
+    font-weight: 600;
+}
+
+

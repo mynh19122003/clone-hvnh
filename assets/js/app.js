@@ -12,7 +12,10 @@ const HVNH = {
         searchKeyword: "",
         currentCaptcha: "",
         tkbMode: "lop", // 'lop', 'giangvien', 'phong', 'monhoc'
-        currentUser: null
+        currentUser: null,
+        dvcCategory: "cong-tac-sv",
+        dvcFilter: "all",
+        dvcSearch: ""
     },
 
     init: function () {
@@ -73,7 +76,12 @@ const HVNH = {
             this.state.searchKeyword = "";
         }
 
-        if (route !== "portal") {
+        if (route !== "dich-vu-cong") {
+            const h = document.getElementById("header");
+            if (h) h.style.display = "block";
+        }
+
+        if (route !== "portal" && route !== "dich-vu-cong") {
             this.ensurePublicLayout();
         }
 
@@ -92,8 +100,15 @@ const HVNH = {
             case "login":
                 this.renderLoginPage();
                 break;
+            case "dich-vu-cong":
+                this.renderDichVuCong();
+                break;
             case "portal":
-                this.renderStudentPortal(param);
+                if (param === "xin-giay-xac-nhan") {
+                    this.renderDichVuCong();
+                } else {
+                    this.renderStudentPortal(param);
+                }
                 break;
             case "tin-tuc":
                 if (param) {
@@ -1264,9 +1279,8 @@ const HVNH = {
                 bodyContent.innerHTML = this.renderPortalDangKyHocPhan(u);
                 break;
             case "xin-giay-xac-nhan":
-                headerTitle.innerText = "Xin giấy xác nhận";
-                bodyContent.innerHTML = this.renderPortalXinGiayXacNhan(u);
-                break;
+                window.location.hash = "#/dich-vu-cong";
+                return;
             case "lien-he":
                 headerTitle.innerText = "Liên hệ - góp ý";
                 bodyContent.innerHTML = this.renderPortalLienHe(u);
@@ -2268,48 +2282,383 @@ const HVNH = {
         `;
     },
 
-    // 19. Xin giấy xác nhận
-    renderPortalXinGiayXacNhan: function (u) {
-        return `
-            <div style="border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe; margin-bottom: 20px;">
-                <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
-                    <i class="glyphicon glyphicon-file"></i> ĐĂNG KÝ CẤP GIẤY XÁC NHẬN SINH VIÊN TRỰC TUYẾN
+    // 19. DỊCH VỤ CÔNG TRỰC TUYẾN (dichvucong.hvnh.edu.vn - Replicating Photo 2)
+    renderDichVuCong: function () {
+        const u = this.state.currentUser || {
+            username: "008307000568",
+            hoTen: "HUỲNH THỊ THU HÀ",
+            lop: "K24CLC-NHA",
+            khoa: "Ngân hàng",
+            emailCaNhan: "huynhthuthuha@gmail.com"
+        };
+
+        // Hide public header to replicate standalone dichvucong.hvnh.edu.vn site
+        const h = document.getElementById("header");
+        if (h) h.style.display = "none";
+
+        const dvcData = HVNH_DATA.publicServices || { categories: [], procedures: [] };
+        const activeCatId = this.state.dvcCategory || "cong-tac-sv";
+        const activeFilter = this.state.dvcFilter || "all";
+        const searchKey = (this.state.dvcSearch || "").trim().toLowerCase();
+
+        // Filter procedures
+        let procedures = (dvcData.procedures || []).filter(p => {
+            let match = true;
+            if (activeCatId && p.categoryId !== activeCatId) match = false;
+            if (activeFilter === "tructuyen" && p.hinhThuc !== "Trực tuyến") match = false;
+            if (activeFilter === "tructiep" && p.hinhThuc !== "Trực tiếp") match = false;
+            if (searchKey && !p.tenThuTuc.toLowerCase().includes(searchKey)) match = false;
+            return match;
+        });
+
+        const bodyEl = document.getElementById("body");
+        if (!bodyEl) return;
+
+        bodyEl.innerHTML = `
+            <div class="dvc-page-wrapper">
+                <!-- Simulated Browser Address Ribbon replicating Photo 2 URL -->
+                <div class="dvc-browser-bar">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button type="button" class="btn btn-xs btn-default" onclick="window.history.back()" title="Quay lại"><i class="glyphicon glyphicon-arrow-left"></i></button>
+                        <button type="button" class="btn btn-xs btn-default" onclick="HVNH.renderDichVuCong()" title="Tải lại"><i class="glyphicon glyphicon-refresh"></i></button>
+                    </div>
+                    <div class="dvc-browser-url">
+                        <i class="glyphicon glyphicon-lock" style="color: #16a34a; font-size: 11px;"></i>
+                        <span>https://dichvucong.hvnh.edu.vn/procedure-list?fields=F202510090421565506582&sort=Feedback%253A0%252CFieldCodes%253A0&ext=%257B%2522processingMethod...</span>
+                    </div>
+                    <div>
+                        <a href="#/portal" class="dvc-back-btn">
+                            <i class="glyphicon glyphicon-share-alt" style="transform: scaleX(-1);"></i>
+                            Quay lại Cổng SV (online.hvnh.edu.vn)
+                        </a>
+                    </div>
                 </div>
-                <form onsubmit="HVNH.nopDonXacNhan(event)">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label style="font-size: 12.5px;">Loại giấy xác nhận:</label>
-                                <select class="form-control input-sm" id="selGiayXacNhan">
-                                    <option>Giấy xác nhận sinh viên (Vay vốn ngân hàng chính sách)</option>
-                                    <option>Giấy xác nhận sinh viên (Tạm hoãn nghĩa vụ quân sự)</option>
-                                    <option>Giấy xác nhận sinh viên (Làm vé xe buýt / Thẻ sinh viên)</option>
-                                    <option>Giấy giới thiệu thực tập tại doanh nghiệp</option>
+
+                <!-- Top Navigation Header -->
+                <header class="dvc-header">
+                    <div class="dvc-logo-box">
+                        <svg width="34" height="42" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M50 4 L93 20 C93 78 50 114 50 116 C50 114 7 78 7 20 Z" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+                            <path d="M50 8 L89 23 C89 74 50 108 50 111 C50 108 11 74 11 23 Z" fill="#163b65"/>
+                            <text x="50" y="44" font-family="'Arial Black', Arial, sans-serif" font-size="20" font-weight="900" fill="#ffffff" text-anchor="middle">BAV</text>
+                            <g transform="translate(26, 49)">
+                                <path d="M24 16 C16 13 4 14 0 17 L0 31 C6 28 16 27 24 30 Z" fill="#ffffff"/>
+                                <path d="M24 16 C32 13 44 14 48 17 L48 31 C42 28 32 27 24 30 Z" fill="#ffffff"/>
+                                <path d="M24 4 L26 10 L32 12 L26 14 L24 20 L22 14 L16 12 L22 10 Z" fill="#ffd54f"/>
+                            </g>
+                            <text x="50" y="100" font-family="'Arial', sans-serif" font-size="11" font-weight="bold" fill="#ffd54f" text-anchor="middle">1961</text>
+                        </svg>
+                        <div>
+                            <div class="title-top">DỊCH VỤ CÔNG TRỰC TUYẾN</div>
+                            <div class="title-sub">HỌC VIỆN NGÂN HÀNG</div>
+                        </div>
+                    </div>
+
+                    <ul class="dvc-nav-menu">
+                        <li><span class="dvc-nav-item" style="font-size: 16px; cursor: pointer;">☰</span></li>
+                        <li><a href="javascript:void(0)" class="dvc-nav-item"><i class="glyphicon glyphicon-info-sign"></i> Giới thiệu & Hướng dẫn</a></li>
+                        <li><a href="javascript:void(0)" class="dvc-nav-item" style="color: #1d4ed8; font-weight: 600;"><i class="glyphicon glyphicon-education"></i> TTHC Sinh viên</a></li>
+                        <li><a href="javascript:void(0)" class="dvc-nav-item"><i class="glyphicon glyphicon-briefcase"></i> TTHC Cán bộ/Nhân viên</a></li>
+                        <li><a href="javascript:void(0)" class="dvc-nav-item"><i class="glyphicon glyphicon-user"></i> TTHC Vãng lai</a></li>
+                        <li><a href="javascript:void(0)" class="dvc-nav-item"><i class="glyphicon glyphicon-search"></i> Tra cứu hồ sơ</a></li>
+                    </ul>
+
+                    <div class="dvc-top-right">
+                        <div class="dvc-lang-flag" title="Tiếng Việt">
+                            <svg width="24" height="18" viewBox="0 0 30 20">
+                                <rect width="30" height="20" fill="#da251d"/>
+                                <polygon points="15,4 16.5,8.8 21.5,8.8 17.5,11.8 19,16.5 15,13.5 11,16.5 12.5,11.8 8.5,8.8 13.5,8.8" fill="#ffff00"/>
+                            </svg>
+                        </div>
+                        <div class="dvc-btn-login" onclick="HVNH.openStudentProfileQuickView()">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span>${u.username}</span>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Blue Ribbon: TRANG CHỦ -->
+                <div class="dvc-breadcrumb-bar">
+                    TRANG CHỦ
+                </div>
+
+                <!-- Content Grid: 2 Columns -->
+                <div class="dvc-content-grid">
+                    <!-- Left Sidebar: LĨNH VỰC -->
+                    <aside class="dvc-sidebar">
+                        <div class="dvc-sidebar-title">
+                            <span style="font-size: 14px; letter-spacing: -2px;">:::</span> LĨNH VỰC
+                        </div>
+                        <input type="text" class="dvc-search-input" id="dvcCatSearch" placeholder="🔍 Nhập để tìm kiếm..." oninput="HVNH.filterDvcCategories(this.value)">
+                        <ul class="dvc-category-list" id="dvcCategoryList">
+                            ${(dvcData.categories || []).map(cat => `
+                                <li>
+                                    <a href="javascript:void(0)" class="dvc-cat-item ${cat.id === activeCatId ? 'active' : ''}" onclick="HVNH.setDvcCategory('${cat.id}')">
+                                        ${cat.name}
+                                    </a>
+                                </li>
+                            `).join("")}
+                        </ul>
+                    </aside>
+
+                    <!-- Right Main Panel -->
+                    <main class="dvc-main-panel">
+                        <!-- Filter Row -->
+                        <div class="dvc-filter-row">
+                            <div class="dvc-filter-group">
+                                <span>Hình thức</span>
+                                <div class="dvc-pill-container">
+                                    <button type="button" class="dvc-pill-btn ${activeFilter === 'all' ? 'active' : ''}" onclick="HVNH.setDvcFilter('all')">Tất cả</button>
+                                    <button type="button" class="dvc-pill-btn ${activeFilter === 'tructiep' ? 'active' : ''}" onclick="HVNH.setDvcFilter('tructiep')">Trực tiếp</button>
+                                    <button type="button" class="dvc-pill-btn ${activeFilter === 'tructuyen' ? 'active' : ''}" onclick="HVNH.setDvcFilter('tructuyen')">Trực tuyến</button>
+                                </div>
+                            </div>
+
+                            <div class="dvc-search-box">
+                                <span style="font-size: 13px; font-weight: 500; color: #475569;">Tìm kiếm</span>
+                                <input type="text" class="dvc-procedure-input" id="txtDvcSearch" placeholder="🔍 Tìm kiếm bằng tên thủ tục ..." value="${this.state.dvcSearch || ''}" onkeydown="if(event.key==='Enter') HVNH.searchDvcProcedures()">
+                                <button type="button" class="dvc-btn-search" onclick="HVNH.searchDvcProcedures()">
+                                    <i class="glyphicon glyphicon-search"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Procedures Table replicating Photo 2 -->
+                        <div class="table-responsive">
+                            <table class="dvc-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 55px; text-align: center;">STT</th>
+                                        <th>Tên thủ tục</th>
+                                        <th style="width: 220px;">Lĩnh vực</th>
+                                        <th style="width: 130px; text-align: center;">Hình thức</th>
+                                        <th style="width: 150px; text-align: center;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${procedures.length > 0 ? procedures.map((proc, index) => `
+                                        <tr>
+                                            <td style="text-align: center; font-weight: 600; color: #64748b;">${index + 1}</td>
+                                            <td>
+                                                <div style="font-weight: 500; color: #0f172a; line-height: 1.45;">${proc.tenThuTuc}</div>
+                                                <div style="font-size: 12px; color: #64748b; margin-top: 3px;">Thời gian xử lý: ${proc.thoiGianGiaiQuyet}</div>
+                                            </td>
+                                            <td style="color: #475569;">${proc.linhVuc}</td>
+                                            <td style="text-align: center;">
+                                                <span class="badge-online">${proc.hinhThuc}</span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <button type="button" class="btn-nop-hoso" onclick="HVNH.openNopHoSoModal('${proc.id}')">
+                                                    <i class="glyphicon glyphicon-send" style="color: #0284c7;"></i> NỘP HỒ SƠ
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `).join("") : `
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: 30px; color: #64748b;">
+                                                <i class="glyphicon glyphicon-info-sign" style="font-size: 20px;"></i>
+                                                <p style="margin-top: 8px;">Không tìm thấy thủ tục hành chính phù hợp với tiêu chí tra cứu.</p>
+                                            </td>
+                                        </tr>
+                                    `}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Footer & Pagination -->
+                        <div class="dvc-pagination-bar">
+                            <div>
+                                Hiển thị: <strong>1 đến ${procedures.length}</strong> / ${procedures.length} dữ liệu.
+                            </div>
+                            <div class="dvc-page-controls">
+                                <button type="button" class="dvc-page-btn" disabled>|◄</button>
+                                <button type="button" class="dvc-page-btn" disabled>◄</button>
+                                <button type="button" class="dvc-page-btn active">1</button>
+                                <button type="button" class="dvc-page-btn" disabled>►</button>
+                                <button type="button" class="dvc-page-btn" disabled>►|</button>
+                                <select style="height: 26px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 12px; margin-left: 6px; padding: 0 4px;">
+                                    <option>10</option>
+                                    <option>20</option>
+                                    <option>50</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                    </main>
+                </div>
+            </div>
+        `;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    setDvcCategory: function (catId) {
+        this.state.dvcCategory = catId;
+        this.renderDichVuCong();
+    },
+
+    setDvcFilter: function (filter) {
+        this.state.dvcFilter = filter;
+        this.renderDichVuCong();
+    },
+
+    filterDvcCategories: function (val) {
+        const keyword = (val || "").trim().toLowerCase();
+        const items = document.querySelectorAll("#dvcCategoryList li");
+        items.forEach(li => {
+            const text = li.innerText.toLowerCase();
+            li.style.display = text.includes(keyword) ? "block" : "none";
+        });
+    },
+
+    searchDvcProcedures: function () {
+        const input = document.getElementById("txtDvcSearch");
+        this.state.dvcSearch = input ? input.value.trim() : "";
+        this.renderDichVuCong();
+    },
+
+    openNopHoSoModal: function (procId) {
+        const dvcData = HVNH_DATA.publicServices || { procedures: [] };
+        const proc = dvcData.procedures.find(p => p.id === procId) || {
+            tenThuTuc: "Quy trình cấp giấy xác nhận sinh viên",
+            linhVuc: "Công tác sinh viên"
+        };
+        const u = this.state.currentUser || {
+            username: "008307000568",
+            hoTen: "HUỲNH THỊ THU HÀ",
+            lop: "K24CLC-NHA",
+            khoa: "Ngân hàng",
+            emailCaNhan: "huynhthuthuha@gmail.com",
+            diDong: "0968 554 219"
+        };
+
+        const body = `
+            <div style="font-size: 13px; line-height: 1.6;">
+                <div style="background: #f0f7fa; border: 1px solid #c8e1ec; border-radius: 4px; padding: 12px 16px; margin-bottom: 16px;">
+                    <div style="font-weight: 700; color: #163b65; font-size: 14px; margin-bottom: 4px;">
+                        ${proc.tenThuTuc}
+                    </div>
+                    <div style="color: #64748b; font-size: 12.5px;">
+                        Lĩnh vực: <strong>${proc.linhVuc}</strong> | Thời gian xử lý dự kiến: <strong>${proc.thoiGianGiaiQuyet || '1-2 ngày'}</strong>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 12px; background: #fafbfc; border-radius: 4px; padding: 10px 0; border: 1px dashed #e2e8f0;">
+                    <div class="col-md-6">
+                        <div>Họ và tên: <strong style="color: #163b65;">${u.hoTen}</strong></div>
+                        <div>Mã sinh viên: <strong>${u.username}</strong></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>Lớp học: <strong>${u.lop || 'K24CLC-NHA'}</strong></div>
+                        <div>Khoa: <strong>${u.khoa || 'Ngân hàng'}</strong></div>
+                    </div>
+                </div>
+
+                <form id="frmNopHoSoDvc" onsubmit="HVNH.submitHoSoDvc('${proc.id}', event)">
+                    <div class="form-group">
+                        <label style="font-size: 12.5px; font-weight: 600;">Lý do / Mục đích xin cấp giấy <span style="color: red;">*</span>:</label>
+                        <textarea class="form-control input-sm" id="txtDvcReason" rows="3" placeholder="Nhập chi tiết mục đích (VD: Bổ sung hồ sơ vay vốn Ngân hàng Chính sách xã hội địa phương, hoãn NVQS...)" required></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label style="font-size: 12.5px;">Số lượng bản in:</label>
-                                <input type="number" class="form-control input-sm" value="1" min="1" max="5">
+                                <label style="font-size: 12.5px; font-weight: 600;">Số lượng bản in:</label>
+                                <select class="form-control input-sm" id="selDvcQty">
+                                    <option value="1">01 bản</option>
+                                    <option value="2">02 bản</option>
+                                    <option value="3">03 bản</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label style="font-size: 12.5px;">Hình thức nhận:</label>
-                                <select class="form-control input-sm">
-                                    <option>Bản điện tử ký số (Email)</option>
-                                    <option>Bản giấy (Tại Bộ phận Một cửa)</option>
+                                <label style="font-size: 12.5px; font-weight: 600;">Hình thức nhận kết quả:</label>
+                                <select class="form-control input-sm" id="selDvcDelivery">
+                                    <option value="email">Bản điện tử ký số gửi về Email (${u.emailCaNhan || 'huynhthuthuha@gmail.com'})</option>
+                                    <option value="office">Bản giấy dấu đỏ nhận tại Phòng Công tác Sinh viên (P.104-A1)</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-primary" style="background-color: #004b63;">
-                        <i class="glyphicon glyphicon-send"></i> Gửi yêu cầu xác nhận
-                    </button>
+
+                    <div class="form-group">
+                        <label style="font-size: 12.5px; font-weight: 600;">Đính kèm tệp minh chứng (nếu có):</label>
+                        <input type="file" class="form-control input-sm" accept=".pdf,.jpg,.jpeg,.png">
+                        <small style="color: #64748b;">Chấp nhận file PDF, JPG, PNG (tối đa 5MB)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-size: 12.5px; font-weight: 600;">Ghi chú thêm:</label>
+                        <input type="text" class="form-control input-sm" placeholder="Ghi chú thêm cho cán bộ tiếp nhận hồ sơ...">
+                    </div>
                 </form>
             </div>
         `;
+
+        const footer = `
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary btn-sm" style="background-color: #163b65; border-color: #163b65;" onclick="document.getElementById('frmNopHoSoDvc').requestSubmit()">
+                <i class="glyphicon glyphicon-send"></i> Gửi hồ sơ trực tuyến
+            </button>
+        `;
+
+        this.showModal("Nộp hồ sơ trực tuyến", body, footer);
+    },
+
+    submitHoSoDvc: function (procId, e) {
+        if (e) e.preventDefault();
+        const reason = (document.getElementById("txtDvcReason").value || "").trim();
+        if (!reason) {
+            alert("Vui lòng nhập lý do nộp hồ sơ!");
+            return;
+        }
+
+        const randomCode = "HS-2026-008307000568-" + Math.floor(10 + Math.random() * 90);
+        $("#myAlert").modal("hide");
+
+        const successBody = `
+            <div style="text-align: center; padding: 20px 10px;">
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: #dcfce7; color: #16a34a; font-size: 28px; line-height: 56px; margin: 0 auto 15px;">
+                    ✓
+                </div>
+                <h4 style="font-weight: 700; color: #163b65; margin-bottom: 10px;">NỘP HỒ SƠ THÀNH CÔNG!</h4>
+                <p style="font-size: 13.5px; color: #475569; margin-bottom: 15px;">
+                    Yêu cầu giải quyết thủ tục hành chính của bạn đã được chuyển tới <strong>Phòng Công tác sinh viên</strong>.
+                </p>
+                <div style="background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 12px; font-size: 13px; display: inline-block; margin-bottom: 15px;">
+                    Mã hồ sơ tiếp nhận: <strong style="color: #2563eb; font-size: 15px;">${randomCode}</strong><br>
+                    Ngày nộp: <strong>${new Date().toLocaleDateString('vi-VN')}</strong> | Trạng thái: <span class="label label-info">Đang thụ lý</span>
+                </div>
+                <p style="font-size: 12.5px; color: #64748b;">
+                    Bạn có thể theo dõi tiến độ xử lý hồ sơ tại mục <strong>"Tra cứu hồ sơ"</strong> trên Cổng Dịch vụ công hoặc qua email đã đăng ký.
+                </p>
+            </div>
+        `;
+
+        this.showModal("Xác nhận tiếp nhận hồ sơ", successBody, `
+            <button type="button" class="btn btn-primary btn-sm" style="background-color: #163b65;" data-dismiss="modal">Đồng ý</button>
+        `);
+    },
+
+    openStudentProfileQuickView: function () {
+        const u = this.state.currentUser || { username: "008307000568", hoTen: "HUỲNH THỊ THU HÀ" };
+        this.showModal("Tài khoản sinh viên", `
+            <div style="font-size: 13px; line-height: 1.8;">
+                <div>Họ và tên: <strong style="color: #163b65;">${u.hoTen}</strong></div>
+                <div>Mã số sinh viên: <strong>${u.username}</strong></div>
+                <div>Lớp: <strong>${u.lop || 'K24CLC-NHA'}</strong></div>
+                <div>Trạng thái: <span class="label label-success">Đã xác thực</span></div>
+            </div>
+        `, `
+            <a href="#/portal" class="btn btn-primary btn-sm" style="background-color: #163b65;" data-dismiss="modal">Đến trang Cổng SV</a>
+            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Đóng</button>
+        `);
+    },
+
+    renderPortalXinGiayXacNhan: function (u) {
+        // Direct forwarding to Dịch Vụ Công view
+        this.renderDichVuCong();
+        return "";
     },
 
     // 20. Liên hệ - góp ý

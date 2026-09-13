@@ -902,6 +902,109 @@ const HVNH_DATA = {
             gpa10: 10.0,
             xepLoai: "Cán bộ"
         }
+    },
+
+    // Dịch vụ công trực tuyến Học viện Ngân hàng (dichvucong.hvnh.edu.vn) - Replicating Photo 2
+    publicServices: {
+        categories: [
+            { id: "cong-tac-sv", name: "Công tác sinh viên" },
+            { id: "ho-tro-dao-tao", name: "Hỗ trợ đào tạo" },
+            { id: "quan-ly-dao-tao", name: "Quản lý đào tạo" },
+            { id: "dao-tao-quoc-te", name: "Đào tạo quốc tế" },
+            { id: "dao-tao-tu-xa", name: "Quản lý đào tạo từ xa" },
+            { id: "boi-duong-ngan-han", name: "Quản lý đào tạo, bồi dưỡng ngắn hạn" },
+            { id: "nghien-cuu-kh", name: "Quản lý nghiên cứu khoa học" },
+            { id: "sau-dai-hoc", name: "Quản lý đào tạo sau đại học" },
+            { id: "dang-doan-the", name: "Đảng, Công đoàn, Đoàn Thanh niên" },
+            { id: "tai-chinh-ke-toan", name: "Tài chính - Kế toán" },
+            { id: "to-chuc-can-bo", name: "Tổ chức cán bộ" },
+            { id: "tuyen-sinh-tt", name: "Tư vấn tuyển sinh và phát triển thương hiệu" },
+            { id: "thu-vien", name: "Thư viện" },
+            { id: "cntt", name: "Công nghệ thông tin" },
+            { id: "tong-hop", name: "Tổng hợp" }
+        ],
+        procedures: [
+            {
+                stt: 1,
+                id: "PROC-CTSV-01",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình nộp đơn xin nghỉ học có lý do (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Tiếp nhận và giải quyết đơn xin nghỉ học tạm thời có lý do (ốm đau, việc gia đình, lý do cá nhân) theo quy chế đào tạo.",
+                thoiGianGiaiQuyet: "3 - 5 ngày làm việc"
+            },
+            {
+                stt: 2,
+                id: "PROC-CTSV-02",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình nộp đơn xin thôi học theo nguyện vọng (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Giải quyết thủ tục thôi học tự nguyện, thanh toán nghĩa vụ học phí và rút hồ sơ gốc.",
+                thoiGianGiaiQuyet: "5 - 7 ngày làm việc"
+            },
+            {
+                stt: 3,
+                id: "PROC-CTSV-03",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình cấp giấy giới thiệu cho sinh viên (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Cấp giấy giới thiệu sinh viên liên hệ thực tập, nghiên cứu thực tế tại các tổ chức, doanh nghiệp, ngân hàng.",
+                thoiGianGiaiQuyet: "1 - 2 ngày làm việc"
+            },
+            {
+                stt: 4,
+                id: "PROC-CTSV-04",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình cấp giấy chứng nhận cho sinh viên (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Chứng nhận sinh viên đang theo học tại Học viện Ngân hàng để phục vụ xin việc, làm thủ tục hành chính.",
+                thoiGianGiaiQuyet: "1 - 2 ngày làm việc"
+            },
+            {
+                stt: 5,
+                id: "PROC-CTSV-05",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình cấp giấy xác nhận vay vốn/ xác nhận ƯĐGD (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Cấp mẫu giấy xác nhận phục vụ vay vốn tín dụng sinh viên tại Ngân hàng Chính sách Xã hội hoặc chế độ ưu đãi giáo dục.",
+                thoiGianGiaiQuyet: "1 - 2 ngày làm việc"
+            },
+            {
+                stt: 6,
+                id: "PROC-CTSV-06",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình xét cấp học bổng xã hội cho sinh viên",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Tiếp nhận hồ sơ xét duyệt học bổng trợ cấp xã hội, học bổng chính sách, học bổng doanh nghiệp tài trợ.",
+                thoiGianGiaiQuyet: "Theo kế hoạch từng đợt"
+            },
+            {
+                stt: 7,
+                id: "PROC-CTSV-07",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình cấp lại thẻ sinh viên (Dành cho SV Hệ chuẩn và Hệ CLC)",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Cấp lại thẻ sinh viên tích hợp thẻ ghi nợ ngân hàng do mất, hỏng hoặc rách mờ.",
+                thoiGianGiaiQuyet: "7 - 10 ngày làm việc"
+            },
+            {
+                stt: 8,
+                id: "PROC-CTSV-08",
+                categoryId: "cong-tac-sv",
+                tenThuTuc: "Quy trình đăng ký cấp lại bảng điểm / giấy xác nhận sinh viên",
+                linhVuc: "Công tác sinh viên",
+                hinhThuc: "Trực tuyến",
+                moTa: "Cấp bảng điểm quá trình học tập (tiếng Việt / song ngữ Anh-Việt) có xác nhận của Học viện.",
+                thoiGianGiaiQuyet: "2 - 3 ngày làm việc"
+            }
+        ]
     }
 };
 
