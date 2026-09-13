@@ -125,6 +125,88 @@ a:hover, a:focus {
     background-color: #fff !important;
 }
 
+/* User Account Dropdown on Navbar (Matching online.hvnh.edu.vn) */
+.user-nav-item {
+    position: relative;
+    padding: 0 !important;
+}
+
+.user-nav-link {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    padding: 10px 15px 10px 10px !important;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    line-height: 20px;
+    transition: color 0.15s ease;
+}
+
+/* When clicked, focused, active, or dropdown is open: text turns orange */
+.user-nav-link:hover,
+.user-nav-link:focus,
+.user-nav-link:active,
+.user-nav-link.active,
+.user-nav-link.is-open,
+.user-nav-item.open > .user-nav-link,
+.user-nav-item.open > .user-nav-link .user-display-name {
+    color: #ffa500 !important;
+    background-color: transparent !important;
+    text-decoration: none !important;
+}
+
+/* Authentic dark teal dropdown menu matching user's photo */
+.user-nav-dropdown {
+    background-color: #056382 !important;
+    border-radius: 0px !important;
+    border: 1px solid #03485f !important;
+    border-top: none !important;
+    right: 0 !important;
+    left: auto !important;
+    min-width: 175px !important;
+    padding: 4px 0 !important;
+    margin-top: 0px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+    z-index: 1050 !important;
+}
+
+.user-nav-dropdown > li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.user-nav-dropdown > li > a {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 13.5px !important;
+    padding: 8px 18px !important;
+    display: block !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.user-nav-dropdown > li > a:hover,
+.user-nav-dropdown > li > a:focus {
+    background-color: #044b62 !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.user-nav-dropdown .divider,
+.user-nav-dropdown .user-nav-divider {
+    height: 1px !important;
+    margin: 4px 0 !important;
+    overflow: hidden !important;
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    border-bottom: 1px solid #03485f !important;
+}
+
 /* Body Layout & Sidebar Menu */
 #body {
     margin-top: 1px;

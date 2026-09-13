@@ -153,6 +153,16 @@ const HVNH = {
                 this.renderNewsList();
             }
         });
+
+        // Close user dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+            const li = document.getElementById("userDropdownLi");
+            const toggleLink = document.getElementById("userMenuToggle");
+            if (li && !li.contains(e.target)) {
+                li.classList.remove("open");
+                if (toggleLink) toggleLink.classList.remove("is-open");
+            }
+        });
     },
 
     /* ==========================================================================
@@ -1063,16 +1073,16 @@ const HVNH = {
         if (this.state.currentUser) {
             const u = this.state.currentUser;
             container.innerHTML = `
-                <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
-                    <span>
-                        <a href="#/portal" style="color: #fff; font-weight: bold; text-decoration: none;">
-                            ${u.username} | ${u.hoTen}
-                        </a>
-                        &nbsp;
-                        <a href="javascript:void(0)" onclick="HVNH.logout()" style="color: #ffa500; font-weight: normal; text-decoration: none;">
-                            [Đăng xuất]
-                        </a>
-                    </span>
+                <li class="dropdown stylecolor user-nav-item" id="userDropdownLi">
+                    <a href="javascript:void(0)" class="dropdown-toggle user-nav-link" id="userMenuToggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="HVNH.toggleUserDropdown(event)">
+                        <span class="user-display-name">${u.username} | ${u.hoTen}</span>
+                    </a>
+                    <ul class="dropdown-menu stylecolor user-nav-dropdown" id="userNavDropdownMenu">
+                        <li><a href="javascript:void(0)" onclick="HVNH.goToPortal('info')">Thông tin</a></li>
+                        <li><a href="javascript:void(0)" onclick="HVNH.showChangePasswordModal()">Đổi mật khẩu</a></li>
+                        <li role="separator" class="divider user-nav-divider"></li>
+                        <li><a href="javascript:void(0)" onclick="HVNH.logout()">Thoát</a></li>
+                    </ul>
                 </li>
             `;
         } else {
@@ -1082,6 +1092,120 @@ const HVNH = {
                 </li>
             `;
         }
+    },
+
+    toggleUserDropdown: function (e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        const li = document.getElementById("userDropdownLi");
+        const toggleLink = document.getElementById("userMenuToggle");
+        if (!li) return;
+
+        const isOpen = li.classList.contains("open");
+        if (isOpen) {
+            li.classList.remove("open");
+            if (toggleLink) toggleLink.classList.remove("is-open");
+        } else {
+            li.classList.add("open");
+            if (toggleLink) toggleLink.classList.add("is-open");
+        }
+    },
+
+    goToPortal: function (tab = "info") {
+        const li = document.getElementById("userDropdownLi");
+        const toggleLink = document.getElementById("userMenuToggle");
+        if (li) li.classList.remove("open");
+        if (toggleLink) toggleLink.classList.remove("is-open");
+
+        if (window.location.hash.startsWith("#/portal")) {
+            this.switchPortalSection(tab);
+        } else {
+            window.location.hash = "#/portal";
+            setTimeout(() => {
+                this.switchPortalSection(tab);
+            }, 100);
+        }
+    },
+
+    showChangePasswordModal: function () {
+        const li = document.getElementById("userDropdownLi");
+        const toggleLink = document.getElementById("userMenuToggle");
+        if (li) li.classList.remove("open");
+        if (toggleLink) toggleLink.classList.remove("is-open");
+
+        const modalEl = document.getElementById("myAlert");
+        const titleEl = document.getElementById("h4Alert");
+        const contentEl = document.getElementById("divContentAlert");
+        if (!modalEl || !titleEl || !contentEl) return;
+
+        titleEl.innerText = "Đổi mật khẩu";
+        contentEl.innerHTML = `
+            <div style="padding: 10px 15px;">
+                <div class="form-group">
+                    <label style="font-weight: bold; font-size: 13px;">Mật khẩu hiện tại:</label>
+                    <input type="password" id="txtOldPassword" class="form-control" placeholder="Nhập mật khẩu hiện tại" style="height: 34px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: bold; font-size: 13px;">Mật khẩu mới:</label>
+                    <input type="password" id="txtNewPassword" class="form-control" placeholder="Nhập mật khẩu mới" style="height: 34px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: bold; font-size: 13px;">Xác nhận mật khẩu mới:</label>
+                    <input type="password" id="txtConfirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới" style="height: 34px;">
+                </div>
+                <div id="pwdChangeMsg" style="margin-top: 10px;"></div>
+                <div style="text-align: right; margin-top: 15px;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" style="background-color: #056382; border-color: #044b62;" onclick="HVNH.doChangePassword()">Đổi mật khẩu</button>
+                </div>
+            </div>
+        `;
+        $(modalEl).modal("show");
+    },
+
+    doChangePassword: function () {
+        const oldP = (document.getElementById("txtOldPassword")?.value || "").trim();
+        const newP = (document.getElementById("txtNewPassword")?.value || "").trim();
+        const confP = (document.getElementById("txtConfirmPassword")?.value || "").trim();
+        const msgEl = document.getElementById("pwdChangeMsg");
+
+        if (!oldP || !newP || !confP) {
+            if (msgEl) msgEl.innerHTML = '<span style="color: red; font-size: 13px;">Vui lòng nhập đầy đủ các trường thông tin!</span>';
+            return;
+        }
+
+        if (this.state.currentUser && this.state.currentUser.password && oldP !== this.state.currentUser.password) {
+            if (msgEl) msgEl.innerHTML = '<span style="color: red; font-size: 13px;">Mật khẩu hiện tại không chính xác!</span>';
+            return;
+        }
+
+        if (newP !== confP) {
+            if (msgEl) msgEl.innerHTML = '<span style="color: red; font-size: 13px;">Mật khẩu xác nhận không khớp!</span>';
+            return;
+        }
+
+        if (newP.length < 6) {
+            if (msgEl) msgEl.innerHTML = '<span style="color: red; font-size: 13px;">Mật khẩu mới phải có ít nhất 6 ký tự!</span>';
+            return;
+        }
+
+        if (this.state.currentUser) {
+            this.state.currentUser.password = newP;
+            try {
+                localStorage.setItem("hvnh_user", JSON.stringify(this.state.currentUser));
+            } catch (err) {}
+        }
+
+        if (msgEl) {
+            msgEl.innerHTML = '<span style="color: green; font-weight: bold; font-size: 13px;">Đổi mật khẩu thành công!</span>';
+        }
+
+        setTimeout(() => {
+            $("#myAlert").modal("hide");
+            this.showToast("Mật khẩu đã được cập nhật thành công.", "success");
+        }, 1000);
     },
 
     /* ==========================================================================
