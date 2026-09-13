@@ -1858,8 +1858,29 @@ const HVNH = {
         `;
     },
 
-    // 8. Chi tiết hóa đơn (Photo 16)
+    renderPortalLoadingSpinner: function () {
+        return `
+            <div class="portal-loader-wrapper">
+                <svg class="portal-dot-spinner-svg" width="46" height="46" viewBox="0 0 46 46">
+                    <circle class="p-dot p-dot-1" cx="23" cy="7" r="2.8" fill="#1b6ca8" opacity="0.12"/>
+                    <circle class="p-dot p-dot-2" cx="34.3" cy="11.7" r="2.8" fill="#1b6ca8" opacity="0.22"/>
+                    <circle class="p-dot p-dot-3" cx="39" cy="23" r="2.8" fill="#1b6ca8" opacity="0.38"/>
+                    <circle class="p-dot p-dot-4" cx="34.3" cy="34.3" r="2.8" fill="#1b6ca8" opacity="0.55"/>
+                    <circle class="p-dot p-dot-5" cx="23" cy="39" r="2.8" fill="#1b6ca8" opacity="0.75"/>
+                    <circle class="p-dot p-dot-6" cx="11.7" cy="34.3" r="3.2" fill="#1b6ca8" opacity="1.0"/>
+                    <circle class="p-dot p-dot-7" cx="7" cy="23" r="3.0" fill="#1b6ca8" opacity="0.88"/>
+                    <circle class="p-dot p-dot-8" cx="11.7" cy="11.7" r="2.8" fill="#1b6ca8" opacity="0.15"/>
+                </svg>
+            </div>
+        `;
+    },
+
+    // 8. Chi tiết hóa đơn (Hiển thị loading spinner theo yêu cầu)
     renderPortalHoaDon: function (u) {
+        return this.renderPortalLoadingSpinner();
+    },
+
+    renderPortalHoaDonTable: function (u) {
         const invoices = u.hoaDon || [];
         let rows = "";
         invoices.forEach((hd, idx) => {
@@ -2803,16 +2824,9 @@ const HVNH = {
         `;
     },
 
-    // 23. Hướng dẫn sử dụng
+    // 23. Hướng dẫn sử dụng (Hiển thị loading spinner theo yêu cầu)
     renderPortalHuongDan: function (u) {
-        return `
-            <div style="line-height: 1.8; font-size: 13.5px;">
-                <h4 style="color: #004b63; font-weight: bold;">HƯỚNG DẪN SỬ DỤNG CỔNG THÔNG TIN ĐÀO TẠO HỌC VIỆN NGÂN HÀNG</h4>
-                <p>1. <strong>Đăng ký học phần:</strong> Sinh viên truy cập vào mục "Đăng ký học phần" theo đúng khung giờ quy định cho từng khóa để đăng ký môn học và lớp tín chỉ.</p>
-                <p>2. <strong>Học phí & Hóa đơn:</strong> Toàn bộ học phí phát sinh trong học kỳ được cập nhật tại mục "Tài chính sinh viên". Sau khi hoàn thành nghĩa vụ, hóa đơn điện tử sẽ được cấp phát tại "Chi tiết hóa đơn".</p>
-                <p>3. <strong>Minh chứng chứng chỉ quốc tế:</strong> Sinh viên nộp chứng chỉ IELTS/MOS qua chức năng "Nộp chứng chỉ" để được thẩm định và công nhận miễn môn tương đương.</p>
-            </div>
-        `;
+        return this.renderPortalLoadingSpinner();
     },
 
     /* ==========================================================================

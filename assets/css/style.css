@@ -852,6 +852,48 @@ a:hover, a:focus {
     padding: 15px 20px;
 }
 
+/* Portal Circular Dot Loading Spinner (Matching online.hvnh.edu.vn) */
+.portal-loader-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+    padding-bottom: 80px;
+    min-height: 400px;
+    width: 100%;
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.portal-dot-spinner-svg {
+    width: 46px;
+    height: 46px;
+    display: block;
+}
+
+.portal-dot-spinner-svg .p-dot {
+    animation: portalDotFade 0.8s linear infinite;
+    transform-origin: center;
+}
+
+.portal-dot-spinner-svg .p-dot-1 { animation-delay: 0s; }
+.portal-dot-spinner-svg .p-dot-2 { animation-delay: -0.7s; }
+.portal-dot-spinner-svg .p-dot-3 { animation-delay: -0.6s; }
+.portal-dot-spinner-svg .p-dot-4 { animation-delay: -0.5s; }
+.portal-dot-spinner-svg .p-dot-5 { animation-delay: -0.4s; }
+.portal-dot-spinner-svg .p-dot-6 { animation-delay: -0.3s; }
+.portal-dot-spinner-svg .p-dot-7 { animation-delay: -0.2s; }
+.portal-dot-spinner-svg .p-dot-8 { animation-delay: -0.1s; }
+
+@keyframes portalDotFade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.12;
+    }
+}
+
 /* Table styles inside portal */
 .portal-table {
     width: 100%;
