@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Học viện Ngân hàng</title>
+    <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon" />
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="loginbox">
+            <div class="loginbox-social">
+                <div class="logo">
+                    <a href="index.html#/"><img src="assets/logo/logo.png" alt="Học viện Ngân hàng" style="width: 140px;"></a>
+                </div>
+                <div class="uni-name" style="margin-top: 10px; font-weight: bold; color: #056382; font-size: 17px;">
+                    HỌC VIỆN NGÂN HÀNG
+                </div>
+                <div class="social-title" style="color: #056382; font-size: 14px;">Cổng thông tin đào tạo</div>
+            </div>
+
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+                <div class="or">-*-</div>
+            </div>
+
+            <div id="loginAlert"></div>
+
+            <form id="frmLogin" onsubmit="handleLoginSubmit(event)">
+                <div class="loginbox-textbox">
+                    <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập (Mã SV)" required>
+                </div>
+                <div class="loginbox-textbox">
+                    <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required>
+                </div>
+
+                <div class="loginbox-forgot">
+                    <div style="font-size: 13px; margin-bottom: 4px; font-weight: 500;">Nhập mã bảo vệ:</div>
+                    <div class="captcha-box">
+                        <canvas id="captchaCanvas" width="140" height="38"></canvas>
+                        <button type="button" class="btn-refresh-captcha" onclick="drawCaptcha()" title="Đổi mã khác">
+                            <i class="glyphicon glyphicon-refresh"></i> Đổi mã
+                        </button>
+                    </div>
+                    <input type="text" class="form-control" id="txtCaptcha" placeholder="Nhập mã bảo vệ..." style="max-width: 220px;" required>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-info btn-block" style="background-color: #056382 !important; border-color: #056382; font-weight: bold; padding: 10px;">
+                        Đăng nhập
+                    </button>
+                </div>
+
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; font-size: 12.5px;">
+                    <a href="javascript:void(0)" onclick="quickDemo()" style="color: #056382; font-weight: bold;">
+                        <i class="glyphicon glyphicon-user"></i> Tài khoản mẫu
+                    </a>
+                    <a href="index.html#/" style="color: #666;">
+                        <i class="glyphicon glyphicon-home"></i> Về trang chủ
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script>
+        let currentCaptcha = "";
+
+        function drawCaptcha() {
+            const canvas = document.getElementById("captchaCanvas");
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let code = "";
+            for (let i = 0; i < 5; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            currentCaptcha = code;
+
+            ctx.fillStyle = "#eef4f8";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < 4; i++) {
+                ctx.strokeStyle = `rgba(5, 99, 130, ${Math.random() * 0.4 + 0.2})`;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                ctx.stroke();
+            }
+
+            ctx.font = "bold 22px Courier, monospace";
+            ctx.fillStyle = "#056382";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(code, canvas.width / 2, canvas.height / 2);
+        }
+
+        function quickDemo() {
+            document.getElementById("txtUsername").value = "21A4010123";
+            document.getElementById("txtPassword").value = "123";
+            document.getElementById("txtCaptcha").value = currentCaptcha;
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const u = document.getElementById("txtUsername").value.trim();
+            const p = document.getElementById("txtPassword").value.trim();
+            const c = document.getElementById("txtCaptcha").value.trim().toUpperCase();
+            const alertBox = document.getElementById("loginAlert");
+
+            if (c !== currentCaptcha) {
+                alertBox.innerHTML = `<div class="alert alert-danger" style="padding: 8px; font-size: 13px;">Mã bảo vệ không chính xác!</div>`;
+                drawCaptcha();
+                return;
+            }
+
+            const student = HVNH_DATA.students[u];
+            if (!student || student.password !== p) {
+                alertBox.innerHTML = `<div class="alert alert-danger" style="padding: 8px; font-size: 13px;">Tên đăng nhập hoặc mật khẩu không chính xác!</div>`;
+                drawCaptcha();
+                return;
+            }
+
+            // Save user to localStorage
+            localStorage.setItem("hvnh_user", JSON.stringify(student));
+            alertBox.innerHTML = `<div class="alert alert-success" style="padding: 8px; font-size: 13px;">Đăng nhập thành công! Đang chuyển hướng...</div>`;
+            setTimeout(() => {
+                window.location.href = "index.html#/portal";
+            }, 500);
+        }
+
+        window.onload = drawCaptcha;
+    </script>
+</body>
+</html>

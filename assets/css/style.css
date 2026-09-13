@@ -1,0 +1,921 @@
+/* ========================================================
+   Banking Academy of Vietnam (Học viện Ngân hàng) Stylesheet
+   Replicating https://online.hvnh.edu.vn/
+   ======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+    --hvnh-blue: #056382;
+    --hvnh-blue-light: #077da5;
+    --hvnh-blue-dark: #03485f;
+    --hvnh-accent: #ffa500;
+    --hvnh-gold: #fece7a;
+    --hvnh-gray-border: #dadada;
+    --hvnh-gray-light: #f5f5f5;
+    --hvnh-text: #333333;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: var(--hvnh-text);
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    overflow-x: hidden;
+}
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+a:hover, a:focus {
+    color: #23527c;
+    text-decoration: none;
+}
+
+/* Container wrapper matching online.hvnh.edu.vn */
+.page-wrapper {
+    background: #fff;
+    min-height: 100vh;
+    margin: 0 1px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Header & Banner */
+#header {
+    width: 100%;
+}
+
+.banner-container {
+    width: 100%;
+    overflow: hidden;
+    background-color: #056382;
+}
+
+.banner-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Navbar */
+.navbar-hvnh {
+    background-color: var(--hvnh-blue) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    margin-bottom: 0 !important;
+    min-height: 44px;
+}
+
+.navbar-hvnh .navbar-brand {
+    color: #fff !important;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.navbar-hvnh .navbar-nav > li > a {
+    color: #ffffff !important;
+    font-weight: bold;
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+}
+
+.navbar-hvnh .navbar-nav > li > a:hover,
+.navbar-hvnh .navbar-nav > li > a:focus {
+    color: var(--hvnh-accent) !important;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.navbar-hvnh .navbar-nav > li.active > a {
+    color: var(--hvnh-accent) !important;
+    background-color: var(--hvnh-blue-dark);
+    border-bottom: 3px solid var(--hvnh-accent);
+}
+
+.navbar-hvnh .navbar-right {
+    margin-right: 10px;
+}
+
+.navbar-hvnh .user-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff !important;
+    padding: 8px 12px !important;
+    cursor: pointer;
+}
+
+.navbar-hvnh .user-avatar-mini {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 2px;
+}
+
+/* Mobile Toggle */
+.navbar-toggle {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    margin-top: 5px;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: #fff !important;
+}
+
+/* Main Layout Grid */
+#body {
+    margin-top: 1px;
+    padding: 15px 15px;
+}
+
+/* Sidebar Menu */
+#leftMenu {
+    border: 1px solid var(--hvnh-gray-border);
+    margin-bottom: 20px;
+    background: #fff;
+}
+
+.menuhome {
+    background-color: var(--hvnh-blue);
+    color: #ffffff;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.accordion-group {
+    border-bottom: 1px solid #eeeeee;
+}
+
+.accordion-group:last-child {
+    border-bottom: none;
+}
+
+.accordion-heading {
+    padding: 8px 12px;
+    transition: background 0.15s;
+}
+
+.accordion-heading:hover {
+    background-color: #f6fafe;
+}
+
+.accordion-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333333;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+
+.accordion-toggle i {
+    color: var(--hvnh-blue);
+    font-size: 11px;
+    transition: transform 0.2s ease;
+}
+
+.accordion-toggle.expanded i {
+    transform: rotate(90deg);
+}
+
+.accordion-toggle:hover span {
+    color: var(--hvnh-blue);
+}
+
+.accordion-body {
+    background-color: #fbfbfb;
+    border-top: 1px solid #f0f0f0;
+}
+
+.accordion-body ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.accordion-body ul li {
+    border-bottom: 1px dashed #e8e8e8;
+}
+
+.accordion-body ul li:last-child {
+    border-bottom: none;
+}
+
+.accordion-body ul li a {
+    display: block;
+    padding: 7px 15px 7px 28px;
+    color: #444444;
+    font-size: 13px;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.15s;
+}
+
+.accordion-body ul li a::before {
+    content: "•";
+    position: absolute;
+    left: 17px;
+    color: var(--hvnh-blue);
+}
+
+.accordion-body ul li a:hover {
+    color: var(--hvnh-blue);
+    background-color: #eef6fb;
+    padding-left: 32px;
+}
+
+/* Main Content Box */
+.divmain {
+    border: 1px solid #dfdfdf;
+    border-top: 0;
+    background: #ffffff;
+    margin-bottom: 20px;
+    min-height: 550px;
+}
+
+.bgtitle {
+    border-radius: 0;
+    background-color: var(--hvnh-blue);
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* News Items */
+.news-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.news-item:hover {
+    background-color: #f7faff;
+}
+
+.news-item a {
+    text-decoration: none !important;
+    display: block;
+}
+
+.news-title {
+    color: #1a5b82;
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1.45;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.news-title:hover {
+    color: #0c82bf;
+    text-decoration: underline;
+}
+
+.news-pin {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.news-meta {
+    text-align: right;
+    color: #888888;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.news-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: normal;
+    color: #fff;
+    background-color: #5bc0de;
+    border-radius: 3px;
+    margin-left: 6px;
+}
+
+/* Pagination */
+.pagination-container {
+    font-weight: bold;
+    padding: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-top: 1px solid #eee;
+    background: #fafafa;
+}
+
+.pagination-container a, .pagination-container span {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #337ab7;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.pagination-container span.active {
+    background: var(--hvnh-blue);
+    color: #fff;
+    border-color: var(--hvnh-blue);
+}
+
+.pagination-container a:hover {
+    background: #e9ecef;
+}
+
+/* Quick Search input in News */
+.news-search-bar {
+    padding: 0 15px 15px 15px;
+}
+
+/* Degree Lookup (Tra cứu văn bằng) */
+.vanbang-container {
+    padding: 15px;
+}
+
+.vanbang-form label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 4px;
+}
+
+.vanbang-form input.form-control {
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    height: 34px;
+}
+
+.vanbang-form input.form-control:focus {
+    border-color: var(--hvnh-blue);
+    box-shadow: 0 0 5px rgba(5, 99, 130, 0.3);
+}
+
+.vanbang-result-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.vanbang-result-table th {
+    background-color: #609810 !important;
+    color: #ffffff !important;
+    padding: 8px !important;
+    font-size: 13px;
+    text-align: center;
+    border: 1px solid #4a750c;
+}
+
+.vanbang-result-table td {
+    padding: 8px !important;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.vanbang-result-table tr:hover {
+    background-color: #f1f8e9;
+}
+
+/* Degree Certificate Card / Preview */
+.degree-card {
+    border: 8px double #c59b27;
+    padding: 30px;
+    background: #fffef9;
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.degree-card::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    background: url('../logo/logo.png') center/contain no-repeat;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.degree-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.degree-header h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #8b0000;
+    text-transform: uppercase;
+}
+
+.degree-header h2 {
+    margin: 5px 0 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #056382;
+    text-transform: uppercase;
+}
+
+.degree-body {
+    font-size: 14.5px;
+    line-height: 1.8;
+}
+
+.degree-field {
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.degree-label {
+    width: 180px;
+    font-weight: 600;
+    color: #555;
+}
+
+.degree-value {
+    flex: 1;
+    font-weight: bold;
+    color: #111;
+}
+
+/* Timetable Lookup (Tra cứu thời khóa biểu) */
+.tkb-btn-bar {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.hlbtn {
+    background-color: #3EECAC !important;
+    background-image: linear-gradient(19deg, #3EECAC 0%, #EE74E1 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+
+.tkb-filter-bar {
+    padding: 15px;
+    background: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.tkb-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+}
+
+.tkb-filter-group select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 13px;
+    height: 32px;
+}
+
+/* Main Timetable Table */
+.maindivtb {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #b2dfdb;
+    margin-top: 10px;
+}
+
+.maindivtb th {
+    background-color: var(--hvnh-blue) !important;
+    color: #ffffff !important;
+    padding: 10px 6px !important;
+    text-align: center;
+    font-size: 13.5px;
+    border: 1px solid #03485f;
+}
+
+.maindivtb .thu {
+    background-color: #f4fbf7;
+    font-weight: bold;
+    color: #056382;
+    height: 60px;
+    text-align: center;
+    vertical-align: middle !important;
+    width: 80px;
+    border: 1px solid #b2dfdb;
+}
+
+.maindivtb td {
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+    vertical-align: top;
+    width: 30%;
+    min-height: 80px;
+    background-color: #ffffff;
+}
+
+.maindivtb .divcontent {
+    border: 1px dashed orange !important;
+    background-color: #fffdf8;
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    text-align: left;
+    font-size: 12.5px;
+    line-height: 1.5;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.maindivtb .divcontent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.maindivtb .divcontent b {
+    color: #056382;
+}
+
+.slot-empty {
+    color: #bbb;
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Admissions Lookup (Tra cứu tuyển sinh) */
+.tuyensinh-container {
+    padding: 15px;
+}
+
+.tuyensinh-search-box {
+    display: flex;
+    gap: 8px;
+    max-width: 550px;
+    margin-bottom: 20px;
+}
+
+.tuyensinh-note {
+    border: 1px solid #d9edf7;
+    background-color: #f4faff;
+    border-left: 4px solid var(--hvnh-blue);
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 25px;
+    font-size: 13.5px;
+}
+
+/* Login Page Component (matching target_login.html) */
+.login-container {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 0 15px;
+}
+
+.loginbox {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.loginbox-social {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.loginbox-social .logo img {
+    width: 140px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.loginbox-social .uni-name {
+    margin-top: 10px;
+    font-weight: bold;
+    color: var(--hvnh-blue);
+    font-size: 16px;
+    letter-spacing: 0.5px;
+}
+
+.loginbox-social .social-title {
+    color: var(--hvnh-blue);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+.loginbox-or {
+    position: relative;
+    text-align: center;
+    margin: 15px 0 20px 0;
+}
+
+.loginbox-or .or-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e5e5e5;
+}
+
+.loginbox-or .or {
+    position: relative;
+    background: #fff;
+    padding: 0 10px;
+    color: #888;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.loginbox-textbox {
+    margin-bottom: 15px;
+}
+
+.loginbox-textbox input.form-control {
+    height: 38px;
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.loginbox-forgot {
+    margin-bottom: 20px;
+}
+
+.captcha-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+#captchaCanvas {
+    background: #eef2f5;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.btn-refresh-captcha {
+    color: var(--hvnh-blue);
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    background: none;
+    padding: 5px;
+}
+
+.btn-refresh-captcha:hover {
+    color: #03485f;
+}
+
+/* Student Portal Dashboard */
+.portal-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.portal-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #edf2f7;
+    margin-bottom: 20px;
+}
+
+.portal-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid var(--hvnh-blue);
+    padding: 3px;
+    object-fit: cover;
+}
+
+.portal-nav-tabs {
+    display: flex;
+    gap: 5px;
+    border-bottom: 2px solid var(--hvnh-blue);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.portal-tab-btn {
+    padding: 8px 16px;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #475569;
+    transition: all 0.2s;
+}
+
+.portal-tab-btn.active {
+    background: var(--hvnh-blue);
+    color: #ffffff;
+    border-color: var(--hvnh-blue);
+}
+
+/* Table styles inside portal */
+.portal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.portal-table th {
+    background: var(--hvnh-blue) !important;
+    color: #fff !important;
+    padding: 8px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.portal-table td {
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 13px;
+}
+
+.portal-table tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+/* Footer (Matching online.hvnh.edu.vn) */
+.footer {
+    width: 100%;
+    background: var(--hvnh-blue);
+    color: #ffffff;
+    margin-top: 25px;
+    padding: 20px 0;
+}
+
+.footer .row {
+    margin: 0;
+}
+
+.footer-logo {
+    width: 85px;
+    height: auto;
+    display: block;
+}
+
+.footer-info {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.footer-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #ffffff;
+}
+
+.footer-links a {
+    color: #e2e8f0;
+    margin-right: 15px;
+    font-size: 13px;
+}
+
+.footer-links a:hover {
+    color: var(--hvnh-accent);
+}
+
+/* Modal styling */
+.modal-header {
+    background-color: var(--hvnh-blue) !important;
+    color: #ffffff !important;
+    border-radius: 0;
+    padding: 12px 15px;
+}
+
+.modal-header .close {
+    color: #ffffff !important;
+    opacity: 0.9;
+    font-size: 24px;
+}
+
+.modal-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0;
+}
+
+.modal-footer {
+    border-top: 1px solid #eeeeee;
+    padding: 10px 15px;
+}
+
+/* Alert Notification Banner / Toast */
+.hvnh-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 280px;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar-hvnh .navbar-nav > li > a {
+        padding: 10px 15px;
+    }
+    .degree-field {
+        flex-direction: column;
+    }
+    .degree-label {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+    .maindivtb .thu {
+        width: 60px;
+        font-size: 12px;
+    }
+    .maindivtb td {
+        padding: 4px;
+        font-size: 11px;
+    }
+    .maindivtb .divcontent {
+        padding: 5px;
+        font-size: 11px;
+    }
+    .footer {
+        text-align: center;
+    }
+    .footer-logo {
+        margin: 0 auto 15px auto;
+    }
+}
