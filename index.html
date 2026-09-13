@@ -22,168 +22,167 @@
     <div class="page-wrapper">
         <!-- HEADER -->
         <header id="header">
-            <div class="banner-container">
-                <img class="banner-img" src="assets/logo/banner.jpg" alt="Học viện Ngân hàng - Banking Academy of Vietnam" />
+            <div class="row">
+                <div class="col-md-12">
+                    <img style="width: 100%; max-height: 400px; display: block;" src="assets/logo/banner.jpg" alt="Học viện Ngân hàng" />
+                </div>
             </div>
 
-            <!-- NAVBAR -->
-            <nav class="navbar navbar-default navbar-hvnh">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menuHVNH" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-xs-12">
+                    <div id="header">
+                        <nav class="navbar navbar-default stylecolor">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menuHVNH" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
 
-                    <div class="collapse navbar-collapse" id="menuHVNH">
-                        <ul class="nav navbar-nav">
-                            <li id="nav-home" class="active"><a href="#/"><i class="glyphicon glyphicon-home"></i> Trang chủ</a></li>
-                            <li id="nav-vanbang"><a href="#/tra-cuu-van-bang"><i class="glyphicon glyphicon-certificate"></i> Tra cứu văn bằng</a></li>
-                            <li id="nav-tkb"><a href="#/tra-cuu-tkb"><i class="glyphicon glyphicon-calendar"></i> Tra cứu thời khóa biểu</a></li>
-                            <li id="nav-tuyensinh"><a href="#/tra-cuu-tuyen-sinh"><i class="glyphicon glyphicon-education"></i> Tra cứu tuyển sinh</a></li>
-                            <li id="nav-vqt"><a href="#/home/vien-quoc-te"><i class="glyphicon glyphicon-globe"></i> Viện Đào tạo Quốc tế</a></li>
-                        </ul>
+                            <div class="collapse navbar-collapse" id="menuHVNH" style="color: black !important">
+                                <ul class="nav navbar-nav">
+                                    <li id="nav-home" class="active"><a href="#/">Trang chủ</a></li>
+                                    <li id="nav-vanbang"><a href="#/tra-cuu-van-bang">Tra cứu văn bằng</a></li>
+                                    <li id="nav-tkb"><a href="#/tra-cuu-tkb">Tra cứu thời khóa biểu</a></li>
+                                    <li id="nav-tuyensinh"><a href="#/tra-cuu-tuyen-sinh">Tra cứu tuyển sinh</a></li>
+                                    <li id="nav-vqt"><a href="#/home/vien-quoc-te">Viện Đào tạo Quốc tế</a></li>
+                                </ul>
 
-                        <ul class="nav navbar-nav navbar-right" id="authNavContainer">
-                            <li id="nav-login"><a href="login.html"><i class="glyphicon glyphicon-lock"></i> Đăng nhập</a></li>
-                        </ul>
+                                <ul class="nav navbar-nav navbar-right" id="authNavContainer">
+                                    <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
+                                        <span><a href="login.html" style="color: #fff; font-weight: bold; text-decoration: none;">Đăng nhập</a></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
                     </div>
                 </div>
-            </nav>
+            </div>
         </header>
 
         <!-- BODY CONTENT -->
-        <div id="body">
+        <div id="body" style="margin-top: 1px">
             <div class="row">
                 <!-- LEFT SIDEBAR -->
-                <div class="col-md-3 col-sm-4">
+                <div class="col-md-3">
                     <div class="accordion" id="leftMenu">
-                        <!-- Menu Header -->
-                        <div class="menuhome">
-                            <span class="glyphicon glyphicon-th"></span>
-                            <b>Tin tức</b>
+                        <div class="accordion-group">
+                            <div class="accordion-heading menuhome" style="padding:10px">
+                                <a href="#/" style="color:#fff !important; text-decoration:none;">
+                                    <span style="color:#fff !important" class="glyphicon glyphicon-th"></span>
+                                    <b style="color:#fff !important">Tin tức</b>
+                                </a>
+                            </div>
                         </div>
 
                         <!-- 1. Thông báo chung -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('thong-bao-chung')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Thông báo chung</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Thông báo chung</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 2. Quy định, quy chế đào tạo -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('quy-che')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Quy định, quy chế đào tạo</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Quy định, quy chế đào tạo</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 3. Quy trình đào tạo -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('quy-trinh')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Quy trình đào tạo</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Quy trình đào tạo</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 4. Tốt nghiệp -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('tot-nghiep')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Tốt nghiệp</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Tốt nghiệp</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 5. Thông báo học phí -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('hoc-phi')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Thông báo học phí</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Thông báo học phí</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 6. Thời khóa biểu, đăng ký học -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('dang-ky-hoc')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Thời khóa biểu, đăng ký học</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Thời khóa biểu, đăng ký học</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 7. Lịch thi -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('lich-thi')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Lịch thi</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Lịch thi</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 8. Học bổng, khen thưởng -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('hoc-bong')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Học bổng, khen thưởng</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Học bổng, khen thưởng</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 9. Chương trình đào tạo -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('chuong-trinh')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Chương trình đào tạo</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Chương trình đào tạo</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 10. Cảnh báo học tập -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('canh-bao')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Cảnh báo học tập, ngừng học, thôi học</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Cảnh báo học tập, ngừng học, thôi học</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 11. Kết quả học tập (Collapsible) -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapse_kqht">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Kết quả học tập</span>
+                            <div class="accordion-heading" style="padding:5px;">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapse_1018">
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Kết quả học tập</span>
                                 </a>
                             </div>
-                            <div id="collapse_kqht" class="panel-collapse collapse">
-                                <div class="accordion-body">
+                            <div id="collapse_1018" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
                                     <ul>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-chuyen-doi')">Công nhận KQHT, chuyển đổi tín chỉ</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khuyen-khich')">Cộng điểm khuyến khích</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-phuc-khao')">Phúc tra, phúc khảo</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khoa-luan')">Khóa luận, chuyên đề tốt nghiệp</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-qp-an-ninh')">Quốc phòng an ninh</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khac')">Khác</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-chuyen-doi')" style="color:#333">&nbsp;Công nhận KQHT, chuyển đổi tín chỉ</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khuyen-khich')" style="color:#333">&nbsp;Cộng điểm khuyến khích</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-phuc-khao')" style="color:#333">&nbsp;Phúc tra, phúc khảo</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khoa-luan')" style="color:#333">&nbsp;Khóa luận, chuyên đề tốt nghiệp</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-qp-an-ninh')" style="color:#333">&nbsp;Quốc phòng an ninh</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('kqht-khac')" style="color:#333">&nbsp;Khác</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -191,44 +190,41 @@
 
                         <!-- 12. Các biểu mẫu -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('bieu-mau')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Các biểu mẫu</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Các biểu mẫu</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 13. Chuẩn đầu ra ngoại ngữ, tin học -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
+                            <div class="accordion-heading" style="padding:5px;">
                                 <a class="accordion-toggle" href="javascript:void(0)" onclick="HVNH.filterCategory('chuan-dau-ra')">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Chuẩn đầu ra ngoại ngữ, tin học</span>
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Chuẩn đầu ra ngoại ngữ, tin học</span>
                                 </a>
                             </div>
                         </div>
 
                         <!-- 14. Viện Đào tạo Quốc tế (Collapsible) -->
                         <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapse_vqt">
-                                    <i class="glyphicon glyphicon-chevron-right"></i>
-                                    <span>Thông tin dành cho sinh viên Viện Đào tạo Quốc tế</span>
+                            <div class="accordion-heading" style="padding:5px;">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapse_1019">
+                                    <i class="glyphicon glyphicon-chevron-right" style="color:#056382"></i><span style="color:#333"> Thông tin dành cho sinh viên Viện Đào tạo Quốc tế</span>
                                 </a>
                             </div>
-                            <div id="collapse_vqt" class="panel-collapse collapse">
-                                <div class="accordion-body">
+                            <div id="collapse_1019" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
                                     <ul>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-tan-sv')">Thông tin dành cho tân sinh viên</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-quy-che')">Quy định, quy chế đào tạo</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-dich-vu')">Hướng dẫn sử dụng các dịch vụ trực tuyến</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-hoc-phi')">Học phí</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-ren-luyen')">Rèn luyện, Học bổng, Khen thưởng</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-canh-bao')">Cảnh báo học tập, ngừng học, buộc thôi học</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-tot-nghiep')">Tốt nghiệp</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-bieu-mau')">Các biểu mẫu</a></li>
-                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-kenh-tt')">Kênh thông tin Viện Đào tạo Quốc tế</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-tan-sv')" style="color:#333">&nbsp;Thông tin dành cho tân sinh viên</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-quy-che')" style="color:#333">&nbsp;Quy định, quy chế đào tạo</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-dich-vu')" style="color:#333">&nbsp;Hướng dẫn sử dụng các dịch vụ trực tuyến</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-hoc-phi')" style="color:#333">&nbsp;Học phí</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-ren-luyen')" style="color:#333">&nbsp;Rèn luyện, Học bổng, Khen thưởng</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-canh-bao')" style="color:#333">&nbsp;Cảnh báo học tập, ngừng học, buộc thôi học</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-tot-nghiep')" style="color:#333">&nbsp;Tốt nghiệp</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-bieu-mau')" style="color:#333">&nbsp;Các biểu mẫu</a></li>
+                                        <li><a href="javascript:void(0)" onclick="HVNH.filterCategory('vqt-kenh-tt')" style="color:#333">&nbsp;Kênh thông tin Viện Đào tạo Quốc tế</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -237,7 +233,7 @@
                 </div>
 
                 <!-- RIGHT MAIN CONTENT (Dynamic) -->
-                <div class="col-md-9 col-sm-8">
+                <div class="col-md-9">
                     <div id="mainContent">
                         <!-- Populated dynamically by app.js -->
                     </div>
@@ -247,22 +243,35 @@
 
         <!-- FOOTER -->
         <footer class="footer">
-            <div class="container-fluid">
+            <div style="background: #056382; color: white;">
                 <div class="row">
-                    <div class="col-md-1 hidden-xs"></div>
-                    <div class="col-md-6 col-sm-8" style="display: flex; align-items: center; gap: 20px;">
-                        <img src="assets/logo/logo.png" class="footer-logo" alt="HVNH Logo" />
-                        <div class="footer-info">
-                            <div class="footer-title">HỌC VIỆN NGÂN HÀNG</div>
-                            <div>Địa chỉ: <b>Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội</b></div>
-                            <div>Website: <b>www.hvnh.edu.vn</b> | Email: <b>phongdaotao@hvnh.edu.vn</b></div>
-                            <div>Điện thoại: <b>+84 243 852 1305</b> - Fax: <b>+84 243 852 5024</b></div>
+                    <div class="col-md-1"> </div>
+                    <div class="col-md-5" style="height: 100px; padding-top: 5px; margin-bottom: 15px">
+                        <div style="float:left; ">
+                            <div style="padding-bottom: 20px">
+                                <img src="assets/logo/logo.png" style="width: 90px; padding-top: 10px" alt="HVNH Logo" />
+                            </div>
+                        </div>
+                        <div style="float:left; padding: 10px 0px 0px 15px ">
+                            <div class="cus-ttcedu-footer" style="font-weight:bold">
+                                HỌC VIỆN NGÂN HÀNG
+                            </div>
+                            <div class="cus-ttcedu-footer">
+                                Địa chỉ: <b>Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội</b>
+                            </div>
+                            <div class="cus-ttcedu-footer">
+                                Website: <b>www.hvnh.edu.vn</b> | Email: <b>phongdaotao@hvnh.edu.vn</b>
+                            </div>
+                            <div class="cus-ttcedu-footer">
+                                Điện thoại: <b>+84 243 852 1305</b> - Fax: <b>+84 243 852 5024 </b>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-5 col-sm-4 text-right footer-links" style="padding-top: 15px;">
-                        <a href="http://hvnh.edu.vn" target="_blank"><i class="glyphicon glyphicon-link"></i> Cổng thông tin HVNH</a>
-                        <a href="#/tra-cuu-van-bang"><i class="glyphicon glyphicon-certificate"></i> Văn bằng</a>
-                        <a href="#/tra-cuu-tkb"><i class="glyphicon glyphicon-calendar"></i> Lịch học</a>
+                    <div class="col-md-7">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
             </div>

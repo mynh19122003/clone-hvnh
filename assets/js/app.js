@@ -7,7 +7,7 @@ const HVNH = {
     state: {
         currentPage: "home",
         newsPage: 1,
-        newsPerPage: 8,
+        newsPerPage: 20,
         selectedCategory: "thong-bao-chung",
         searchKeyword: "",
         currentCaptcha: "",
@@ -159,32 +159,13 @@ const HVNH = {
        1. HOME PAGE & NEWS
        ========================================================================== */
     renderHome: function () {
-        const catInfo = HVNH_DATA.categories.find(c => c.id === this.state.selectedCategory) || { name: "Thông báo chung" };
+        const catInfo = HVNH_DATA.categories.find(c => c.id === this.state.selectedCategory) || { name: "Thông báo chung" };
         
         const html = `
             <div class="divmain">
-                <div class="bgtitle">
-                    <span>${catInfo.name}</span>
-                    <span style="font-size: 12px; font-weight: normal; text-transform: none; opacity: 0.9;">
-                        Cổng thông tin đào tạo Học viện Ngân hàng
-                    </span>
-                </div>
-
-                <div class="news-search-bar">
-                    <div class="input-group">
-                        <input type="text" id="txtSearchNews" class="form-control" 
-                               value="${this.state.searchKeyword}" 
-                               placeholder="Tìm kiếm thông báo, quy chế, thời khóa biểu...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="HVNH.clearNewsSearch()">
-                                <i class="glyphicon glyphicon-remove"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-
+                <div class="bgtitle">${catInfo.name}</div>
                 <div id="newsListContainer"></div>
-                <div id="newsPaginationContainer" class="pagination-container"></div>
+                <div id="newsPaginationContainer"></div>
             </div>
         `;
 
@@ -202,7 +183,6 @@ const HVNH = {
         // Category filter
         if (this.state.selectedCategory && this.state.selectedCategory !== "all") {
             filtered = filtered.filter(n => n.category === this.state.selectedCategory || n.category.startsWith(this.state.selectedCategory));
-            // If empty, allow fallback to general news for rich display
             if (filtered.length === 0) {
                 filtered = HVNH_DATA.news;
             }
@@ -218,8 +198,7 @@ const HVNH = {
 
         if (filtered.length === 0) {
             container.innerHTML = `
-                <div style="padding: 40px; text-align: center; color: #888;">
-                    <i class="glyphicon glyphicon-search" style="font-size: 32px; margin-bottom: 10px; color: #ccc;"></i>
+                <div style="padding: 30px; text-align: center; color: #888;">
                     <p>Không tìm thấy tin tức hoặc thông báo nào phù hợp.</p>
                 </div>
             `;
@@ -235,43 +214,39 @@ const HVNH = {
         const startIndex = (this.state.newsPage - 1) * this.state.newsPerPage;
         const pageItems = filtered.slice(startIndex, startIndex + this.state.newsPerPage);
 
-        let itemsHtml = "";
+        let itemsHtml = "<div>";
         pageItems.forEach(item => {
-            const pinIcon = item.isPinned ? `<span class="glyphicon glyphicon-pushpin news-pin" title="Tin ghim quan trọng"></span>` : "";
+            const pinIcon = item.isPinned ? `<span class="glyphicon glyphicon-pushpin"></span>\n` : "";
             itemsHtml += `
-                <div class="news-item">
-                    <a href="#/tin-tuc/${item.id}">
-                        <div class="news-title">
+                <div style="margin:5px">
+                    <div id="divNews">
+                        <a style="text-decoration:none" href="#/tin-tuc/${item.id}"> 
                             ${pinIcon}
-                            <span>${item.title}</span>
-                            ${item.isPinned ? `<span class="news-badge">Mới</span>` : ""}
-                        </div>
-                        <div class="news-meta">
-                            <span style="float: left; color: #666; font-size: 11.5px;">
-                                <i class="glyphicon glyphicon-folder-open"></i> ${item.categoryName}
-                            </span>
-                            <i>ngày đăng ${item.date}</i>
-                        </div>
-                    </a>
+                            ${item.title}
+                            <div style="text-align:right;color:#b7b5b5"><i>ngày đăng ${item.date}</i></div>
+                        </a>                       
+                    </div>                    
                 </div>
             `;
         });
+        itemsHtml += "</div>";
 
         container.innerHTML = itemsHtml;
 
-        // Render Pagination UI
-        let pagHtml = `<span>Trang </span>`;
-        for (let i = 1; i <= totalPages; i++) {
+        // Render Pagination UI matching online.hvnh.edu.vn exactly
+        let pagHtml = `<div style="font-weight: bold; padding: 10px; font-size: 13px; color: #333;">Trang `;
+        for (let i = 1; i <= Math.min(10, totalPages); i++) {
             if (i === this.state.newsPage) {
-                pagHtml += `<span class="active">[${i}]</span>`;
+                pagHtml += ` [${i}] `;
             } else {
-                pagHtml += `<a onclick="HVNH.changeNewsPage(${i})">${i}</a>`;
+                pagHtml += ` <a href="javascript:void(0)" onclick="HVNH.changeNewsPage(${i})" style="color: #337ab7; text-decoration: none; padding: 0 2px;">${i}</a> `;
             }
         }
         if (this.state.newsPage < totalPages) {
-            pagHtml += `<a onclick="HVNH.changeNewsPage(${this.state.newsPage + 1})">Trang sau</a>`;
-            pagHtml += `<a onclick="HVNH.changeNewsPage(${totalPages})">Trang cuối</a>`;
+            pagHtml += ` <a href="javascript:void(0)" onclick="HVNH.changeNewsPage(${this.state.newsPage + 1})" style="color: #337ab7; text-decoration: none; margin-left: 5px;">Trang sau</a> `;
+            pagHtml += ` <a href="javascript:void(0)" onclick="HVNH.changeNewsPage(${totalPages})" style="color: #337ab7; text-decoration: none; margin-left: 5px;">Trang cuối</a>`;
         }
+        pagHtml += `</div>`;
 
         if (pagContainer) pagContainer.innerHTML = pagHtml;
     },
@@ -1088,23 +1063,22 @@ const HVNH = {
         if (this.state.currentUser) {
             const u = this.state.currentUser;
             container.innerHTML = `
-                <li style="display: flex; align-items: center; padding-top: 6px; padding-bottom: 6px; padding-right: 15px;">
-                    <div class="user-top-badge">
-                        <span>
-                            <a href="#/portal" style="color: #ffffff; font-weight: bold; text-decoration: none;">
-                                ${u.username} | ${u.hoTen}
-                            </a>
-                        </span>
-                        <a href="javascript:void(0)" class="logout-link" onclick="HVNH.logout()">
-                            <i class="glyphicon glyphicon-log-out"></i> [Đăng xuất]
+                <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
+                    <span>
+                        <a href="#/portal" style="color: #fff; font-weight: bold; text-decoration: none;">
+                            ${u.username} | ${u.hoTen}
                         </a>
-                    </div>
+                        &nbsp;
+                        <a href="javascript:void(0)" onclick="HVNH.logout()" style="color: #ffa500; font-weight: normal; text-decoration: none;">
+                            [Đăng xuất]
+                        </a>
+                    </span>
                 </li>
             `;
         } else {
             container.innerHTML = `
-                <li id="nav-login">
-                    <a href="login.html"><i class="glyphicon glyphicon-lock"></i> Đăng nhập</a>
+                <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
+                    <span><a href="login.html" style="color: #fff; font-weight: bold; text-decoration: none;">Đăng nhập</a></span>
                 </li>
             `;
         }

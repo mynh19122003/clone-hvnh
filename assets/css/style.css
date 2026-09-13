@@ -42,15 +42,14 @@ a {
 
 a:hover, a:focus {
     color: #23527c;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 /* Container wrapper matching online.hvnh.edu.vn */
 .page-wrapper {
     background: #fff;
     min-height: 100vh;
-    margin: 0 1px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    margin: 0px 1px;
 }
 
 /* Header & Banner */
@@ -58,315 +57,212 @@ a:hover, a:focus {
     width: 100%;
 }
 
-.banner-container {
-    width: 100%;
-    overflow: hidden;
-    background-color: #056382;
-}
-
-.banner-img {
+#header img {
     width: 100%;
     max-height: 400px;
-    object-fit: cover;
     display: block;
 }
 
-/* Navbar */
-.navbar-hvnh {
-    background-color: var(--hvnh-blue) !important;
-    border-radius: 0 !important;
-    border: 0 !important;
-    margin-bottom: 0 !important;
-    min-height: 44px;
+/* Navbar replicating online.hvnh.edu.vn */
+.stylecolor {
+    background-color: #056382 !important;
 }
 
-.navbar-hvnh .navbar-brand {
+.navbar {
+    border-radius: 0px !important;
+    border: 0px !important;
+    color: #FFF;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+    min-height: 40px !important;
+    background-color: #056382 !important;
+}
+
+.navbar-nav li a {
+    color: #fff !important;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    font-weight: bold;
+}
+
+#header .navbar-nav > li > a {
+    padding-top: 9px !important;
+    padding-bottom: 5px !important;
     color: #fff !important;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    font-size: 16px;
-}
-
-.navbar-hvnh .navbar-nav > li > a {
-    color: #ffffff !important;
-    font-weight: bold;
-    padding: 12px 16px;
     font-size: 14px;
-    transition: all 0.2s;
-    border-bottom: 3px solid transparent;
+    background-color: transparent !important;
 }
 
-.navbar-hvnh .navbar-nav > li > a:hover,
-.navbar-hvnh .navbar-nav > li > a:focus {
-    color: var(--hvnh-accent) !important;
-    background-color: rgba(255, 255, 255, 0.08);
+#header .navbar-nav > li > a:hover {
+    color: #ffa500 !important;
+    background-color: transparent !important;
+    text-decoration: none !important;
 }
 
-.navbar-hvnh .navbar-nav > li.active > a {
-    color: var(--hvnh-accent) !important;
-    background-color: var(--hvnh-blue-dark);
-    border-bottom: 3px solid var(--hvnh-accent);
+#header .navbar-nav > li.active > a,
+#header .navbar-nav > li.active > a:hover,
+#header .navbar-nav > li.active > a:focus {
+    color: #ffa500 !important;
+    background-color: transparent !important;
 }
 
-.navbar-hvnh .navbar-right {
-    margin-right: 10px;
+#header nav {
+    background-color: #056382 !important;
 }
 
-.navbar-hvnh .user-dropdown-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #fff !important;
-    padding: 8px 12px !important;
-    cursor: pointer;
+#menu ul li a:hover {
+    color: #ffa500 !important;
 }
 
-.navbar-hvnh .user-avatar-mini {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #fff;
-    padding: 2px;
-}
-
-/* Mobile Toggle */
 .navbar-toggle {
+    margin-top: 3px;
+    margin-bottom: 3px;
     border-color: rgba(255, 255, 255, 0.5) !important;
-    margin-top: 5px;
 }
 
 .navbar-toggle .icon-bar {
     background-color: #fff !important;
 }
 
-/* Main Layout Grid */
+/* Body Layout & Sidebar Menu */
 #body {
     margin-top: 1px;
-    padding: 15px 15px;
 }
 
-/* Sidebar Menu */
 #leftMenu {
-    border: 1px solid var(--hvnh-gray-border);
+    margin-top: 0px;
     margin-bottom: 20px;
+    border: 1px solid #dadada;
+    border-bottom: 0;
+}
+
+#leftMenu .accordion-group {
+    margin-bottom: 0;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #dadada;
+}
+
+#leftMenu .accordion-heading {
+    padding: 5px 10px;
     background: #fff;
 }
 
-.menuhome {
-    background-color: var(--hvnh-blue);
-    color: #ffffff;
-    padding: 10px 15px;
+#leftMenu .accordion-heading.menuhome {
+    background-color: #056382 !important;
+    padding: 10px 10px !important;
+    border: none;
+}
+
+#leftMenu .accordion-heading.menuhome a {
+    color: #fff !important;
     font-weight: bold;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.accordion-group {
-    border-bottom: 1px solid #eeeeee;
-}
-
-.accordion-group:last-child {
-    border-bottom: none;
-}
-
-.accordion-heading {
-    padding: 8px 12px;
-    transition: background 0.15s;
-}
-
-.accordion-heading:hover {
-    background-color: #f6fafe;
-}
-
-.accordion-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #333333;
-    font-size: 13.5px;
-    font-weight: 500;
-    text-decoration: none !important;
-}
-
-.accordion-toggle i {
-    color: var(--hvnh-blue);
-    font-size: 11px;
-    transition: transform 0.2s ease;
-}
-
-.accordion-toggle.expanded i {
-    transform: rotate(90deg);
-}
-
-.accordion-toggle:hover span {
-    color: var(--hvnh-blue);
-}
-
-.accordion-body {
-    background-color: #fbfbfb;
-    border-top: 1px solid #f0f0f0;
-}
-
-.accordion-body ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.accordion-body ul li {
-    border-bottom: 1px dashed #e8e8e8;
-}
-
-.accordion-body ul li:last-child {
-    border-bottom: none;
-}
-
-.accordion-body ul li a {
-    display: block;
-    padding: 7px 15px 7px 28px;
-    color: #444444;
-    font-size: 13px;
     text-decoration: none;
-    position: relative;
-    transition: all 0.15s;
+    font-size: 14px;
 }
 
-.accordion-body ul li a::before {
-    content: "•";
-    position: absolute;
-    left: 17px;
-    color: var(--hvnh-blue);
+#leftMenu .accordion-heading a {
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    font-weight: normal;
+    display: block;
 }
 
-.accordion-body ul li a:hover {
-    color: var(--hvnh-blue);
-    background-color: #eef6fb;
-    padding-left: 32px;
+#leftMenu .accordion-heading a:hover {
+    color: #056382;
 }
 
-/* Main Content Box */
+#leftMenu .accordion-heading a i.glyphicon-chevron-right {
+    color: #056382;
+    font-size: 10px;
+    margin-right: 4px;
+}
+
+#leftMenu .accordion-inner {
+    padding: 3px 0 5px 0;
+    background: #fff;
+}
+
+#leftMenu .accordion-inner ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+#leftMenu .accordion-inner ul li {
+    list-style: none;
+    border-left: 1px dotted #555;
+    padding: 2px 0 2px 8px;
+}
+
+#leftMenu .accordion-inner ul li a {
+    color: #333;
+    font-size: 12.5px;
+    text-decoration: none;
+}
+
+#leftMenu .accordion-inner ul li a:hover {
+    color: #056382;
+    text-decoration: underline;
+}
+
+/* Main Content Box & News List */
 .divmain {
     border: 1px solid #dfdfdf;
     border-top: 0;
     background: #ffffff;
     margin-bottom: 20px;
-    min-height: 550px;
+    min-height: 520px;
 }
 
 .bgtitle {
-    border-radius: 0;
-    background-color: var(--hvnh-blue);
+    border-radius: 3px;
+    background-color: #056382;
     color: #ffffff;
     font-weight: bold;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
-/* News Items */
-.news-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background-color 0.2s;
+#divNews {
+    padding: 2px 0;
 }
 
-.news-item:hover {
-    background-color: #f7faff;
-}
-
-.news-item a {
-    text-decoration: none !important;
+#divNews a {
+    text-decoration: none;
+    color: #337ab7;
+    font-size: 14px;
+    line-height: 1.42857143;
     display: block;
 }
 
-.news-title {
-    color: #1a5b82;
-    font-size: 14.5px;
-    font-weight: 500;
-    line-height: 1.45;
-    margin-bottom: 4px;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.news-title:hover {
-    color: #0c82bf;
+#divNews a:hover {
+    color: #23527c;
     text-decoration: underline;
 }
 
-.news-pin {
-    color: #d9534f;
-    font-size: 14px;
-    margin-top: 2px;
-    flex-shrink: 0;
-}
-
-.news-meta {
-    text-align: right;
-    color: #888888;
+#divNews .glyphicon-pushpin {
     font-size: 12px;
-    font-style: italic;
+    margin-right: 4px;
 }
 
-.news-badge {
-    display: inline-block;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: normal;
-    color: #fff;
-    background-color: #5bc0de;
-    border-radius: 3px;
-    margin-left: 6px;
+/* Footer replicating online.hvnh.edu.vn */
+.footer {
+    background: #056382;
+    color: white;
+    margin-top: 20px;
+    border: none;
 }
 
-/* Pagination */
-.pagination-container {
-    font-weight: bold;
-    padding: 15px;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    border-top: 1px solid #eee;
-    background: #fafafa;
-}
-
-.pagination-container a, .pagination-container span {
-    display: inline-block;
-    padding: 4px 10px;
-    border: 1px solid #ddd;
-    background: #fff;
-    color: #337ab7;
-    border-radius: 3px;
-    text-decoration: none;
+.cus-ttcedu-footer {
     font-size: 13px;
-    cursor: pointer;
-}
-
-.pagination-container span.active {
-    background: var(--hvnh-blue);
+    padding: 1px;
+    line-height: 1.4;
     color: #fff;
-    border-color: var(--hvnh-blue);
-}
-
-.pagination-container a:hover {
-    background: #e9ecef;
-}
-
-/* Quick Search input in News */
-.news-search-bar {
-    padding: 0 15px 15px 15px;
 }
 
 /* Degree Lookup (Tra cứu văn bằng) */
