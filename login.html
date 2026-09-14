@@ -6,6 +6,14 @@
     <title>Đăng nhập - Cổng thông tin đào tạo - Học viện Ngân hàng</title>
     <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon" />
     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=2.8" />
+
+    <!-- jQuery & Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -17,11 +25,19 @@
         body {
             background-color: #f2f4f7;
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .login-page-body {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            padding: 30px 15px;
         }
 
         input, button, select, textarea {
@@ -455,11 +471,45 @@
     </style>
 </head>
 <body>
-    <div class="login-card" id="loginCard">
-        <!-- Top Animated Running Progress Bar -->
-        <div class="card-loader" id="cardLoader">
-            <div class="card-loader-bar" id="cardLoaderBar"></div>
-        </div>
+    <!-- Top Header & Navbar matching homepage 100% -->
+    <header id="header">
+        <nav class="navbar navbar-default stylecolor" style="margin-bottom: 0;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="navbar-collapse collapse" id="menu" style="color: black !important">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html#/">Trang chủ</a></li>
+                    <li><a href="javascript:void(0)">Tra cứu văn bằng</a></li>
+                    <li><a href="javascript:void(0)">Tra cứu thời khóa biểu</a></li>
+                    <li><a href="javascript:void(0)">Tra cứu tuyển sinh</a></li>
+                    <li><a href="index.html#/home/vien-quoc-te">Viện Đào tạo Quốc tế</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
+                        <span><a href="login.html" style="color: #ffa500; font-weight: bold; text-decoration: none;">Đăng nhập</a></span>
+                        <ul class="dropdown-menu stylecolor">
+                            <div class="divider"></div>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="login-page-body">
+        <div class="login-card" id="loginCard">
+            <!-- Top Animated Running Progress Bar -->
+            <div class="card-loader" id="cardLoader">
+                <div class="card-loader-bar" id="cardLoaderBar"></div>
+            </div>
 
         <!-- Logo Học viện Ngân hàng (170px như web trường online.hvnh.edu.vn) -->
         <div class="logo-box">
@@ -504,6 +554,7 @@
             <br>
             <a href="index.html#/" class="back-home">← Cổng thông tin đào tạo HVNH</a>
         </div>
+    </div>
     </div>
 
     <!-- Application Data -->
@@ -710,7 +761,7 @@
                 setTimeout(() => {
                     card.classList.add("card-exit");
                     setTimeout(() => {
-                        window.location.href = "index.html?user=" + encodeURIComponent(u) + "#/";
+                        window.location.href = "index.html?user=" + encodeURIComponent(u) + "#/portal";
                     }, 350);
                 }, 500);
             }, 700);

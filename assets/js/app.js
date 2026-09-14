@@ -81,6 +81,12 @@ const HVNH = {
             if (h) h.style.display = "block";
         }
 
+        // Hide banner row in student portal so navbar sits directly at the top matching online.hvnh.edu.vn
+        const bannerRow = document.getElementById("headerBannerRow");
+        if (bannerRow) {
+            bannerRow.style.display = (route === "portal") ? "none" : "block";
+        }
+
         if (route !== "portal" && route !== "dich-vu-cong") {
             this.ensurePublicLayout();
         }
@@ -1059,6 +1065,7 @@ const HVNH = {
                     </a>
                     <ul class="dropdown-menu stylecolor user-nav-dropdown" id="userNavDropdownMenu">
                         <li><a href="javascript:void(0)" onclick="HVNH.goToPortal('info')">Thông tin</a></li>
+                        <li><a href="javascript:void(0)" onclick="HVNH.goToPortal('ket-qua-dang-ky')">Kết quả đăng ký HP</a></li>
                         <li><a href="javascript:void(0)" onclick="HVNH.showChangePasswordModal()">Đổi mật khẩu</a></li>
                         <li role="separator" class="divider user-nav-divider"></li>
                         <li><a href="javascript:void(0)" onclick="HVNH.logout()">Thoát</a></li>
