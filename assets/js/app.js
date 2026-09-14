@@ -1349,7 +1349,7 @@ const HVNH = {
                 bodyContent.innerHTML = this.renderPortalVangThi(u);
                 break;
             case "lich-hoc":
-                headerTitle.innerText = "Lịch học";
+                headerTitle.innerText = "Thời khóa biểu sinh viên";
                 bodyContent.innerHTML = this.renderPortalLichHoc(u);
                 break;
             case "lich-thi":
@@ -1595,15 +1595,26 @@ const HVNH = {
         return html;
     },
 
-    // 4. Chuyên cần (Photos 9-10)
+    // 4. Chuyên cần (Khớp ảnh chụp)
     renderPortalDiemDanh: function (u) {
         return `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <div style="font-weight: bold; color: #004b63; font-size: 13.5px;">
-                    <i class="glyphicon glyphicon-calendar"></i> BẢNG THEO DÕI CHUYÊN CẦN - HỌC KỲ 1 NĂM HỌC 2026 - 2027
+            <div class="portal-filter-row" style="margin-bottom: 14px; display: flex; align-items: center; gap: 30px;">
+                <div class="portal-filter-item">
+                    <label style="font-weight: normal; margin-right: 6px;">Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 130px; height: 28px; padding: 2px 8px; font-size: 13px;">
+                        <option selected>Tất cả</option>
+                        <option>2026-2027</option>
+                        <option>2025-2026</option>
+                    </select>
                 </div>
-                <div>
-                    <span class="label label-success" style="font-size: 12px; padding: 4px 8px;">Tỷ lệ chuyên cần toàn khóa: 100%</span>
+                <div class="portal-filter-item">
+                    <label style="font-weight: normal; margin-right: 6px;">Học kỳ :</label>
+                    <select class="portal-filter-select" style="min-width: 130px; height: 28px; padding: 2px 8px; font-size: 13px;">
+                        <option selected>Tất cả</option>
+                        <option>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
                 </div>
             </div>
 
@@ -1611,30 +1622,29 @@ const HVNH = {
                 <table class="portal-table-hvnh">
                     <thead>
                         <tr>
-                            <th style="width: 45px;">STT</th>
-                            <th style="width: 110px;">Mã LHP</th>
-                            <th>Tên học phần</th>
-                            <th style="width: 50px;">Số TC</th>
-                            <th style="width: 80px;">Vắng có phép</th>
-                            <th style="width: 85px;">Vắng K.phép</th>
-                            <th style="width: 75px;">Tổng vắng</th>
-                            <th style="width: 85px;">Chuyên cần</th>
-                            <th style="width: 100px;">Đủ ĐK thi</th>
+                            <th rowspan="2" style="vertical-align: middle; text-align: center; width: 140px;">Mã lớp học phần</th>
+                            <th rowspan="2" style="vertical-align: middle; text-align: center; min-width: 170px;">Tên lớp học phần</th>
+                            <th rowspan="2" style="vertical-align: middle; text-align: center; width: 65px;">Số TC</th>
+                            <th colspan="4" style="text-align: center;">Thời gian học</th>
+                            <th colspan="2" style="text-align: center;">Điểm danh</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 85px; text-align: center;">Ngày</th>
+                            <th style="width: 60px; text-align: center;">Thứ</th>
+                            <th style="width: 80px; text-align: center;">Phòng</th>
+                            <th style="width: 60px; text-align: center;">Tiết</th>
+                            <th style="width: 80px; text-align: center;">Có phép</th>
+                            <th style="width: 90px; text-align: center;">Không phép</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td style="text-align: center;">1</td><td style="text-align: center; font-weight: bold;">261FIN22H04</td><td>Tài chính - Tiền tệ</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">2</td><td style="text-align: center; font-weight: bold;">261LAW02H03</td><td>Luật kinh tế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">3</td><td style="text-align: center; font-weight: bold;">261MAT16H01</td><td>Phân tích định lượng trong kinh tế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">4</td><td style="text-align: center; font-weight: bold;">261FIN01H04</td><td>Tài chính doanh nghiệp I</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">5</td><td style="text-align: center; font-weight: bold;">261FIN03H01</td><td>Thuế</td><td style="text-align: center;">3.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">6</td><td style="text-align: center; font-weight: bold;">261PLT05H40</td><td>Chủ nghĩa xã hội khoa học</td><td style="text-align: center;">2.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
-                        <tr><td style="text-align: center;">7</td><td style="text-align: center; font-weight: bold;">261SPT04H03</td><td>Giáo dục thể chất IV (Cầu lông)</td><td style="text-align: center;">1.0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center;">0</td><td style="text-align: center; font-weight: bold; color: #2e7d32;">100%</td><td style="text-align: center; color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</td></tr>
+                        <tr>
+                            <td colspan="9" style="padding: 10px 14px; text-align: left; color: #333333; font-size: 13px;">
+                                Chưa có thông tin điểm danh
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-            </div>
-            <div style="font-size: 12.5px; color: #666; font-style: italic; margin-top: 5px;">
-                * Quy chế: Sinh viên nghỉ học quá 20% tổng số tiết của học phần sẽ bị cấm thi kết thúc học phần và nhận điểm 0.
             </div>
         `;
     },
@@ -2501,9 +2511,50 @@ const HVNH = {
         `;
     },
 
-    // 15. Lịch học (Hiển thị loading spinner)
+    // 15. Lịch học (Khớp ảnh 2: có bộ lọc và spinner xoay, không hiện bảng TKB)
     renderPortalLichHoc: function (u) {
-        return this.renderPortalLoadingSpinner();
+        return `
+            <div class="portal-filter-row" style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <div class="portal-filter-item">
+                    <label style="font-weight: normal; margin-right: 5px;">Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 140px; height: 28px; padding: 2px 6px; font-size: 13px;">
+                        <option selected>2026-2027</option>
+                        <option>2025-2026</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label style="font-weight: normal; margin-right: 5px;">Học kỳ:</label>
+                    <select class="portal-filter-select" style="min-width: 120px; height: 28px; padding: 2px 6px; font-size: 13px;">
+                        <option selected>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label style="font-weight: normal; margin-right: 5px;">Sắp xếp:</label>
+                    <select class="portal-filter-select" style="min-width: 120px; height: 28px; padding: 2px 6px; font-size: 13px;">
+                        <option selected>Môn học</option>
+                        <option>Thứ</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <a href="javascript:void(0)" style="color: #2a7de2; font-size: 13px; text-decoration: none;">[In TKB]</a>
+                </div>
+            </div>
+
+            <div class="portal-loader-wrapper" style="margin-top: 50px; margin-bottom: 120px; display: flex; justify-content: center; align-items: center;">
+                <svg class="portal-dot-spinner-svg" width="46" height="46" viewBox="0 0 46 46">
+                    <circle class="p-dot p-dot-1" cx="23" cy="7" r="2.8" fill="#1b6ca8" opacity="0.12"/>
+                    <circle class="p-dot p-dot-2" cx="34.3" cy="11.7" r="2.8" fill="#1b6ca8" opacity="0.22"/>
+                    <circle class="p-dot p-dot-3" cx="39" cy="23" r="2.8" fill="#1b6ca8" opacity="0.38"/>
+                    <circle class="p-dot p-dot-4" cx="34.3" cy="34.3" r="2.8" fill="#1b6ca8" opacity="0.55"/>
+                    <circle class="p-dot p-dot-5" cx="23" cy="39" r="2.8" fill="#1b6ca8" opacity="0.75"/>
+                    <circle class="p-dot p-dot-6" cx="11.7" cy="34.3" r="3.2" fill="#1b6ca8" opacity="1.0"/>
+                    <circle class="p-dot p-dot-7" cx="7" cy="23" r="3.0" fill="#1b6ca8" opacity="0.88"/>
+                    <circle class="p-dot p-dot-8" cx="11.7" cy="11.7" r="2.8" fill="#1b6ca8" opacity="0.15"/>
+                </svg>
+            </div>
+        `;
     },
 
     // 16. Lịch thi (Khớp ảnh 4)
