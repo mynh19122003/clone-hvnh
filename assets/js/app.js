@@ -89,13 +89,10 @@ const HVNH = {
 
         switch (route) {
             case "tra-cuu-van-bang":
-                this.renderDegreeLookup();
-                break;
             case "tra-cuu-tkb":
-                this.renderTimetableLookup();
-                break;
             case "tra-cuu-tuyen-sinh":
-                this.renderAdmissionsLookup();
+                window.location.hash = "#/";
+                this.renderHome();
                 break;
             case "login":
                 this.renderLoginPage();
@@ -130,9 +127,6 @@ const HVNH = {
         document.querySelectorAll(".navbar-nav li").forEach(li => li.classList.remove("active"));
         const navMap = {
             "home": "nav-home",
-            "tra-cuu-van-bang": "nav-vanbang",
-            "tra-cuu-tkb": "nav-tkb",
-            "tra-cuu-tuyen-sinh": "nav-tuyensinh",
             "login": "nav-login",
             "portal": "nav-portal"
         };

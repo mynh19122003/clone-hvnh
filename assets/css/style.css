@@ -94,6 +94,22 @@ a:hover, a:focus {
     background-color: transparent !important;
 }
 
+#header .navbar-nav > li > span.nav-text-item {
+    display: inline-block;
+    padding-top: 9px !important;
+    padding-bottom: 5px !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #fff !important;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: transparent !important;
+    cursor: default !important;
+    pointer-events: none !important;
+    user-select: none;
+    line-height: 20px;
+}
+
 #header .navbar-nav > li > a:hover {
     color: #ffa500 !important;
     background-color: transparent !important;
