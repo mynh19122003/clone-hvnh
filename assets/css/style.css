@@ -947,17 +947,29 @@ a:hover, a:focus {
     max-width: 200px;
     line-height: 27px;
     transition: color 0.1s ease;
+    background: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .portal-sidebar-nav > li > a:hover {
     color: #056382;
     text-decoration: underline;
+    background: transparent !important;
+    background-color: transparent !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .portal-sidebar-nav > li > a.active,
 .portal-sidebar-nav > li.active > a {
     font-weight: bold;
     color: #056382;
+    background: transparent !important;
+    background-color: transparent !important;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -1252,10 +1264,12 @@ a:hover, a:focus {
     font-size: 13px;
     text-decoration: none !important;
     position: relative;
-    transition: all 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -1268,10 +1282,11 @@ a:hover, a:focus {
 }
 
 .portal-sidebar-nav a:hover {
-    background-color: #eaf2f6;
+    background: transparent !important;
+    background-color: transparent !important;
     color: #004b63;
     font-weight: 500;
-    text-decoration: none !important;
+    text-decoration: underline !important;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
@@ -1280,7 +1295,8 @@ a:hover, a:focus {
 .portal-sidebar-nav a.active,
 .portal-sidebar-nav a:focus,
 .portal-sidebar-nav a:active {
-    background-color: #e0ecf3;
+    background: transparent !important;
+    background-color: transparent !important;
     color: #004b63;
     font-weight: bold;
     outline: none !important;
