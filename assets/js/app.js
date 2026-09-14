@@ -125,13 +125,6 @@ const HVNH = {
 
     setActiveNav: function (route) {
         document.querySelectorAll(".navbar-nav li").forEach(li => li.classList.remove("active"));
-        const navMap = {
-            "home": "nav-home",
-            "login": "nav-login",
-            "portal": "nav-portal"
-        };
-        const el = document.getElementById(navMap[route]);
-        if (el) el.classList.add("active");
     },
 
     bindEvents: function () {
@@ -1075,7 +1068,10 @@ const HVNH = {
         } else {
             container.innerHTML = `
                 <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
-                    <span><a href="login.html" style="color: #fff; font-weight: bold; text-decoration: none;">Đăng nhập</a></span>
+                    <span><a href="login.html">Đăng nhập</a></span>
+                    <ul class="dropdown-menu stylecolor">
+                        <div class="divider"></div>
+                    </ul>
                 </li>
             `;
         }

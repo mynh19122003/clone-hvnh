@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     
     <!-- Custom Application CSS -->
-    <link rel="stylesheet" href="assets/css/style.css?v=2.6" />
+    <link rel="stylesheet" href="assets/css/style.css?v=2.7" />
 
     <!-- jQuery & Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -33,7 +33,7 @@
                     <div id="header">
                         <nav class="navbar navbar-default stylecolor">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menuHVNH" aria-expanded="false">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
                                     <span class="sr-only">Toggle navigation</span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
@@ -41,18 +41,21 @@
                                 </button>
                             </div>
 
-                            <div class="collapse navbar-collapse" id="menuHVNH" style="color: black !important">
+                            <div class="navbar-collapse collapse" id="menu" style="color: black !important">
                                 <ul class="nav navbar-nav">
-                                    <li id="nav-home" class="active"><a href="#/">Trang chủ</a></li>
-                                    <li id="nav-vanbang"><span class="nav-text-item">Tra cứu văn bằng</span></li>
-                                    <li id="nav-tkb"><span class="nav-text-item">Tra cứu thời khóa biểu</span></li>
-                                    <li id="nav-tuyensinh"><span class="nav-text-item">Tra cứu tuyển sinh</span></li>
-                                    <li id="nav-vqt"><a href="#/home/vien-quoc-te">Viện Đào tạo Quốc tế</a></li>
+                                    <li><a href="#/">Trang chủ</a></li>
+                                    <li><a href="javascript:void(0)">Tra cứu văn bằng</a></li>
+                                    <li><a href="javascript:void(0)">Tra cứu thời khóa biểu</a></li>
+                                    <li><a href="javascript:void(0)">Tra cứu tuyển sinh</a></li>
+                                    <li><a href="#/home/vien-quoc-te">Viện Đào tạo Quốc tế</a></li>
                                 </ul>
 
                                 <ul class="nav navbar-nav navbar-right" id="authNavContainer">
                                     <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
-                                        <span><a href="login.html" style="color: #fff; font-weight: bold; text-decoration: none;">Đăng nhập</a></span>
+                                        <span><a href="login.html">Đăng nhập</a></span>
+                                        <ul class="dropdown-menu stylecolor">
+                                            <div class="divider"></div>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>
@@ -295,7 +298,7 @@
     </div>
 
     <!-- Core App Scripts -->
-    <script src="assets/js/data.js?v=2.6"></script>
-    <script src="assets/js/app.js?v=2.6"></script>
+    <script src="assets/js/data.js?v=2.7"></script>
+    <script src="assets/js/app.js?v=2.7"></script>
 </body>
 </html>

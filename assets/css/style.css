@@ -79,10 +79,26 @@ a:hover, a:focus {
 }
 
 .navbar-nav li a {
-    color: #fff !important;
+    color: #555;
     margin-bottom: 0px;
     margin-top: 0px;
     font-weight: bold;
+}
+
+#header nav {
+    background-color: #056382 !important;
+}
+
+#header nav a {
+    color: #fff !important;
+}
+
+#header nav a:hover {
+    color: #e4e1e1;
+}
+
+#header .navbar {
+    min-height: 40px !important;
 }
 
 #header .navbar-nav > li > a {
@@ -94,40 +110,24 @@ a:hover, a:focus {
     background-color: transparent !important;
 }
 
-#header .navbar-nav > li > span.nav-text-item {
-    display: inline-block;
-    padding-top: 9px !important;
-    padding-bottom: 5px !important;
-    padding-left: 15px;
-    padding-right: 15px;
-    color: #fff !important;
-    font-weight: bold;
-    font-size: 14px;
-    background-color: transparent !important;
-    cursor: default !important;
-    pointer-events: none !important;
-    user-select: none;
-    line-height: 20px;
-}
-
-#header .navbar-nav > li > a:hover {
+#menu ul li a:hover {
     color: #ffa500 !important;
     background-color: transparent !important;
     text-decoration: none !important;
 }
 
-#header .navbar-nav > li.active > a,
-#header .navbar-nav > li.active > a:hover,
-#header .navbar-nav > li.active > a:focus {
-    color: #ffa500 !important;
+#menu ul li a:focus {
+    color: #fff !important;
     background-color: transparent !important;
 }
 
-#header nav {
-    background-color: #056382 !important;
+.dropdown.stylecolor span a {
+    color: #fff !important;
+    font-weight: bold;
+    text-decoration: none;
 }
 
-#menu ul li a:hover {
+.dropdown.stylecolor span a:hover {
     color: #ffa500 !important;
 }
 
