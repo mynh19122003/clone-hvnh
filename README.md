@@ -1,243 +1,231 @@
-# CẨM NANG HƯỚNG DẪN TỰ CHỈNH SỬA THÔNG TIN TRÊN WEBSITE
+# CẨM NANG HƯỚNG DẪN TỰ CHỈNH SỬA WEBSITE
 
-Tài liệu này hướng dẫn chi tiết cách tự chỉnh sửa toàn bộ các thông tin hiển thị trên website (thông tin sinh viên, điểm số, học phí, lịch thi, tin tức, văn bằng, thời khóa biểu, hình ảnh, thông tin trường...).
-
----
-
-## 📁 1. BẢN ĐỒ CÁC FILE CHỨA NỘI DUNG
-
-Website được thiết kế tĩnh (Static Web), toàn bộ dữ liệu mẫu và nội dung hiển thị được phân loại rõ ràng trong các file sau:
-
-| File cần sửa | Chức năng chính |
-| :--- | :--- |
-| **`assets/js/data.js`** | **Nơi quan trọng nhất:** Chứa toàn bộ dữ liệu sinh viên (hồ sơ, điểm số, học phí, hóa đơn, lịch thi...), tin tức thông báo, dữ liệu tra cứu văn bằng, thời khóa biểu, tuyển sinh. |
-| **`index.html`** | Chứa khung giao diện trang chủ, banner, thanh menu điều hướng, thông tin liên hệ ở chân trang (địa chỉ, số điện thoại, email trường). |
-| **`login.html`** | Giao diện trang đăng nhập, form đăng nhập, captcha. |
-| **`assets/logo/`** | Thư mục chứa hình ảnh logo trường (`logo.png`) và banner đầu trang (`banner.jpg`). |
-| **`assets/css/style.css`** | Chứa màu sắc, phông chữ, kích thước, hiệu ứng hiển thị của website. |
-| **`assets/js/app.js`** | Logic xử lý điều hướng, tính toán hiển thị, đóng mở popup. |
+Tài liệu này hướng dẫn cách chỉnh sửa nội dung của website tĩnh, cập nhật source lên GitHub và để Vercel tự động triển khai phiên bản mới.
 
 ---
 
-## 👤 2. HƯỚNG DẪN SỬA THÔNG TIN SINH VIÊN & TÀI KHOẢN ĐĂNG NHẬP
+## 1. CÁC FILE QUAN TRỌNG
 
-Mở file: **`assets/js/data.js`** và tìm đến đoạn `students: {` (khoảng dòng 733 trở đi).
+| File / thư mục | Chức năng |
+| --- | --- |
+| `assets/js/data.js` | Dữ liệu hiển thị của website như hồ sơ mẫu, điểm số, học phí, lịch thi, tin tức và dữ liệu tra cứu. |
+| `index.html` | Nội dung và bố cục trang chính. |
+| `login.html` | Giao diện trang đăng nhập. |
+| `assets/logo/` | Logo, banner và một số hình ảnh giao diện. |
+| `assets/css/style.css` | Màu sắc, kích thước, font chữ và giao diện. |
+| `assets/js/app.js` | Logic JavaScript và các chức năng tương tác. |
 
-Mỗi tài khoản sinh viên được lưu dưới dạng một khối thông tin theo Mã định danh / Tên đăng nhập (ví dụ: `"008307000568"`).
-
-### 2.1. Đổi tài khoản & mật khẩu đăng nhập
-```javascript
-"008307000568": {
-    username: "008307000568", // Tên đăng nhập
-    password: "123",          // Mật khẩu đăng nhập
-    hoTen: "NGUYỄN VĂN A",    // Tên hiển thị sau khi đăng nhập
-```
-
-### 2.2. Sửa thông tin cá nhân & lý lịch sinh viên
-Bạn chỉ cần thay đổi các giá trị trong dấu ngoặc kép:
-```javascript
-    hoTen: "NGUYỄN VĂN A",                  // Họ và tên
-    maSV: "21A4010123",                     // Mã số sinh viên
-    gioiTinh: "Nam",                        // Nam hoặc Nữ
-    ngaySinh: "15/08/2003",                 // Ngày sinh
-    noiSinh: "Hà Nội",                      // Nơi sinh
-    cmnd: "001203004567",                   // Số CCCD / CMND
-    tinhTrang: "Còn học",                   // Tình trạng học tập
-    email: "anv21a4010@hvnh.edu.vn",        // Email sinh viên cấp
-    lop: "K24-TCNH01",                      // Lớp sinh viên
-    nienKhoa: "2021 - 2025",                // Niên khóa
-    khoaHoc: "K24 (2021 - 2025)",           // Khóa học
-    loaiHinhDaoTao: "Đại học chính quy",    // Hệ đào tạo
-    chucVu: "Sinh viên",                    // Chức vụ trong lớp
-    coVanHocTap: "TS. Nguyễn Văn B",        // Tên cố vấn học tập
-```
-
-### 2.3. Sửa điểm tổng kết GPA và Điểm rèn luyện
-Tìm đến các trường sau trong object của sinh viên:
-```javascript
-    tinChiTichLuy: 110,   // Số tín chỉ tích lũy
-    gpa: 3.45,           // Điểm GPA thang 4
-    gpa10: 8.25,         // Điểm GPA thang 10
-    xepLoai: "Giỏi",     // Xếp loại học lực (Xuất sắc / Giỏi / Khá / Trung bình)
-    drl: 88,             // Điểm rèn luyện
-    xepLoaiDRL: "Tốt",   // Xếp loại rèn luyện (Xuất sắc / Tốt / Khá)
-```
-
-### 2.4. Sửa bảng điểm chi tiết các môn học (Kết quả học tập)
-Tìm đến mảng `marks: [` của sinh viên:
-```javascript
-    marks: [
-        { 
-            maHP: "FIN01A", 
-            tenHP: "Tài chính tiền tệ", 
-            soTC: 3, 
-            diemChuyenCan: "9.0", 
-            diemGiuaKy: "8.5", 
-            diemThi: "8.0", 
-            diemTongKet: "8.3", 
-            diemChu: "B+", 
-            thang4: "3.5", 
-            ketQua: "Đạt" 
-        },
-        // Thêm hoặc sửa các môn học khác tương tự...
-    ]
-```
-
-### 2.5. Sửa thông tin Tài chính sinh viên & Hóa đơn
-- **Khoản nợ / Học phí**: Tìm đến `taiChinh: {`
-  ```javascript
-  taiChinh: {
-      hocKy: "Học kỳ 1 năm học 2026-2027",
-      tongPhaiNop: "9.500.000",
-      daNop: "9.500.000",
-      conNo: "0",
-      trangThai: "Đã hoàn thành"
-  }
-  ```
-- **Lịch sử hóa đơn**: Tìm đến `hoaDon: [`:
-  ```javascript
-  hoaDon: [
-      { 
-          id: 1, 
-          soHD: "HD2026-00129", 
-          ngayPhatHanh: "20/03/2026", 
-          soTien: "9.500.000 đ", 
-          noiDung: "Thu học phí Học kỳ 1 năm học 2026-2027", 
-          trangThai: "Đã thanh toán" 
-      }
-  ]
-  ```
-
-### 2.6. Sửa Lịch thi sinh viên
-Tìm đến `lichThi: [`:
-```javascript
-    lichThi: [
-        {
-            maHP: "FIN01A",
-            tenHP: "Tài chính doanh nghiệp",
-            ngayThi: "25/12/2026",
-            caThi: "Ca 2 (09h30 - 11h00)",
-            phongThi: "D1-302",
-            soBaoDanh: "24",
-            hinhThuc: "Tự luận"
-        }
-    ]
-```
+Nếu chỉ cần thay đổi dữ liệu hiển thị, ưu tiên chỉnh sửa `assets/js/data.js`.
 
 ---
 
-## 📰 3. HƯỚNG DẪN THÊM / SỬA TIN TỨC & THÔNG BÁO
+## 2. SỬA DỮ LIỆU HIỂN THỊ
 
-Mở file: **`assets/js/data.js`** và tìm đến mảng `news: [` (khoảng dòng 44 trở đi).
+Mở `assets/js/data.js`, tìm đúng nhóm dữ liệu cần chỉnh và chỉ thay đổi phần giá trị.
 
-Để thêm một bài viết / thông báo mới, hãy sao chép mẫu sau và thêm vào đầu danh sách:
+Ví dụ:
+
 ```javascript
 {
-    id: 17099,                                // Mã bài viết (không trùng nhau)
-    category: "thong-bao-chung",              // Mã danh mục (xem bên dưới)
-    categoryName: "Thông báo chung",          // Tên danh mục hiển thị
-    title: "Tiêu đề thông báo của bạn ở đây", // Tiêu đề bài viết
-    date: "14/09/2026",                       // Ngày đăng
-    isPinned: true,                           // true = ghim lên đầu; false = bình thường
-    views: 1250,                              // Số lượt xem ban đầu
+    hoTen: "NGUYEN VAN A",
+    maSV: "MASV_MAU",
+    lop: "TEN_LOP",
+    gpa: 3.45,
+    tinhTrang: "Con hoc"
+}
+```
+
+Khi sửa dữ liệu JavaScript, cần giữ nguyên cấu trúc dấu ngoặc `{ }`, `[ ]`, dấu phẩy `,` và dấu nháy nếu không chắc chắn về cú pháp.
+
+---
+
+## 3. SỬA TIN TỨC / THÔNG BÁO
+
+Trong `assets/js/data.js`, tìm phần dữ liệu tin tức và chỉnh nội dung cần thiết.
+
+Ví dụ:
+
+```javascript
+{
+    id: 1001,
+    category: "thong-bao-chung",
+    categoryName: "Thong bao chung",
+    title: "Tieu de thong bao",
+    date: "14/09/2026",
+    isPinned: false,
+    views: 0,
     content: `
-        <p>Đoạn văn mở đầu thông báo...</p>
-        <p>Nội dung chi tiết của bài viết.</p>
-        <ul>
-            <li>Mục 1</li>
-            <li>Mục 2</li>
-        </ul>
+        <p>Noi dung thong bao.</p>
     `,
-    author: "Phòng Quản lý Đào tạo"
-},
-```
-
-> **Danh mục bài viết (`category`):**
-> - `"thong-bao-chung"`: Thông báo chung
-> - `"quy-che"`: Quy định, quy chế đào tạo
-> - `"quy-trinh"`: Quy trình đào tạo
-> - `"tot-nghiep"`: Tốt nghiệp
-> - `"hoc-phi"`: Thông báo học phí
-> - `"dang-ky-hoc"`: Thời khóa biểu, đăng ký học
-> - `"lich-thi"`: Lịch thi
-> - `"hoc-bong"`: Học bổng, khen thưởng
-> - `"chuan-dau-ra"`: Chuẩn đầu ra ngoại ngữ, tin học
-> - `"vien-quoc-te"`: Viện Đào tạo Quốc tế
-
----
-
-## 🔍 4. HƯỚNG DẪN SỬA DỮ LIỆU CÁC TRANG TRA CỨU
-
-Trong file **`assets/js/data.js`**:
-
-### 4.1. Tra cứu văn bằng (`HVNH_DATA.degrees`)
-Tìm đến `degrees: [`:
-```javascript
-{
-    id: 1,
-    soHieu: "B2025-HVNH-04123",       // Số hiệu văn bằng
-    soVaoSo: "1234/QĐ-HVNH",          // Số vào sổ cấp bằng
-    hoTen: "NGUYỄN VĂN A",            // Họ tên người được cấp
-    ngaySinh: "15/08/2003",           // Ngày sinh
-    nganhHoc: "Tài chính - Ngân hàng",// Ngành đào tạo
-    namTotNghiep: "2025",             // Năm tốt nghiệp
-    xepLoai: "Giỏi",                  // Xếp loại tốt nghiệp
-    hinhThuc: "Chính quy"             // Hình thức đào tạo
+    author: "Ban quan tri"
 }
 ```
 
-### 4.2. Tra cứu tuyển sinh (`HVNH_DATA.admissions`)
-Tìm đến `admissions: [`:
-```javascript
-{
-    cccd: "001203004567",             // Số CCCD để tra cứu
-    maHoSo: "XT2026-0812",            // Mã hồ sơ
-    hoTen: "NGUYỄN VĂN A",            // Họ tên thí sinh
-    ngaySinh: "15/08/2007",           // Ngày sinh
-    nganhXetTuyen: "Ngân hàng số",    // Ngành xét tuyển
-    toHop: "A00",                     // Tổ hợp môn
-    tongDiem: "27.50",                // Tổng điểm
-    diemChuan: "26.00",               // Điểm chuẩn ngành
-    ketQua: "Trúng tuyển"             // Trạng thái trúng tuyển
-}
+Mỗi `id` nên là duy nhất.
+
+---
+
+## 4. THAY LOGO, BANNER VÀ HÌNH ẢNH
+
+Các hình ảnh thường nằm trong `assets/`, `assets/logo/` hoặc `image/`.
+
+Cách đơn giản nhất để thay ảnh mà không cần sửa code:
+
+1. Chuẩn bị ảnh mới.
+2. Giữ đúng tên file và phần mở rộng giống file cũ.
+3. Thay file cũ bằng file mới.
+4. Commit thay đổi lên GitHub.
+
+Ví dụ:
+
+```text
+assets/logo/logo.png
+assets/logo/banner.jpg
 ```
 
----
-
-## 🏫 5. HƯỚNG DẪN THAY ĐỔI HÌNH ẢNH & THÔNG TIN TRƯỜNG
-
-### 5.1. Thay đổi Logo và Banner
-- **Logo trường**: Thay thế file tại đường dẫn: `assets/logo/logo.png`.
-- **Banner lớn đầu trang**: Thay thế file tại đường dẫn: `assets/logo/banner.jpg`.
-*(Lưu ý: Giữ nguyên tên file để website tự nhận diện mà không cần sửa code).*
-
-### 5.2. Sửa thông tin liên hệ, hotline, địa chỉ
-Mở file **`index.html`**, cuộn xuống phần chân trang (thẻ `<footer>` khoảng dòng 260):
-- Địa chỉ: `Số 12, đường Chùa Bộc, Quận Đống Đa, Hà Nội`
-- Website: `www.hvnh.edu.vn`
-- Email: `phongdaotao@hvnh.edu.vn`
-- Điện thoại: `+84 243 852 1305`
+Nếu giữ nguyên tên file thì thường không cần sửa lại đường dẫn trong HTML/CSS.
 
 ---
 
-## ⚡ 6. CÁCH LƯU & CẬP NHẬT LÊN GITHUB & VERCEL
+## 5. HƯỚNG DẪN NHANH CHO KHÁCH HÀNG — SỬA FILE TRỰC TIẾP TRÊN GITHUB
 
-Sau khi chỉnh sửa xong các file trên máy tính của bạn:
+Đây là cách dễ nhất nếu chỉ cần chỉnh một vài nội dung nhỏ và không muốn cài phần mềm lập trình.
 
-### Bước 1: Lưu thay đổi và đẩy lên GitHub
-Mở cửa sổ dòng lệnh (Terminal / PowerShell) tại thư mục `f:\Code\Clone-Web` và chạy:
+1. Đăng nhập GitHub bằng tài khoản đã được cấp quyền truy cập repository.
+2. Mở repository của website.
+3. Chọn file cần sửa, ví dụ `assets/js/data.js`, `index.html` hoặc `login.html`.
+4. Nhấn biểu tượng **bút chì — Edit this file**.
+5. Tìm đúng nội dung cần thay đổi.
+6. Chỉ sửa phần cần thiết, hạn chế thay đổi cấu trúc code nếu không hiểu rõ.
+7. Nhấn **Commit changes...**.
+8. Nhập mô tả, ví dụ `Cap nhat noi dung website`.
+9. Commit thay đổi vào nhánh `main` nếu tài khoản được phép.
+10. Nếu repository đã liên kết với Vercel, Vercel sẽ tự động triển khai phiên bản mới.
+
+### Lưu ý quan trọng
+
+Trước khi sửa một đoạn lớn, nên sao chép đoạn cũ ra Notepad để có thể khôi phục nếu cần.
+
+Không xóa các ký tự như:
+
+```text
+{ } [ ] , " ' `
+```
+
+nếu không chắc chắn chúng dùng để làm gì.
+
+---
+
+## 6. SỬA WEBSITE BẰNG VS CODE
+
+### Bước 1 — Tải source về máy
+
+Mở Terminal / PowerShell:
+
+```powershell
+git clone https://github.com/mynh19122003/clone-hvnh.git
+cd clone-hvnh
+```
+
+### Bước 2 — Mở bằng VS Code
+
+```powershell
+code .
+```
+
+Sau đó chọn file cần sửa ở thanh bên trái.
+
+### Bước 3 — Chạy thử website trên máy
+
+Nếu máy có Python:
+
+```powershell
+python -m http.server 8080
+```
+
+Mở trình duyệt:
+
+```text
+http://localhost:8080
+```
+
+Hoặc sử dụng extension **Live Server** trong VS Code.
+
+### Bước 4 — Đưa thay đổi lên GitHub
+
 ```powershell
 git add .
-git commit -m "Cap nhat thong tin moi"
+git commit -m "Cap nhat noi dung website"
 git push origin main
 ```
 
-### Bước 2: Triển khai tự động lên Vercel
-Chạy tiếp lệnh sau để xuất bản trực tiếp lên link website:
-```powershell
-npx vercel --prod --yes
+---
+
+## 7. VERCEL TỰ ĐỘNG CẬP NHẬT WEBSITE
+
+Nếu project Vercel đã liên kết với repository GitHub này thì thông thường **không cần upload source thủ công lên Vercel**.
+
+Quy trình hoạt động:
+
+```text
+Sua code
+   ↓
+Commit / Push GitHub
+   ↓
+Vercel phat hien commit moi
+   ↓
+Tu dong deploy
+   ↓
+Website duoc cap nhat
 ```
 
-### Bước 3: Kiểm tra và xem kết quả
-- Truy cập vào link website: **https://clone-web-gray.vercel.app/**
-- **Mẹo tránh bị lưu bộ nhớ đệm (Cache):** Nếu trên điện thoại hoặc máy tính chưa thấy đổi ngay, hãy nhấn tổ hợp phím **`Ctrl + Shift + R`** (hoặc `Ctrl + F5`) trên trình duyệt, hoặc mở ở tab ẩn danh để tải lại dữ liệu mới nhất.
+Sau khi push code, mở Vercel và kiểm tra deployment mới đã ở trạng thái `Ready` hay chưa.
+
+---
+
+## 8. WEBSITE CHƯA HIỂN THỊ THAY ĐỔI THÌ LÀM GÌ?
+
+Kiểm tra theo thứ tự:
+
+1. Thay đổi đã được commit lên GitHub chưa.
+2. Vercel đã nhận commit mới chưa.
+3. Deployment trên Vercel có trạng thái `Ready` không.
+4. Nhấn `Ctrl + F5` hoặc `Ctrl + Shift + R` trên trình duyệt.
+5. Thử mở website bằng cửa sổ ẩn danh.
+6. Nếu deployment báo lỗi, kiểm tra lại file vừa chỉnh gần nhất.
+
+---
+
+## 9. FILE NÀO KHÁCH HÀNG NÊN VÀ KHÔNG NÊN TỰ SỬA?
+
+Khách hàng có thể tự sửa các nội dung đơn giản trong:
+
+```text
+assets/js/data.js
+index.html
+login.html
+```
+
+Nếu chỉ cần cập nhật nội dung hoặc dữ liệu, không nên chỉnh sâu vào:
+
+```text
+assets/js/app.js
+assets/css/style.css
+```
+
+Các thay đổi lớn về giao diện, JavaScript, logic đăng nhập hoặc cấu trúc website nên được người phát triển kiểm tra trước khi đưa lên bản chính thức.
+
+---
+
+## 10. QUY TRÌNH AN TOÀN KHUYẾN NGHỊ
+
+```text
+1. Sao lưu noi dung cu
+2. Chi sua mot noi dung moi lan
+3. Luu / Commit
+4. Cho Vercel deploy
+5. Kiem tra website
+6. Neu dung thi moi tiep tuc sua muc tiep theo
+```
+
+Làm theo quy trình này giúp dễ xác định nguyên nhân nếu một thay đổi làm website hiển thị sai.
