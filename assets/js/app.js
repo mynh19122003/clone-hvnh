@@ -7,7 +7,7 @@ const HVNH = {
     state: {
         currentPage: "home",
         newsPage: 1,
-        newsPerPage: 20,
+        newsPerPage: 15,
         selectedCategory: "thong-bao-chung",
         searchKeyword: "",
         currentCaptcha: "",
@@ -216,16 +216,13 @@ const HVNH = {
 
         let itemsHtml = "<div>";
         pageItems.forEach(item => {
-            const pinIcon = item.isPinned ? `<span class="glyphicon glyphicon-pushpin"></span>\n` : "";
+            const pinIcon = item.isPinned ? `<span class="glyphicon glyphicon-pushpin" style="color: #005580; margin-right: 5px; font-size: 13px;"></span>` : "";
             itemsHtml += `
-                <div style="margin:5px">
-                    <div id="divNews">
-                        <a style="text-decoration:none" href="#/tin-tuc/${item.id}"> 
-                            ${pinIcon}
-                            ${item.title}
-                            <div style="text-align:right;color:#b7b5b5"><i>ngày đăng ${item.date}</i></div>
-                        </a>                       
-                    </div>                    
+                <div class="news-item-row">
+                    <a href="#/tin-tuc/${item.id}" class="news-item-link">
+                        ${pinIcon}${item.title}
+                    </a>
+                    <span class="news-item-date">ngày đăng ${item.date}</span>
                 </div>
             `;
         });
@@ -1042,7 +1039,7 @@ const HVNH = {
             setTimeout(() => {
                 if (card) card.classList.add("card-exit");
                 setTimeout(() => {
-                    window.location.hash = "#/portal";
+                    window.location.hash = "#/";
                 }, 350);
             }, 500);
         }, 700);

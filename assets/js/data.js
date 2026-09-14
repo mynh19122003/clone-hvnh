@@ -43,6 +43,197 @@ const HVNH_DATA = {
     // News & Announcements
     news: [
         {
+            id: 17001,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Kế hoạch thực tập, chuyên đề khóa luận tốt nghiệp Học kỳ 1 năm học 2026-2027",
+            date: "28/07/2026",
+            isPinned: true,
+            views: 5210,
+            content: `
+                <p>Căn cứ kế hoạch đào tạo năm học 2026-2027 của Học viện Ngân hàng;</p>
+                <p>Phòng Đào tạo thông báo Kế hoạch thực tập, chuyên đề khóa luận tốt nghiệp Học kỳ 1 năm học 2026-2027 dành cho sinh viên các khóa cuối:</p>
+                <ul>
+                    <li>1. Thời gian nộp phiếu đăng ký đề tài: từ 01/08/2026 đến 15/08/2026.</li>
+                    <li>2. Thời gian đi thực tập tại các đơn vị: từ 20/08/2026 đến 20/11/2026.</li>
+                    <li>3. Thời gian nộp báo cáo thực tập và khóa luận: trước 17h00 ngày 30/11/2026.</li>
+                </ul>
+                <div class="well" style="margin-top:20px; background:#f9fbfd; border-left: 4px solid #056382;">
+                    <strong>Tệp đính kèm:</strong><br/>
+                    <a href="javascript:void(0)" class="btn btn-sm btn-primary" style="margin-top:5px;" onclick="HVNH.downloadDummy('KH_ThucTap_ChuyenDe_HK1_2026_2027.pdf')"><i class="glyphicon glyphicon-download-alt"></i> Tải kế hoạch thực tập chi tiết (PDF)</a>
+                </div>
+            `
+        },
+        {
+            id: 17002,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "[Chương trình CLC] Thông báo xét chuyển chương trình đào tạo từ chương trình đào tạo chuẩn sang chương trình đào tạo Chất lượng cao",
+            date: "13/07/2026",
+            isPinned: false,
+            views: 3840,
+            content: `
+                <p>Viện Đào tạo Quốc tế và Phòng Quản lý Đào tạo thông báo điều kiện và quy trình xét chuyển từ chương trình đào tạo Chuẩn sang chương trình đào tạo Chất lượng cao (CLC) năm học 2026-2027.</p>
+                <p>Sinh viên nộp hồ sơ trực tuyến từ ngày 15/07/2026 đến hết ngày 30/07/2026.</p>
+            `
+        },
+        {
+            id: 17003,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo lịch tiếp nhận minh chứng xét chuẩn đầu ra NCKH đối với sinh viên hệ Chất lượng cao (Đợt T07/2026)",
+            date: "26/06/2026",
+            isPinned: false,
+            views: 2910,
+            content: `
+                <p>Phòng Khoa học & Hợp tác Quốc tế tiếp nhận minh chứng xét chuẩn đầu ra Nghiên cứu khoa học (NCKH) cho sinh viên các lớp Chất lượng cao đợt tháng 07/2026.</p>
+            `
+        },
+        {
+            id: 17004,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Kế hoạch học tập học phần giáo dục quốc phòng Học kỳ 3 năm học 2025-2026",
+            date: "19/06/2026",
+            isPinned: false,
+            views: 4120,
+            content: `
+                <p>Kế hoạch chi tiết về thời gian, địa điểm tập trung và các thủ tục chuẩn bị cho đợt học tập GDQPAN tại Trung tâm Giáo dục Quốc phòng & An ninh trong Học kỳ 3 năm học 2025-2026.</p>
+            `
+        },
+        {
+            id: 17005,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Kế hoạch thực tập và viết khoá luận tốt nghiệp, chuyên đề tốt nghiệp học kỳ hè năm học 2025 - 2026",
+            date: "18/06/2026",
+            isPinned: false,
+            views: 3200,
+            content: `
+                <p>Thông báo kế hoạch thực tập và viết khóa luận tốt nghiệp, chuyên đề tốt nghiệp đợt học kỳ hè năm học 2025-2026 cho sinh viên các ngành đào tạo chính quy.</p>
+            `
+        },
+        {
+            id: 17006,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo khảo sát thực trạng công tác quản lý hỗ trợ hoạt động học tập của sinh viên trong bối cảnh chuyển đổi số",
+            date: "25/05/2026",
+            isPinned: false,
+            views: 2540,
+            content: `
+                <p>Học viện Ngân hàng đề nghị toàn thể sinh viên tham gia khảo sát trực tuyến nhằm nâng cao chất lượng hỗ trợ sinh viên và cải thiện hệ thống quản lý đào tạo số.</p>
+            `
+        },
+        {
+            id: 17007,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Kết quả xét tốt nghiệp Đợt 01 học kỳ 2 năm học 2025-2026 dự kiến (Cập nhật ngày 09/5/2026)",
+            date: "06/05/2026",
+            isPinned: false,
+            views: 5930,
+            content: `
+                <p>Hội đồng xét tốt nghiệp công bố danh sách sinh viên dự kiến tốt nghiệp Đợt 01 Học kỳ 2 năm học 2025-2026. Sinh viên kiểm tra thông tin và đối chiếu kết quả.</p>
+            `
+        },
+        {
+            id: 17008,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo điều chỉnh kế hoạch thu và bảo vệ khóa luận tốt nghiệp đại học chính quy K25",
+            date: "25/03/2026",
+            isPinned: false,
+            views: 3110,
+            content: `
+                <p>Điều chỉnh mốc thời gian nộp bản hoàn chỉnh khóa luận tốt nghiệp và lịch bảo vệ trước Hội đồng chấm khóa luận tốt nghiệp đối với sinh viên Khóa 25.</p>
+            `
+        },
+        {
+            id: 17009,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Đăng ký xét tốt nghiệp Đợt 1 Học kỳ 2 năm học 2025-2026",
+            date: "23/03/2026",
+            isPinned: false,
+            views: 4720,
+            content: `
+                <p>Phòng Quản lý Đào tạo thông báo mở cổng tiếp nhận đăng ký xét tốt nghiệp Đợt 1 Học kỳ 2 năm học 2025-2026 trên Cổng thông tin đào tạo.</p>
+            `
+        },
+        {
+            id: 17010,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo lịch tiếp nhận minh chứng xét chuẩn đầu ra NCKH đối với sinh viên hệ Chất lượng cao (Đợt T04/2026)",
+            date: "20/03/2026",
+            isPinned: false,
+            views: 2680,
+            content: `
+                <p>Tiếp nhận hồ sơ minh chứng chuẩn đầu ra Nghiên cứu khoa học dành cho sinh viên Chương trình Chất lượng cao đợt tháng 04/2026.</p>
+            `
+        },
+        {
+            id: 17011,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo về kế hoạch nghỉ Giỗ tổ Hùng Vương, Giải phóng miền Nam, thống nhất đất nước, Quốc tế lao động và tổ chức đào tạo trực tuyến giữa 2 đợt nghỉ",
+            date: "18/03/2026",
+            isPinned: false,
+            views: 6890,
+            content: `
+                <p>Thông báo lịch nghỉ lễ Giỗ tổ Hùng Vương, ngày Chiến thắng 30/4 và Quốc tế Lao động 1/5 năm 2026, cùng kế hoạch học bù trực tuyến theo quy định.</p>
+            `
+        },
+        {
+            id: 17012,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo Về việc nhận bằng tốt nghiệp Đợt 01 - Học kỳ 01 - Năm học 2025-2026",
+            date: "06/03/2026",
+            isPinned: false,
+            views: 4520,
+            content: `
+                <p>Lịch cấp phát bằng tốt nghiệp và bảng điểm chính thức Đợt 01 Học kỳ 1 năm học 2025-2026 tại Phòng Quản lý Đào tạo (Phòng 106 Nhà A1).</p>
+            `
+        },
+        {
+            id: 17013,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Danh sách sinh viên bị hủy đăng ký học phần học kỳ 2 năm học 2025-2026 do nợ học phí",
+            date: "03/03/2026",
+            isPinned: false,
+            views: 5120,
+            content: `
+                <p>Danh sách sinh viên chưa hoàn thành nghĩa vụ học phí Học kỳ 2 năm học 2025-2026 theo thông báo thu nợ của Phòng Tài chính - Kế toán.</p>
+            `
+        },
+        {
+            id: 17014,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Thông báo v/v Gia hạn nộp học phí HK2 năm học 2025-2026",
+            date: "13/02/2026",
+            isPinned: false,
+            views: 4310,
+            content: `
+                <p>Học viện Ngân hàng gia hạn thời hạn nộp học phí Học kỳ 2 năm học 2025-2026 qua cổng thanh toán trực tuyến đến hết ngày 28/02/2026.</p>
+            `
+        },
+        {
+            id: 17015,
+            category: "thong-bao-chung",
+            categoryName: "Thông báo chung",
+            title: "Quyết định tốt nghiệp Học kỳ 01 năm học 2025 - 2026",
+            date: "13/02/2026",
+            isPinned: false,
+            views: 6420,
+            content: `
+                <p>Quyết định công nhận tốt nghiệp của Giám đốc Học viện Ngân hàng cho sinh viên đủ điều kiện tốt nghiệp Học kỳ 01 năm học 2025-2026.</p>
+            `
+        },
+        {
             id: 16240,
             category: "thong-bao-chung",
             categoryName: "Thông báo chung",

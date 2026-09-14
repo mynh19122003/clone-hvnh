@@ -315,37 +315,143 @@ a:hover, a:focus {
 }
 
 .bgtitle {
-    border-radius: 3px;
+    border-radius: 0;
     background-color: #056382;
     color: #ffffff;
     font-weight: bold;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px 12px;
+    margin-bottom: 0;
     font-size: 14px;
     text-transform: none;
     letter-spacing: normal;
 }
 
-#divNews {
-    padding: 2px 0;
+#newsListContainer {
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    padding: 2px 4px;
+    margin-bottom: 5px;
 }
 
-#divNews a {
-    text-decoration: none;
-    color: #337ab7;
-    font-size: 14px;
-    line-height: 1.42857143;
-    display: block;
+.news-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 8px;
+    border-bottom: 1px dotted #dcdcdc;
 }
 
-#divNews a:hover {
-    color: #23527c;
-    text-decoration: underline;
+.news-item-row:last-child {
+    border-bottom: none;
 }
 
-#divNews .glyphicon-pushpin {
+.news-item-link {
+    color: #005580 !important;
+    text-decoration: none !important;
+    font-size: 13.5px;
+    line-height: 1.5;
+    flex: 1;
+    padding-right: 15px;
+}
+
+.news-item-link:hover {
+    color: #003350 !important;
+    text-decoration: underline !important;
+}
+
+.news-item-date {
+    color: #888;
     font-size: 12px;
-    margin-right: 4px;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+/* Left Menu Styling Matching online.hvnh.edu.vn */
+#leftMenu {
+    border: none;
+    margin-bottom: 20px;
+}
+
+#leftMenu .accordion-group {
+    border: none;
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+#leftMenu .menuhome {
+    background-color: #056382 !important;
+    padding: 8px 10px !important;
+    border-radius: 0 !important;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#leftMenu .accordion-heading:not(.menuhome) {
+    background-color: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-top: none;
+    padding: 6px 10px !important;
+    transition: background-color 0.15s ease;
+}
+
+#leftMenu .accordion-heading:not(.menuhome):hover {
+    background-color: #f7f9fa;
+}
+
+#leftMenu .accordion-toggle {
+    display: block;
+    color: #333 !important;
+    font-size: 13px;
+    text-decoration: none !important;
+}
+
+#leftMenu .accordion-toggle:hover {
+    color: #056382 !important;
+    text-decoration: none !important;
+}
+
+#leftMenu .accordion-toggle .glyphicon-chevron-right {
+    color: #056382 !important;
+    font-size: 10px;
+    margin-right: 6px;
+}
+
+/* Logged-in User Nav Item */
+.user-nav-item > a {
+    color: #fff !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    padding-top: 9px !important;
+    padding-bottom: 5px !important;
+    background-color: transparent !important;
+}
+
+.user-nav-dropdown {
+    background-color: #056382 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    min-width: 170px !important;
+    margin-top: 1px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.user-nav-dropdown > li > a {
+    color: #ffffff !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.user-nav-dropdown > li > a:hover {
+    background-color: #034b63 !important;
+    color: #ffa500 !important;
+}
+
+.user-nav-divider {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    margin: 4px 0 !important;
 }
 
 /* Footer replicating online.hvnh.edu.vn */
