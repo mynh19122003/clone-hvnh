@@ -1187,17 +1187,17 @@ a:hover, a:focus {
 }
 
 .portal-table-hvnh th {
-    background-color: #f3ad3b;
+    background-color: #f5be7e;
     color: #222222;
-    font-weight: bold;
+    font-weight: 600;
     padding: 7px 8px;
     text-align: center;
-    border: 1px solid #c98e27;
+    border: 1px solid #e2b478;
     font-size: 12.5px;
 }
 
 .portal-table-hvnh td {
-    padding: 6px 8px;
+    padding: 7px 8px;
     border: 1px solid #d5d5d5;
     color: #333333;
     vertical-align: middle;
@@ -1205,6 +1205,88 @@ a:hover, a:focus {
 
 .portal-table-hvnh tr:hover td {
     background-color: #fbfbfb;
+}
+
+.portal-filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 12px;
+    padding: 4px 0;
+    font-size: 13px;
+    color: #222;
+}
+
+.portal-filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.portal-filter-item label {
+    margin-bottom: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    color: #222;
+}
+
+.portal-filter-item select,
+.portal-filter-select {
+    height: 28px;
+    padding: 2px 8px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+}
+
+.portal-filter-item select:focus,
+.portal-filter-select:focus {
+    border-color: #056382;
+}
+
+.portal-btn-action-light {
+    height: 28px;
+    line-height: 1.4;
+    padding: 3px 14px;
+    font-size: 13px;
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.portal-btn-action-light:hover {
+    background-color: #f0f0f0;
+    border-color: #bbb;
+}
+
+.portal-step-block {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.portal-step-title {
+    color: #c0392b;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.portal-step-item {
+    border-top: 1px solid #ebebeb;
+    padding: 8px 0;
+    color: #222;
+}
+
+.portal-step-item:last-child {
+    border-bottom: 1px solid #ebebeb;
 }
 
 .portal-table-hvnh .semester-row {

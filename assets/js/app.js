@@ -1269,8 +1269,7 @@ const HVNH = {
                             <li><a href="javascript:void(0)" id="pnav-nop-chung-chi" onclick="HVNH.switchPortalSection('nop-chung-chi')">Nộp chứng chỉ</a></li>
                             <li><a href="javascript:void(0)" id="pnav-dang-ky-phuc-khao" onclick="HVNH.switchPortalSection('dang-ky-phuc-khao')">Đăng ký phúc khảo</a></li>
                             <li><a href="javascript:void(0)" id="pnav-dang-ky-vang-thi" onclick="HVNH.switchPortalSection('dang-ky-vang-thi')">Đăng ký vắng thi</a></li>
-                            <li><a href="javascript:void(0)" id="pnav-bao-hiem-y-te" onclick="HVNH.switchPortalSection('bao-hiem-y-te')">Khai báo bảo hiểm y tế</a></li>
-                            <li><a href="javascript:void(0)" id="pnav-dang-ky-le-phi" onclick="HVNH.switchPortalSection('dang-ky-le-phi')">Đăng ký lệ phí</a></li>
+                            <li><a href="javascript:void(0)" id="pnav-dang-ky-le-phi" onclick="HVNH.switchPortalSection('dang-ky-le-phi')">Đăng ký lệ phí, BHYT</a></li>
                         </ul>
                     </div>
                 </div>
@@ -1376,11 +1375,10 @@ const HVNH = {
                 bodyContent.innerHTML = this.renderPortalLienHe(u);
                 break;
             case "bao-hiem-y-te":
-                headerTitle.innerText = "Khai báo bảo hiểm y tế";
-                bodyContent.innerHTML = this.renderPortalBaoHiem(u);
-                break;
+                this.switchPortalSection("dang-ky-le-phi");
+                return;
             case "dang-ky-le-phi":
-                headerTitle.innerText = "Đăng ký lệ phí";
+                headerTitle.innerText = "Đăng ký lệ phí, BHYT";
                 bodyContent.innerHTML = this.renderPortalLePhi(u);
                 break;
             case "huong-dan":
@@ -2085,104 +2083,56 @@ const HVNH = {
         `;
     },
 
-    // 12. Xét tốt nghiệp (Photo 20)
+    // 12. Xét tốt nghiệp (Khớp ảnh 3)
     renderPortalXetTotNghiep: function (u) {
         return `
-            <div style="background: #fff8e1; border: 1px solid #ffe082; padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
-                <h4 style="margin: 0 0 6px 0; color: #b78103; font-weight: bold;">
-                    <i class="glyphicon glyphicon-info-sign"></i> THÔNG TIN XÉT TỐT NGHIỆP DỰ KIẾN
-                </h4>
-                <p style="margin: 0; font-size: 13px; color: #5d4037;">
-                    Sinh viên <strong>${u.hoTen}</strong> (Mã SV: <strong>${u.username}</strong>) hiện đang theo học năm thứ 2, Học kỳ 1 năm học 2026-2027.
-                </p>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-bordered" style="font-size: 13px;">
-                        <tr><td style="font-weight: 600; width: 220px;">Tổng số tín chỉ tích lũy:</td><td><strong style="color: #004b63; font-size: 15px;">57 / 130 tín chỉ</strong> (Đạt 43.8%)</td></tr>
-                        <tr><td style="font-weight: 600;">Điểm TBTL hiện tại (hệ 4):</td><td><strong style="color: #2e7d32; font-size: 15px;">2.82 / 4.0</strong> (Khá)</td></tr>
-                        <tr><td style="font-weight: 600;">Điểm TBTL hiện tại (hệ 10):</td><td><strong>7.18 / 10</strong></td></tr>
-                        <tr><td style="font-weight: 600;">Học phần còn nợ / Cần hoàn thành:</td><td><strong>73 tín chỉ</strong></td></tr>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <table class="table table-bordered" style="font-size: 13px;">
-                        <tr><td style="font-weight: 600; width: 220px;">Chuẩn đầu ra Ngoại ngữ:</td><td><span class="label label-success">✓ Đạt (IELTS 5.5)</span></td></tr>
-                        <tr><td style="font-weight: 600;">Chuẩn đầu ra Tin học:</td><td><span class="label label-warning">Chưa nộp</span></td></tr>
-                        <tr><td style="font-weight: 600;">Chứng chỉ GDQPAN:</td><td><span class="label label-success">✓ Đã hoàn thành</span></td></tr>
-                        <tr><td style="font-weight: 600;">Chứng chỉ Giáo dục thể chất:</td><td><span class="label label-success">✓ Đã hoàn thành</span></td></tr>
-                    </table>
+            <div class="portal-filter-row" style="margin-bottom: 12px;">
+                <div class="portal-filter-item">
+                    <label>Chương trình đào tạo:</label>
+                    <select class="portal-filter-select" style="min-width: 270px;">
+                        <option selected>CLC-Hoạch định và Tư v...</option>
+                        <option>CLC-Hoạch định và Tư vấn tài chính</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="alert alert-info" style="font-size: 13px; margin-top: 10px;">
-                <strong>Kết luận:</strong> Sinh viên đang thực hiện đúng tiến độ đào tạo chuẩn của Học viện Ngân hàng. Đợt xét tốt nghiệp chính thức dự kiến diễn ra vào tháng 06/2029.
-            </div>
-        `;
-    },
-
-    // 13. Đăng ký phúc khảo (Photo 22)
-    renderPortalPhucKhao: function (u) {
-        return `
-            <div style="border: 1px solid #c4d7e0; border-radius: 4px; padding: 15px; background: #fafcfe; margin-bottom: 20px;">
-                <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
-                    <i class="glyphicon glyphicon-edit"></i> ĐĂNG KÝ PHÚC KHẢO ĐIỂM THI
-                </div>
-                <form onsubmit="HVNH.submitPhucKhao(event)">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label style="font-size: 12.5px;">Học kỳ phúc khảo:</label>
-                                <select class="form-control input-sm">
-                                    <option>Học kỳ 2 năm học 2025 - 2026</option>
-                                    <option>Học kỳ 1 năm học 2025 - 2026</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label style="font-size: 12.5px;">Chọn học phần đề nghị phúc khảo:</label>
-                                <select class="form-control input-sm" id="selSubjectPhucKhao">
-                                    <option value="ACT01H">ACT01H - Nguyên lý kế toán (Điểm thi: 5.50)</option>
-                                    <option value="ECO01H">ECO01H - Kinh tế vi mô (Điểm thi: 8.10)</option>
-                                    <option value="LAW01H">LAW01H - Pháp luật đại cương (Điểm thi: 5.10)</option>
-                                    <option value="MGT41H">MGT41H - Nghệ thuật lãnh đạo (Điểm thi: 5.80)</option>
-                                    <option value="PLT02H">PLT02H - Kinh tế chính trị Mác - Lênin (Điểm thi: 6.80)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label style="font-size: 12.5px;">Lý do phúc khảo:</label>
-                                <input type="text" class="form-control input-sm" id="txtReasonPhucKhao" placeholder="Nhập lý do đề nghị chấm lại..." required>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-primary" style="background-color: #004b63;">
-                        <i class="glyphicon glyphicon-send"></i> Gửi đơn phúc khảo
+            <div class="portal-step-block">
+                <div class="portal-step-title">Sinh viên thực hiện các bước sau:</div>
+                
+                <div class="portal-step-item" style="display: flex; align-items: center; gap: 8px;">
+                    <span>1.</span>
+                    <button type="button" class="btn btn-sm" style="background-color: #004b63; color: #ffffff; border: none; padding: 4px 14px; border-radius: 3px; font-size: 13px; font-weight: 500;" onclick="window.print()">
+                        In bảng điểm tích lũy
                     </button>
-                </form>
+                </div>
+
+                <div class="portal-step-item">
+                    <div>2. Kiểm tra kết quả học tập trên bảng điểm</div>
+                    <div style="margin-left: 18px; margin-top: 3px; color: #333;">- Nếu có thắc mắc, sinh viên liên hệ P.QLĐT</div>
+                </div>
+
+                <div class="portal-step-item">
+                    <div>3. Chọn đợt xét rồi nhấn &lt;Đăng ký xét tốt nghiệp&gt;</div>
+                    <div style="margin-left: 18px; margin-top: 3px; color: #333;">- Nếu muốn hủy đăng ký, chọn đợt xét rồi nhấn &lt;Hủy đăng ký xét tốt nghiệp&gt;</div>
+                </div>
             </div>
 
-            <div style="font-weight: bold; color: #004b63; margin-bottom: 10px;">
-                <i class="glyphicon glyphicon-list"></i> LỊCH SỬ CÁC ĐƠN PHÚC KHẢO ĐÃ GỬI
-            </div>
             <div class="table-responsive">
                 <table class="portal-table-hvnh">
                     <thead>
                         <tr>
-                            <th style="width: 45px;">STT</th>
-                            <th>Học phần</th>
-                            <th style="width: 100px;">Ngày nộp đơn</th>
-                            <th style="width: 90px;">Điểm cũ</th>
-                            <th style="width: 90px;">Điểm mới</th>
-                            <th style="width: 140px;">Trạng thái</th>
+                            <th style="width: 50px; text-align: center;">STT</th>
+                            <th style="text-align: left; min-width: 180px;">Tên đợt</th>
+                            <th style="width: 260px; text-align: center;">Ngày bắt đầu</th>
+                            <th style="width: 260px; text-align: center;">Ngày kết thúc</th>
+                            <th style="width: 90px; text-align: center;">Chọn</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="6" style="text-align: center; color: #888; padding: 15px;">Chưa có đơn phúc khảo nào trong hệ thống.</td>
+                            <td colspan="5" style="text-align: center; padding: 10px 8px; color: #333; font-size: 13px;">
+                                Chưa có đợt xét tốt nghiệp
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -2190,54 +2140,115 @@ const HVNH = {
         `;
     },
 
-    // 14. Đăng ký vắng thi (Photo 23)
-    renderPortalVangThi: function (u) {
-        const list = u.dangKyVangThi || [
-            { stt: 1, lopHP: "261FIN03H01", maHP: "FIN03H", tenHP: "Thuế", stc: 3 },
-            { stt: 2, lopHP: "261SPT04H03", maHP: "SPT04H", tenHP: "Giáo dục thể chất IV (Cầu lông)", stc: 1 },
-            { stt: 3, lopHP: "261FIN22H04", maHP: "FIN22H", tenHP: "Tài chính - Tiền tệ", stc: 3 },
-            { stt: 4, lopHP: "261MAT16H01", maHP: "MAT16H", tenHP: "Phân tích định lượng trong kinh tế", stc: 3 },
-            { stt: 5, lopHP: "261LAW02H03", maHP: "LAW02H", tenHP: "Luật kinh tế", stc: 3 },
-            { stt: 6, lopHP: "261PLT05H40", maHP: "PLT05H", tenHP: "Chủ nghĩa xã hội khoa học", stc: 2 },
-            { stt: 7, lopHP: "261FIN01H04", maHP: "FIN01H", tenHP: "Tài chính doanh nghiệp I", stc: 3 }
-        ];
-
-        let rows = "";
-        list.forEach(item => {
-            rows += `
-                <tr>
-                    <td style="text-align: center; width: 45px;">${item.stt}</td>
-                    <td style="text-align: center; font-weight: bold; color: #004b63;">${item.lopHP}</td>
-                    <td style="text-align: center;">${item.maHP}</td>
-                    <td>${item.tenHP}</td>
-                    <td style="text-align: center; font-weight: bold;">${item.stc}</td>
-                    <td style="text-align: center;">
-                        <button type="button" class="btn btn-xs btn-default" onclick="HVNH.submitVangThi('${item.tenHP}')" style="color: #c62828;">
-                            <i class="glyphicon glyphicon-edit"></i> Đăng ký vắng thi
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-
+    // 13. Đăng ký phúc khảo (Khớp ảnh 2)
+    renderPortalPhucKhao: function (u) {
         return `
-            <div style="background: #f4f8fa; padding: 10px 14px; border-left: 4px solid #004b63; margin-bottom: 15px; font-size: 13px;">
-                <strong>Học kỳ hiện tại:</strong> Học kỳ 1 năm học 2026 - 2027. Sinh viên có lý do chính đáng (ốm đau đột xuất có xác nhận của bệnh viện từ tuyến huyện trở lên, trùng lịch thi,...) cần nộp đơn và minh chứng trước giờ thi.
+            <div class="portal-filter-row" style="margin-bottom: 14px;">
+                <div class="portal-filter-item">
+                    <label>Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 160px;">
+                        <option selected>2026-2027</option>
+                        <option>2025-2026</option>
+                        <option>2024-2025</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label>Học kỳ :</label>
+                    <select class="portal-filter-select" style="min-width: 140px;">
+                        <option selected>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label>Lần thi :</label>
+                    <select class="portal-filter-select" style="min-width: 100px;">
+                        <option selected>1</option>
+                        <option>2</option>
+                    </select>
+                </div>
             </div>
 
             <div class="table-responsive">
                 <table class="portal-table-hvnh">
                     <thead>
                         <tr>
-                            <th style="width: 45px;">STT</th>
-                            <th style="width: 140px;">Lớp học phần</th>
-                            <th style="width: 90px;">Mã HP</th>
-                            <th>Tên học phần</th>
-                            <th style="width: 60px;">STC</th>
-                            <th style="width: 140px;">Hành động</th>
+                            <th style="width: 45px; text-align: center;">STT</th>
+                            <th style="width: 100px; text-align: center;">Mã học phần</th>
+                            <th style="text-align: left; min-width: 140px;">Tên học phần</th>
+                            <th style="width: 90px; text-align: center;">Ngày thi</th>
+                            <th style="width: 75px; text-align: center;">Giờ thi</th>
+                            <th style="width: 80px; text-align: center;">Điểm thi</th>
+                            <th style="width: 120px; text-align: center;">Điểm trung bình</th>
+                            <th style="width: 145px; text-align: center;">Ngày bắt đầu đăng ký</th>
+                            <th style="width: 155px; text-align: center;">Ngày kết thúc đăng ký</th>
+                            <th style="width: 90px; text-align: center;">Trạng thái</th>
+                            <th style="width: 80px; text-align: center;">Thao tác</th>
+                            <th style="width: 95px; text-align: center;">Thanh toán</th>
                         </tr>
                     </thead>
-                    <tbody>${rows}</tbody>
+                    <tbody>
+                        <tr>
+                            <td colspan="12" style="text-align: center; padding: 10px 8px; color: #333; font-size: 13px;">
+                                Không có dữ liệu!
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        `;
+    },
+
+    // 14. Đăng ký vắng thi (Khớp chuẩn hệ thống)
+    renderPortalVangThi: function (u) {
+        return `
+            <div class="portal-filter-row" style="margin-bottom: 14px;">
+                <div class="portal-filter-item">
+                    <label>Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 160px;">
+                        <option selected>2026-2027</option>
+                        <option>2025-2026</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label>Học kỳ :</label>
+                    <select class="portal-filter-select" style="min-width: 140px;">
+                        <option selected>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item">
+                    <label>Lần thi :</label>
+                    <select class="portal-filter-select" style="min-width: 100px;">
+                        <option selected>1</option>
+                        <option>2</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px; text-align: center;">STT</th>
+                            <th style="width: 100px; text-align: center;">Mã học phần</th>
+                            <th style="text-align: left; min-width: 140px;">Tên học phần</th>
+                            <th style="width: 90px; text-align: center;">Ngày thi</th>
+                            <th style="width: 75px; text-align: center;">Giờ thi</th>
+                            <th style="min-width: 150px; text-align: left;">Lý do vắng thi</th>
+                            <th style="width: 120px; text-align: center;">Tệp minh chứng</th>
+                            <th style="width: 90px; text-align: center;">Trạng thái</th>
+                            <th style="width: 80px; text-align: center;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 10px 8px; color: #333; font-size: 13px;">
+                                Không có dữ liệu!
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         `;
@@ -2801,25 +2812,57 @@ const HVNH = {
         `;
     },
 
-    // 21. Khai báo BHYT
-    renderPortalBaoHiem: function (u) {
-        return `
-            <div class="table-responsive">
-                <table class="table table-bordered" style="font-size: 13px;">
-                    <tr><td style="width: 220px; font-weight: 600;">Mã số thẻ BHYT:</td><td><strong>GD401008307000</strong></td></tr>
-                    <tr><td style="font-weight: 600;">Nơi đăng ký KCB ban đầu:</td><td>Bệnh viện Đa khoa Đống Đa, Hà Nội (Mã: 01-012)</td></tr>
-                    <tr><td style="font-weight: 600;">Giá trị sử dụng:</td><td>Từ ngày 01/10/2025 đến ngày 31/12/2026</td></tr>
-                    <tr><td style="font-weight: 600;">Tình trạng nộp phí BHYT:</td><td><span class="label label-success">Đã hoàn thành</span></td></tr>
-                </table>
-            </div>
-        `;
-    },
-
-    // 22. Đăng ký lệ phí
+    // 21. Đăng ký lệ phí, BHYT (Khớp ảnh 1)
     renderPortalLePhi: function (u) {
         return `
-            <div class="alert alert-info" style="font-size: 13px;">
-                Hiện tại không có đợt thu lệ phí nào mở cho sinh viên Khóa 28. Mọi chi phí đào tạo được tổng hợp tại mục <strong>Tài chính sinh viên</strong>.
+            <div class="portal-filter-row" style="margin-bottom: 14px;">
+                <button type="button" class="portal-btn-action-light" onclick="HVNH.showToast('Chức năng đăng ký trực tuyến hiện chưa mở đợt mới!', 'info')">
+                    Đăng ký
+                </button>
+                <div class="portal-filter-item" style="margin-left: 10px;">
+                    <label>Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 170px;">
+                        <option selected>2029-2030</option>
+                        <option>2028-2029</option>
+                        <option>2027-2028</option>
+                        <option>2026-2027</option>
+                        <option>2025-2026</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item" style="margin-left: 15px;">
+                    <label>Học kỳ :</label>
+                    <select class="portal-filter-select" style="min-width: 140px;">
+                        <option selected>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="portal-table-hvnh">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px; text-align: center;">STT</th>
+                            <th style="text-align: left; min-width: 130px;">Tên loại phí</th>
+                            <th style="text-align: left; min-width: 150px;">Thông tin thêm</th>
+                            <th style="width: 85px; text-align: center;">Số lượng</th>
+                            <th style="width: 100px; text-align: center;">Đơn giá</th>
+                            <th style="width: 110px; text-align: center;">Thành tiền</th>
+                            <th style="width: 120px; text-align: center;">Ngày đăng ký</th>
+                            <th style="width: 85px; text-align: center;">Đã đóng</th>
+                            <th style="width: 60px; text-align: center;">Hủy</th>
+                            <th style="width: 130px; text-align: center;">Link Thanh toán</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="10" style="text-align: center; padding: 10px 8px; color: #333; font-size: 13px;">
+                                Chưa có thông tin lệ phí
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         `;
     },
