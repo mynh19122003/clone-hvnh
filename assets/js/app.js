@@ -1280,9 +1280,14 @@ const HVNH = {
     },
 
     switchPortalSection: function (tabId) {
-        document.querySelectorAll(".portal-sidebar-nav a").forEach(a => a.classList.remove("active"));
+        document.querySelectorAll(".portal-sidebar-nav a, .portal-sidebar-nav li").forEach(el => {
+            el.classList.remove("active");
+            if (typeof el.blur === "function") el.blur();
+        });
         const link = document.getElementById(`pnav-${tabId}`);
-        if (link) link.classList.add("active");
+        if (link && typeof link.blur === "function") {
+            link.blur();
+        }
 
         const u = this.state.currentUser;
         if (!u) return;
