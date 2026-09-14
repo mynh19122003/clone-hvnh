@@ -32,7 +32,7 @@ const HVNH = {
             this.state.currentUser = HVNH_DATA.students[userParam];
             try {
                 localStorage.setItem("hvnh_user", JSON.stringify(this.state.currentUser));
-            } catch (err) {}
+            } catch (err) { }
         } else {
             try {
                 const savedUser = localStorage.getItem("hvnh_user");
@@ -46,7 +46,7 @@ const HVNH = {
 
         // Setup Hash Change Listener for Navigation
         window.addEventListener("hashchange", () => this.handleRouting());
-        
+
         // Initial route or default
         this.handleRouting();
 
@@ -159,7 +159,7 @@ const HVNH = {
        ========================================================================== */
     renderHome: function () {
         const catInfo = HVNH_DATA.categories.find(c => c.id === this.state.selectedCategory) || { name: "Thông báo chung" };
-        
+
         const html = `
             <div class="divmain">
                 <div class="bgtitle">${catInfo.name}</div>
@@ -189,7 +189,7 @@ const HVNH = {
 
         // Keyword filter
         if (this.state.searchKeyword) {
-            filtered = filtered.filter(n => 
+            filtered = filtered.filter(n =>
                 n.title.toLowerCase().includes(this.state.searchKeyword) ||
                 n.content.toLowerCase().includes(this.state.searchKeyword)
             );
@@ -660,7 +660,7 @@ const HVNH = {
         const selTarget = document.getElementById("selTarget");
         const targetId = selTarget ? selTarget.value : "K27NHA";
         const targetText = selTarget ? selTarget.options[selTarget.selectedIndex].text : "K27NHA";
-        
+
         const selWeek = document.getElementById("selWeek");
         const weekText = selWeek ? selWeek.options[selWeek.selectedIndex].text : "Tuần 02";
 
@@ -803,9 +803,9 @@ const HVNH = {
         `;
 
         setTimeout(() => {
-            const results = HVNH_DATA.admissions.filter(a => 
-                a.cccd.toLowerCase().includes(key) || 
-                a.maHoSo.toLowerCase().includes(key) || 
+            const results = HVNH_DATA.admissions.filter(a =>
+                a.cccd.toLowerCase().includes(key) ||
+                a.maHoSo.toLowerCase().includes(key) ||
                 a.hoTen.toLowerCase().includes(key)
             );
 
@@ -1032,7 +1032,7 @@ const HVNH = {
             this.state.currentUser = student;
             try {
                 localStorage.setItem("hvnh_user", JSON.stringify(student));
-            } catch (err) {}
+            } catch (err) { }
             this.updateAuthUI();
 
             setTimeout(() => {
@@ -1065,7 +1065,6 @@ const HVNH = {
                     </a>
                     <ul class="dropdown-menu stylecolor user-nav-dropdown" id="userNavDropdownMenu">
                         <li><a href="javascript:void(0)" onclick="HVNH.goToPortal('info')">Thông tin</a></li>
-                        <li><a href="javascript:void(0)" onclick="HVNH.goToPortal('ket-qua-dang-ky')">Kết quả đăng ký HP</a></li>
                         <li><a href="javascript:void(0)" onclick="HVNH.showChangePasswordModal()">Đổi mật khẩu</a></li>
                         <li role="separator" class="divider user-nav-divider"></li>
                         <li><a href="javascript:void(0)" onclick="HVNH.logout()">Thoát</a></li>
@@ -1185,7 +1184,7 @@ const HVNH = {
             this.state.currentUser.password = newP;
             try {
                 localStorage.setItem("hvnh_user", JSON.stringify(this.state.currentUser));
-            } catch (err) {}
+            } catch (err) { }
         }
 
         if (msgEl) {
@@ -1552,7 +1551,7 @@ const HVNH = {
         programs.forEach(block => {
             let courseRows = "";
             (block.courses || []).forEach(c => {
-                const statusBadge = c.pass 
+                const statusBadge = c.pass
                     ? `<span style="color: #2e7d32; font-weight: bold;"><i class="glyphicon glyphicon-ok"></i> Đạt</span>`
                     : `<span style="color: #888;">Chưa học</span>`;
                 courseRows += `
@@ -2235,7 +2234,7 @@ const HVNH = {
 
         let rows = "";
         certs.forEach(c => {
-            const badge = c.daNop 
+            const badge = c.daNop
                 ? `<span class="label label-success" style="font-size: 12px;"><i class="glyphicon glyphicon-ok"></i> Đã hoàn thành (IELTS 5.5)</span>`
                 : `<span class="label label-warning" style="font-size: 12px;"><i class="glyphicon glyphicon-time"></i> Chưa hoàn thành</span>`;
             rows += `
