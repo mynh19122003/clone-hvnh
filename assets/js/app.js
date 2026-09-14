@@ -1782,49 +1782,19 @@ const HVNH = {
         return html;
     },
 
-    // 7. Tài chính sinh viên (Photos 14-15)
+    // 7. Tài chính sinh viên (Khớp ảnh 1, 2, 3)
     renderPortalTaiChinh: function (u) {
-        const tc = u.taiChinh || {};
-        const cur = tc.namHocHienTai || [];
-        const prev = tc.namHocTruoc || [];
-
-        let curRows = "";
-        cur.forEach(item => {
-            curRows += `
-                <tr>
-                    <td style="font-weight: 500;">${item.maPhi}</td>
-                    <td>${item.tenPhi}</td>
-                    <td style="text-align: right; font-weight: bold;">${item.phaiDong}</td>
-                    <td style="text-align: right;">${item.daDong}</td>
-                    <td style="text-align: center;">${item.ngayDong || ""}</td>
-                    <td style="text-align: right; font-weight: bold; color: #c62828;">${item.conNo}</td>
-                    <td style="text-align: center;">${item.ngayGhiNo || ""}</td>
-                </tr>
-            `;
-        });
-
-        let prevRows = "";
-        prev.forEach(item => {
-            prevRows += `
-                <tr>
-                    <td style="font-weight: 500;">${item.maPhi}</td>
-                    <td>${item.tenPhi}</td>
-                    <td style="text-align: right;">${item.phaiDong}</td>
-                    <td style="text-align: right; color: #2e7d32; font-weight: bold;">${item.daDong}</td>
-                    <td style="text-align: center;">${item.ngayDong || ""}</td>
-                    <td style="text-align: right; font-weight: bold;">${item.conNo}</td>
-                    <td style="text-align: center;">${item.ngayGhiNo || ""}</td>
-                </tr>
-            `;
-        });
-
         return `
-            <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center;">
-                <button type="button" class="portal-action-btn btn-green" onclick="HVNH.thanhToanTrucTuyen()">
-                    <i class="glyphicon glyphicon-credit-card"></i> Thanh toán trực tuyến
+            <div style="display: flex; gap: 15px; margin-bottom: 12px; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333;">
+                    <label style="margin-bottom: 0; font-weight: normal; cursor: pointer;">Phí học kỳ:</label>
+                    <input type="radio" checked name="rdoPhiHocKy" style="margin: 0; cursor: pointer;">
+                </div>
+                <button type="button" class="btn btn-sm" style="background-color: #27ae60; color: #ffffff; font-weight: 600; padding: 4px 14px; border-radius: 3px; border: none;" onclick="HVNH.thanhToanTrucTuyen()">
+                    Thanh toán trực tuyến
                 </button>
-                <button type="button" class="portal-action-btn btn-orange" onclick="HVNH.phuongThucDongHocPhi()">
-                    <i class="glyphicon glyphicon-list"></i> Chọn phương thức đóng học phí
+                <button type="button" class="btn btn-sm" style="background-color: #2980b9; color: #ffffff; font-weight: 600; padding: 4px 14px; border-radius: 3px; border: none;" onclick="HVNH.phuongThucDongHocPhi()">
+                    Chọn phương thức đóng học phí
                 </button>
             </div>
 
@@ -1832,26 +1802,309 @@ const HVNH = {
                 <table class="portal-table-hvnh">
                     <thead>
                         <tr>
-                            <th style="width: 130px;">Mã phí</th>
-                            <th>Tên phí</th>
-                            <th style="width: 100px;">Phải đóng</th>
-                            <th style="width: 100px;">Đã đóng</th>
-                            <th style="width: 95px;">Ngày đóng</th>
-                            <th style="width: 100px;">Còn nợ</th>
-                            <th style="width: 95px;">Ngày ghi nợ</th>
+                            <th style="width: 140px; text-align: left;">Mã phí</th>
+                            <th style="text-align: left; min-width: 250px;">Tên phí</th>
+                            <th style="width: 110px; text-align: right;">Phải đóng</th>
+                            <th style="width: 110px; text-align: right;">Đã đóng</th>
+                            <th style="width: 105px; text-align: center;">Ngày đóng</th>
+                            <th style="width: 110px; text-align: right;">Còn nợ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="semester-row"><td colspan="7">Năm học : 2026-2027, Học kỳ: HK01</td></tr>
-                        ${curRows}
-                        <tr class="semester-row"><td colspan="7">Năm học : 2025-2026, Học kỳ: HK02</td></tr>
-                        ${prevRows}
+                        <!-- Group 1: 2026-2027 HK01 -->
+                        <tr style="background-color: #fcdfd7; font-weight: bold; color: #000;">
+                            <td colspan="6" style="padding: 6px 10px;">Năm học : 2026-2027, Học kỳ: HK01</td>
+                        </tr>
+                        <tr>
+                            <td>261FIN01H04</td>
+                            <td>Tài chính doanh nghiệp I [3.0 tc]</td>
+                            <td style="text-align: right;">3,756,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">3,756,000</td>
+                        </tr>
+                        <tr>
+                            <td>261FIN03H01</td>
+                            <td>Thuế [3.0 tc]</td>
+                            <td style="text-align: right;">3,756,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">3,756,000</td>
+                        </tr>
+                        <tr>
+                            <td>261FIN22H04</td>
+                            <td>Tài chính - Tiền tệ [3.0 tc]</td>
+                            <td style="text-align: right;">3,756,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">3,756,000</td>
+                        </tr>
+                        <tr>
+                            <td>261LAW02H03</td>
+                            <td>Luật kinh tế [3.0 tc]</td>
+                            <td style="text-align: right;">3,756,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">3,756,000</td>
+                        </tr>
+                        <tr>
+                            <td>261MAT16H01</td>
+                            <td>Phân tích định lượng trong kinh tế [3.0 tc]</td>
+                            <td style="text-align: right;">3,756,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">3,756,000</td>
+                        </tr>
+                        <tr>
+                            <td>261PLT05H40</td>
+                            <td>Chủ nghĩa xã hội khoa học [2.0 tc]</td>
+                            <td style="text-align: right;">2,504,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">2,504,000</td>
+                        </tr>
+                        <tr>
+                            <td>261SPT04H03</td>
+                            <td>Phí học lại Giáo dục thể chất IV (Cầu lông) [1.0 tc]</td>
+                            <td style="text-align: right;">825,000</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">825,000</td>
+                        </tr>
+
+                        <!-- Group 2: 2025-2026 HK02 -->
+                        <tr style="background-color: #fcdfd7; font-weight: bold; color: #000;">
+                            <td colspan="6" style="padding: 6px 10px;">Năm học : 2025-2026, Học kỳ: HK02</td>
+                        </tr>
+                        <tr>
+                            <td>252ACT01H01</td>
+                            <td>Nguyên lý kế toán [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252ECO01H01</td>
+                            <td>Kinh tế vi mô [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">05/01/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252LAW01H02</td>
+                            <td>Pháp luật đại cương [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">05/01/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252MGT41H01</td>
+                            <td>Nghệ thuật lãnh đạo [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">05/01/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252PLT02H01</td>
+                            <td>Kinh tế chính trị Mác - Lênin [2.0 tc]</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: center;">05/01/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252PLT03H03</td>
+                            <td>Lịch sử Đảng Cộng sản Việt Nam [2.0 tc]</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: center;">05/01/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252SPT07A_0102</td>
+                            <td>Đường lối quốc phòng và an ninh của Đảng Cộng sản Việt Nam [2.0 tc]</td>
+                            <td style="text-align: right;">1,570,000</td>
+                            <td style="text-align: right;">1,570,000</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252SPT07A_0202</td>
+                            <td>Công tác quốc phòng và an ninh [1.5 tc]</td>
+                            <td style="text-align: right;">1,177,500</td>
+                            <td style="text-align: right;">1,177,500</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252SPT07A_0302</td>
+                            <td>Quân sự chung [1.5 tc]</td>
+                            <td style="text-align: right;">1,177,500</td>
+                            <td style="text-align: right;">1,177,500</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>252SPT07A_0402</td>
+                            <td>Kỹ thuật chiến đấu bộ binh và chiến thuật [3.0 tc]</td>
+                            <td style="text-align: right;">2,355,000</td>
+                            <td style="text-align: right;">2,355,000</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Lệ phí ăn,ở, trang phục GDQPAN</td>
+                            <td>Lệ phí ăn,ở, trang phục GDQPAN</td>
+                            <td style="text-align: right;">2,512,000</td>
+                            <td style="text-align: right;">2,512,000</td>
+                            <td style="text-align: center;">20/03/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí điểm chuyển miễn</td>
+                            <td>Phí điểm chuyển miễn: Phát âm</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí điểm chuyển miễn</td>
+                            <td>Phí điểm chuyển miễn: Kỹ năng viết</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí điểm chuyển miễn</td>
+                            <td>Phí điểm chuyển miễn: Kỹ năng nói</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí điểm chuyển miễn</td>
+                            <td>Phí điểm chuyển miễn: Kỹ năng đọc</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí điểm chuyển miễn</td>
+                            <td>Phí điểm chuyển miễn: Kỹ năng nghe</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: right;">1,001,700</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+
+                        <!-- Group 3: 2025-2026 HK01 -->
+                        <tr style="background-color: #fcdfd7; font-weight: bold; color: #000;">
+                            <td colspan="6" style="padding: 6px 10px;">Năm học : 2025-2026, Học kỳ: HK01</td>
+                        </tr>
+                        <tr>
+                            <td>251BUS02H01</td>
+                            <td>Phí học lại Giao tiếp trong kinh doanh [2.0 tc]</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: right;">2,226,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251ECO02H02</td>
+                            <td>Kinh tế vĩ mô [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251IS03H01</td>
+                            <td>Năng lực số ứng dụng [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251MAT03H22</td>
+                            <td>Xác suất và thống kê [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251MAT04H11</td>
+                            <td>Toán dành cho kinh tế [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251PLT01H19</td>
+                            <td>Triết học Mác - Lênin [3.0 tc]</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: right;">3,339,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>251SPT01H12</td>
+                            <td>Giáo dục thể chất I (Đại cương) [1.0 tc]</td>
+                            <td style="text-align: right;">785,000</td>
+                            <td style="text-align: right;">785,000</td>
+                            <td style="text-align: center;">09/02/2026</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Bảo hiểm y tế (bắt buộc, có giá trị 15 tháng)</td>
+                            <td>Bảo hiểm y tế (bắt buộc, có giá trị 15 tháng)</td>
+                            <td style="text-align: right;">789,750</td>
+                            <td style="text-align: right;">789,750</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Dịch vụ nhập học</td>
+                            <td>Dịch vụ nhập học</td>
+                            <td style="text-align: right;">250,000</td>
+                            <td style="text-align: right;">250,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Học phí</td>
+                            <td>Học phí HK01 2025-2026</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: right;">0</td>
+                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Phí bảo hiểm thân thể (tự nguyện, có giá trị 4 năm)</td>
+                            <td>Phí bảo hiểm thân thể (tự nguyện, có giá trị 4 năm)</td>
+                            <td style="text-align: right;">400,000</td>
+                            <td style="text-align: right;">400,000</td>
+                            <td style="text-align: center;">13/09/2025</td>
+                            <td style="text-align: right;">0</td>
+                        </tr>
+
+                        <!-- Summary Row -->
+                        <tr style="background-color: #f5be7e; font-weight: bold; color: #000;">
+                            <td colspan="5" style="padding: 7px 10px; font-weight: bold;">Tổng học phí còn nợ :</td>
+                            <td style="text-align: right; font-weight: bold; padding: 7px 10px;">22,105,000</td>
+                        </tr>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="total-debt-row" style="background-color: #fce8a6; color: #843b00; font-weight: bold; font-size: 14px; padding: 10px 14px; border: 1px solid #faebcc; border-radius: 4px;">
-                Tổng học phí còn nợ : <span style="font-size: 16px; color: #b71c1c;">${tc.tongNo || "22,109,000"} VNĐ</span>
             </div>
         `;
     },
@@ -1873,9 +2126,9 @@ const HVNH = {
         `;
     },
 
-    // 8. Chi tiết hóa đơn (Hiển thị loading spinner theo yêu cầu)
+    // 8. Chi tiết hóa đơn (Hiển thị bảng hóa đơn)
     renderPortalHoaDon: function (u) {
-        return this.renderPortalLoadingSpinner();
+        return this.renderPortalHoaDonTable(u);
     },
 
     renderPortalHoaDonTable: function (u) {
@@ -2284,32 +2537,49 @@ const HVNH = {
         `;
     },
 
-    // 16. Lịch thi
+    // 16. Lịch thi (Khớp ảnh 4)
     renderPortalLichThi: function (u) {
         return `
-            <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
-                <i class="glyphicon glyphicon-time"></i> LỊCH THI KẾT THÚC HỌC PHẦN DỰ KIẾN (HK1 2026-2027)
+            <div class="portal-filter-row" style="margin-bottom: 14px;">
+                <div class="portal-filter-item">
+                    <label>Năm học :</label>
+                    <select class="portal-filter-select" style="min-width: 160px;">
+                        <option selected>2026-2027</option>
+                        <option>2025-2026</option>
+                    </select>
+                </div>
+                <div class="portal-filter-item" style="margin-left: 20px;">
+                    <label>Học kỳ :</label>
+                    <select class="portal-filter-select" style="min-width: 140px;">
+                        <option selected>Học kỳ 1</option>
+                        <option>Học kỳ 2</option>
+                        <option>Học kỳ hè</option>
+                    </select>
+                </div>
             </div>
+
             <div class="table-responsive">
                 <table class="portal-table-hvnh">
                     <thead>
                         <tr>
-                            <th>STT</th>
-                            <th>Mã LHP</th>
-                            <th>Tên học phần</th>
-                            <th>Ngày thi</th>
-                            <th>Ca thi / Giờ thi</th>
-                            <th>Phòng thi</th>
-                            <th>Số báo danh</th>
-                            <th>Hình thức thi</th>
+                            <th style="width: 100px; text-align: left;">Mã học phần</th>
+                            <th style="text-align: left; min-width: 150px;">Tên học phần</th>
+                            <th style="width: 95px; text-align: center;">Số báo danh</th>
+                            <th style="width: 60px; text-align: center;">STC</th>
+                            <th style="width: 90px; text-align: center;">Ngày thi</th>
+                            <th style="width: 75px; text-align: center;">Giờ thi</th>
+                            <th style="width: 130px; text-align: center;">Thời lượng (phút)</th>
+                            <th style="width: 85px; text-align: center;">Phòng thi</th>
+                            <th style="width: 85px; text-align: center;">Địa điểm</th>
+                            <th style="width: 85px; text-align: center;">Ghi chú</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td style="text-align:center;">1</td><td style="text-align:center; font-weight:bold;">261FIN22H04</td><td>Tài chính - Tiền tệ</td><td style="text-align:center;">18/12/2026</td><td style="text-align:center;">Ca 1 (07:30)</td><td style="text-align:center;">D2.301</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
-                        <tr><td style="text-align:center;">2</td><td style="text-align:center; font-weight:bold;">261LAW02H03</td><td>Luật kinh tế</td><td style="text-align:center;">21/12/2026</td><td style="text-align:center;">Ca 2 (09:45)</td><td style="text-align:center;">D2.302</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
-                        <tr><td style="text-align:center;">3</td><td style="text-align:center; font-weight:bold;">261FIN03H01</td><td>Thuế</td><td style="text-align:center;">24/12/2026</td><td style="text-align:center;">Ca 1 (07:30)</td><td style="text-align:center;">D1.204</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
-                        <tr><td style="text-align:center;">4</td><td style="text-align:center; font-weight:bold;">261MAT16H01</td><td>Phân tích định lượng trong kinh tế</td><td style="text-align:center;">27/12/2026</td><td style="text-align:center;">Ca 3 (13:15)</td><td style="text-align:center;">D3.PM01</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Trắc nghiệm máy tính</td></tr>
-                        <tr><td style="text-align:center;">5</td><td style="text-align:center; font-weight:bold;">261FIN01H04</td><td>Tài chính doanh nghiệp I</td><td style="text-align:center;">30/12/2026</td><td style="text-align:center;">Ca 2 (09:45)</td><td style="text-align:center;">D2.301</td><td style="text-align:center; font-weight:bold;">0568</td><td style="text-align:center;">Tự luận (90 phút)</td></tr>
+                        <tr>
+                            <td colspan="10" style="padding: 10px 12px; color: #333; font-size: 13px;">
+                                Chưa có lịch thi
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -2985,79 +3255,10 @@ const HVNH = {
     },
 
     xemChiTietHoaDon: function (soSeries) {
-        const u = this.state.currentUser;
-        const body = `
-            <div style="border: 2px solid #004b63; padding: 25px; background: #fdfdfd; font-family: 'Times New Roman', serif;">
-                <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #004b63; padding-bottom: 12px; margin-bottom: 15px;">
-                    <div>
-                        <div style="font-weight: bold; font-size: 15px; color: #004b63;">HỌC VIỆN NGÂN HÀNG</div>
-                        <div style="font-size: 13px;">Địa chỉ: 12 Chùa Bộc, Quận Đống Đa, Hà Nội</div>
-                        <div style="font-size: 13px;">Mã số thuế: <strong>0100779841</strong></div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: bold; font-size: 15px; color: #c62828;">HÓA ĐƠN ĐIỆN TỬ</div>
-                        <div style="font-size: 12.5px;">Mẫu số: <strong>01GTKT0/001</strong></div>
-                        <div style="font-size: 12.5px;">Ký hiệu: <strong>HVNH/25E</strong></div>
-                        <div style="font-size: 12.5px;">Số Series: <strong>${soSeries || "0429914043"}</strong></div>
-                    </div>
-                </div>
-
-                <div style="font-size: 13.5px; line-height: 1.8; margin-bottom: 15px;">
-                    <div>Họ tên người nộp tiền: <strong>${u.hoTen}</strong></div>
-                    <div>Mã số sinh viên: <strong>${u.username}</strong> | Lớp: <strong>${u.lop}</strong></div>
-                    <div>Chuyên ngành: <strong>${u.chuongTrinhDaoTao || "CLC - Hoạch định và Tư vấn tài chính"}</strong></div>
-                    <div>Hình thức thanh toán: <strong>Chuyển khoản liên ngân hàng số</strong></div>
-                </div>
-
-                <table class="table table-bordered" style="font-size: 13px; margin-bottom: 15px;">
-                    <thead style="background: #f0f4f8;">
-                        <tr>
-                            <th style="text-align: center; width: 40px;">STT</th>
-                            <th>Nội dung các khoản thu</th>
-                            <th style="text-align: center; width: 60px;">ĐVT</th>
-                            <th style="text-align: center; width: 60px;">SL</th>
-                            <th style="text-align: right; width: 120px;">Đơn giá</th>
-                            <th style="text-align: right; width: 130px;">Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align: center;">1</td>
-                            <td>Học phí các môn học tín chỉ Đại học chính quy Chất lượng cao</td>
-                            <td style="text-align: center;">Kỳ</td>
-                            <td style="text-align: center;">1</td>
-                            <td style="text-align: right;">20,034,000</td>
-                            <td style="text-align: right; font-weight: bold;">20,034,000 đ</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="5" style="text-align: right; font-weight: bold;">Tổng cộng tiền thanh toán:</td>
-                            <td style="text-align: right; font-weight: bold; color: #c62828;">20,034,000 đ</td>
-                        </tr>
-                    </tfoot>
-                </table>
-
-                <div style="display: flex; justify-content: space-between; margin-top: 30px; font-size: 13px;">
-                    <div style="text-align: center; width: 200px;">
-                        <strong>NGƯỜI NỘP TIỀN</strong><br>
-                        <em>(Ký, ghi rõ họ tên)</em>
-                    </div>
-                    <div style="text-align: center; width: 250px;">
-                        <em>Hà Nội, ngày 13 tháng 09 năm 2025</em><br>
-                        <strong>THỦ TRƯỞNG ĐƠN VỊ</strong><br>
-                        <div style="margin-top: 15px; color: #c62828; font-weight: bold; border: 2px dashed #c62828; padding: 6px; display: inline-block; border-radius: 4px;">
-                            ✓ KÝ SỐ BỞI HỌC VIỆN NGÂN HÀNG<br>
-                            <span style="font-size: 11px;">Ngày ký: 13/09/2025</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        this.showModal("Chi tiết biên lai - Hóa đơn điện tử", body, `
-            <button type="button" class="btn btn-default" onclick="window.print()"><i class="glyphicon glyphicon-print"></i> In hóa đơn</button>
-            <button type="button" class="btn btn-primary" style="background-color: #004b63;" data-dismiss="modal">Đóng</button>
-        `);
+        const bodyContent = document.getElementById("portalBodyContent");
+        if (bodyContent) {
+            bodyContent.innerHTML = this.renderPortalLoadingSpinner();
+        }
     },
 
     submitPhucKhao: function (e) {
