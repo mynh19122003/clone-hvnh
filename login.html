@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Đăng nhập - Cổng thông tin đào tạo - Học viện Ngân hàng</title>
     <link rel="shortcut icon" href="assets/logo/logo.png" type="image/x-icon" />
-    
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css?v=3.4" />
@@ -40,7 +41,10 @@
             padding: 30px 15px;
         }
 
-        input, button, select, textarea {
+        input,
+        button,
+        select,
+        textarea {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
@@ -102,9 +106,20 @@
         }
 
         @keyframes barIndeterminate {
-            0% { left: -45%; width: 35%; }
-            50% { left: 25%; width: 60%; }
-            100% { left: 100%; width: 45%; }
+            0% {
+                left: -45%;
+                width: 35%;
+            }
+
+            50% {
+                left: 25%;
+                width: 60%;
+            }
+
+            100% {
+                left: 100%;
+                width: 45%;
+            }
         }
 
         @keyframes cardEntrance {
@@ -112,6 +127,7 @@
                 opacity: 0;
                 transform: translateY(18px) scale(0.98);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -119,9 +135,23 @@
         }
 
         @keyframes cardShake {
-            0%, 100% { transform: translateX(0); }
-            15%, 45%, 75% { transform: translateX(-8px); }
-            30%, 60%, 90% { transform: translateX(8px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            15%,
+            45%,
+            75% {
+                transform: translateX(-8px);
+            }
+
+            30%,
+            60%,
+            90% {
+                transform: translateX(8px);
+            }
         }
 
         .logo-box {
@@ -231,7 +261,7 @@
             border-radius: 4px;
             background: #ffffff;
             cursor: pointer;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
             transition: opacity 0.2s ease;
         }
 
@@ -313,8 +343,13 @@
         }
 
         @keyframes btnShimmer {
-            0% { background-position: 100% 0; }
-            100% { background-position: -100% 0; }
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
         }
 
         /* Button Success State */
@@ -333,9 +368,21 @@
         }
 
         @keyframes btnWiggle {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20%,
+            60% {
+                transform: translateX(-5px);
+            }
+
+            40%,
+            80% {
+                transform: translateX(5px);
+            }
         }
 
         /* Circular Spinner Icon */
@@ -351,7 +398,9 @@
         }
 
         @keyframes btnRotate {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Checkmark Icon */
@@ -374,7 +423,9 @@
         }
 
         @keyframes checkmarkDraw {
-            to { stroke-dashoffset: 0; }
+            to {
+                stroke-dashoffset: 0;
+            }
         }
 
         /* Ripple Effect */
@@ -409,6 +460,7 @@
                 opacity: 0;
                 transform: translateY(-8px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -470,39 +522,8 @@
         }
     </style>
 </head>
+
 <body>
-    <!-- Top Header & Navbar matching homepage 100% -->
-    <header id="header">
-        <nav class="navbar navbar-default stylecolor" style="margin-bottom: 0;">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-
-            <div class="navbar-collapse collapse" id="menu" style="color: black !important">
-                <ul class="nav navbar-nav">
-                    <li><a href="index.html#/">Trang chủ</a></li>
-                    <li><a href="index.html#/tra-cuu-van-bang">Tra cứu văn bằng</a></li>
-                    <li><a href="index.html#/tra-cuu-tkb">Tra cứu thời khóa biểu</a></li>
-                    <li><a href="index.html#/tra-cuu-tuyen-sinh">Tra cứu tuyển sinh</a></li>
-                    <li><a href="index.html#/home/vien-quoc-te">Viện Đào tạo Quốc tế</a></li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown stylecolor" style="padding: 10px 10px 0px 0px">
-                        <span><a href="login.html">Đăng nhập</a></span>
-                        <ul class="dropdown-menu stylecolor">
-                            <div class="divider"></div>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
 
     <div class="login-page-body">
         <div class="login-card" id="loginCard">
@@ -511,50 +532,45 @@
                 <div class="card-loader-bar" id="cardLoaderBar"></div>
             </div>
 
-        <!-- Logo Học viện Ngân hàng (170px như web trường online.hvnh.edu.vn) -->
-        <div class="logo-box">
-            <img src="assets/logo/logo.png" alt="Học viện Ngân hàng" class="login-logo-img">
-        </div>
-
-        <div class="school-title">HỌC VIỆN NGÂN HÀNG</div>
-        <div class="portal-subtitle">Cổng thông tin đào tạo</div>
-        <div class="login-divider"></div>
-
-        <div id="loginAlert" class="alert-box"></div>
-
-        <form id="frmLogin" onsubmit="handleLoginSubmit(event)">
-            <div class="form-group">
-                <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" required autocomplete="username">
-            </div>
-            
-            <div class="form-group">
-                <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required autocomplete="current-password">
+            <!-- Logo Học viện Ngân hàng (170px như web trường online.hvnh.edu.vn) -->
+            <div class="logo-box">
+                <img src="assets/logo/logo.png" alt="Học viện Ngân hàng" class="login-logo-img">
             </div>
 
-            <!-- Mã bảo vệ Captcha chuẩn web trường -->
-            <div class="captcha-wrapper">
-                <div class="captcha-canvas-box">
-                    <canvas id="captchaCanvas" width="220" height="46" onclick="generateCaptcha()" title="Nhấp để đổi mã bảo vệ"></canvas>
-                    <button type="button" class="captcha-refresh-btn" onclick="generateCaptcha()" title="Đổi mã bảo vệ">↻</button>
+            <div class="school-title">HỌC VIỆN NGÂN HÀNG</div>
+            <div class="portal-subtitle">Cổng thông tin đào tạo</div>
+            <div class="login-divider"></div>
+
+            <div id="loginAlert" class="alert-box"></div>
+
+            <form id="frmLogin" onsubmit="handleLoginSubmit(event)">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="txtUsername" placeholder="Tên đăng nhập" required
+                        autocomplete="username">
                 </div>
-                <div class="captcha-label">Nhập mã bảo vệ:</div>
-                <input type="text" class="form-control" id="txtCaptcha" placeholder="" autocomplete="off" required>
-            </div>
 
-            <button type="submit" class="btn-login" id="btnLogin">
-                <span class="btn-text" id="btnText">Đăng nhập</span>
-            </button>
-        </form>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="txtPassword" placeholder="Mật khẩu" required
+                        autocomplete="current-password">
+                </div>
 
-        <div class="test-helper">
-            <div>Tài khoản test: <strong>008307000568</strong> | Mật khẩu: <strong>12351235</strong></div>
-            <button type="button" class="test-btn" onclick="fillTestAccount()">
-                ⚡ Điền tài khoản test
-            </button>
-            <br>
-            <a href="index.html#/" class="back-home">← Cổng thông tin đào tạo HVNH</a>
+                <!-- Mã bảo vệ Captcha chuẩn web trường -->
+                <div class="captcha-wrapper">
+                    <div class="captcha-canvas-box">
+                        <canvas id="captchaCanvas" width="220" height="46" onclick="generateCaptcha()"
+                            title="Nhấp để đổi mã bảo vệ"></canvas>
+                        <button type="button" class="captcha-refresh-btn" onclick="generateCaptcha()"
+                            title="Đổi mã bảo vệ">↻</button>
+                    </div>
+                    <div class="captcha-label">Nhập mã bảo vệ:</div>
+                    <input type="text" class="form-control" id="txtCaptcha" placeholder="" autocomplete="off" required>
+                </div>
+
+                <button type="submit" class="btn-login" id="btnLogin">
+                    <span class="btn-text" id="btnText">Đăng nhập</span>
+                </button>
+            </form>
         </div>
-    </div>
     </div>
 
     <!-- Application Data -->
@@ -768,4 +784,5 @@
         }
     </script>
 </body>
+
 </html>
