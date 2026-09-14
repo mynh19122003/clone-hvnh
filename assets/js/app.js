@@ -2501,34 +2501,9 @@ const HVNH = {
         `;
     },
 
-    // 15. Lịch học
+    // 15. Lịch học (Hiển thị loading spinner)
     renderPortalLichHoc: function (u) {
-        return `
-            <div style="font-weight: bold; color: #004b63; margin-bottom: 12px; font-size: 13.5px;">
-                <i class="glyphicon glyphicon-calendar"></i> THỜI KHÓA BIỂU CÁ NHÂN TUẦN HIỆN TẠI (LỚP: ${u.lop || "CLC - Hoạch định và Tư vấn tài chính 01"})
-            </div>
-            <div class="table-responsive">
-                <table class="maindivtb">
-                    <thead>
-                        <tr>
-                            <th style="width: 80px;">Thứ</th>
-                            <th style="width: 32%;">Sáng (Tiết 1 - 6)</th>
-                            <th style="width: 32%;">Chiều (Tiết 7 - 12)</th>
-                            <th style="width: 32%;">Tối (Tiết 13 - 15)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="thu">Thứ 2</td><td><div class="divcontent"><b style="color:#056382;">Tài chính - Tiền tệ</b><br>Phòng: D2.304 | Giảng viên: TS. Đỗ Đức Minh</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Thứ 3</td><td><div class="slot-empty">—</div></td><td><div class="divcontent"><b style="color:#056382;">Luật kinh tế</b><br>Phòng: D1.201 | Giảng viên: ThS. Hoàng Mai Chi</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Thứ 4</td><td><div class="divcontent"><b style="color:#056382;">Thuế</b><br>Phòng: D2.508 | Giảng viên: PGS.TS. Lê Đình Hoàng</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Thứ 5</td><td><div class="slot-empty">—</div></td><td><div class="divcontent"><b style="color:#056382;">Phân tích định lượng trong kinh tế</b><br>Phòng: D3.101 | Giảng viên: TS. Vũ Hoàng Long</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Thứ 6</td><td><div class="divcontent"><b style="color:#056382;">Tài chính doanh nghiệp I</b><br>Phòng: D2.304 | Giảng viên: TS. Nguyễn Văn Hùng</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Thứ 7</td><td><div class="divcontent"><b style="color:#056382;">Giáo dục thể chất IV (Cầu lông)</b><br>Nhà đa năng HVNH | Giảng viên: ThS. Lê Tuấn Anh</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
-                        <tr><td class="thu">Chủ nhật</td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td><td><div class="slot-empty">—</div></td></tr>
-                    </tbody>
-                </table>
-            </div>
-        `;
+        return this.renderPortalLoadingSpinner();
     },
 
     // 16. Lịch thi (Khớp ảnh 4)
