@@ -95,10 +95,13 @@ const HVNH = {
 
         switch (route) {
             case "tra-cuu-van-bang":
+                this.renderDegreeLookup();
+                break;
             case "tra-cuu-tkb":
+                this.renderTimetableLookup();
+                break;
             case "tra-cuu-tuyen-sinh":
-                window.location.hash = "#/";
-                this.renderHome();
+                this.renderAdmissionsLookup();
                 break;
             case "login":
                 this.renderLoginPage();

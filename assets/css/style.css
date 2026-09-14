@@ -127,9 +127,14 @@ a:active {
     text-decoration: none !important;
 }
 
-#menu ul li a:focus {
+#menu ul li a:focus,
+#menu ul li a:active,
+#menu ul li.active a {
     color: #fff !important;
     background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 .dropdown.stylecolor span a {
