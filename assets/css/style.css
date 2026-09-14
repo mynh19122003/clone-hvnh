@@ -958,6 +958,9 @@ a:hover, a:focus {
 .portal-sidebar-nav > li.active > a {
     font-weight: bold;
     color: #056382;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 /* Right Main Content Panel */
@@ -1247,9 +1250,13 @@ a:hover, a:focus {
     padding: 7px 12px 7px 22px;
     color: #333333;
     font-size: 13px;
-    text-decoration: none;
+    text-decoration: none !important;
     position: relative;
     transition: all 0.15s ease-in-out;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .portal-sidebar-nav a::before {
@@ -1264,14 +1271,22 @@ a:hover, a:focus {
     background-color: #eaf2f6;
     color: #004b63;
     font-weight: 500;
+    text-decoration: none !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-.portal-sidebar-nav a.active {
+.portal-sidebar-nav a.active,
+.portal-sidebar-nav a:focus,
+.portal-sidebar-nav a:active {
     background-color: #e0ecf3;
-    color: #000000;
+    color: #004b63;
     font-weight: bold;
-    border: 1px solid #777777;
-    outline: 1px dotted #222222;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
 }
 
 .portal-sidebar-nav a.active::before {
