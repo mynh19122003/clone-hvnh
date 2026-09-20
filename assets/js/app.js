@@ -1429,19 +1429,19 @@ const HVNH = {
                 <div class="student-col">
                     <div class="section-sub-title">Thông tin khóa học</div>
                     <table class="student-info-table">
-                        <tr><td class="label-td">Niên khóa:</td><td class="val-td">${u.nienKhoa || "2025 - 2029"}</td></tr>
-                        <tr><td class="label-td">Khóa học:</td><td class="val-td">${u.khoaHoc || "K28 (2025 - 2029)"}</td></tr>
-                        <tr><td class="label-td">Chức vụ:</td><td class="val-td">${u.chucVu || "Sinh viên"}</td></tr>
-                        <tr><td class="label-td">Đối tượng:</td><td class="val-td">${u.doiTuong || "Đại học chính quy"}</td></tr>
-                        <tr><td class="label-td">THPT lớp 12:</td><td class="val-td">${u.lop12 || "THPT Chuyên Chu Văn An"}</td></tr>
-                        <tr><td class="label-td">Đoàn:</td><td class="val-td">${u.doan || "Đã vào đoàn"}</td></tr>
-                        <tr><td class="label-td">Ngày vào đoàn:</td><td class="val-td">${u.ngayVaoDoan || "26/03/2023"}</td></tr>
-                        <tr><td class="label-td">Đảng:</td><td class="val-td">${u.dang || "Chưa"}</td></tr>
+                        <tr><td class="label-td">Niên khóa:</td><td class="val-td">${u.nienKhoa || ""}</td></tr>
+                        <tr><td class="label-td">Khóa học:</td><td class="val-td">${u.khoaHoc || ""}</td></tr>
+                        <tr><td class="label-td">Chức vụ:</td><td class="val-td">${u.chucVu || ""}</td></tr>
+                        <tr><td class="label-td">Đối tượng:</td><td class="val-td">${u.doiTuong || ""}</td></tr>
+                        <tr><td class="label-td">THPT lớp 12:</td><td class="val-td">${u.lop12 || ""}</td></tr>
+                        <tr><td class="label-td">Đoàn:</td><td class="val-td">${u.doan || ""}</td></tr>
+                        <tr><td class="label-td">Ngày vào đoàn:</td><td class="val-td">${u.ngayVaoDoan || ""}</td></tr>
+                        <tr><td class="label-td">Đảng:</td><td class="val-td">${u.dang || ""}</td></tr>
                         <tr><td class="label-td">Ngày vào đảng:</td><td class="val-td">${u.ngayVaoDang || ""}</td></tr>
-                        <tr><td class="label-td">Loại hình đào tạo:</td><td class="val-td">${u.loaiHinhDaoTao || "Đại học chính quy CLC"}</td></tr>
-                        <tr><td class="label-td">Cố vấn học tập:</td><td class="val-td">${u.coVanHocTap || "TS. Phạm Thị Minh Nguyệt"}</td></tr>
-                        <tr><td class="label-td">Liên hệ CVHT:</td><td class="val-td">${u.lienHeCVHT || "nguyetptm@hvnh.edu.vn"}</td></tr>
-                        <tr><td class="label-td">Lớp sinh viên:</td><td class="val-td" style="color: #004b63;">${u.lop || "CLC - Hoạch định và Tư vấn tài chính 01"}</td></tr>
+                        <tr><td class="label-td">Loại hình đào tạo:</td><td class="val-td">${u.loaiHinhDaoTao || ""}</td></tr>
+                        <tr><td class="label-td">Cố vấn học tập:</td><td class="val-td">${u.coVanHocTap || ""}</td></tr>
+                        <tr><td class="label-td">Liên hệ CVHT:</td><td class="val-td">${u.lienHeCVHT || ""}</td></tr>
+                        <tr><td class="label-td">Lớp sinh viên:</td><td class="val-td" style="color: #004b63;">${u.lop || ""}</td></tr>
                     </table>
                 </div>
 
@@ -1449,12 +1449,12 @@ const HVNH = {
                 <div class="student-col">
                     <div class="section-sub-title">Thông tin liên lạc</div>
                     <table class="student-info-table">
-                        <tr><td class="label-td">Dân tộc:</td><td class="val-td">${u.danToc || "Kinh"}</td></tr>
-                        <tr><td class="label-td">Tôn giáo:</td><td class="val-td">${u.tonGiao || "Không"}</td></tr>
-                        <tr><td class="label-td">Quốc gia:</td><td class="val-td">${u.quocGia || "Việt Nam"}</td></tr>
-                        <tr><td class="label-td">Tỉnh thành:</td><td class="val-td">${u.tinhThanh || "TP. Hà Nội"}</td></tr>
-                        <tr><td class="label-td">Quận huyện:</td><td class="val-td">${u.quanHuyen || "Quận Cầu Giấy"}</td></tr>
-                        <tr><td class="label-td">Di động:</td><td class="val-td">${u.diDong || "0968 554 219"}</td></tr>
+                        <tr><td class="label-td">Dân tộc:</td><td class="val-td">${u.danToc || ""}</td></tr>
+                        <tr><td class="label-td">Tôn giáo:</td><td class="val-td">${u.tonGiao || ""}</td></tr>
+                        <tr><td class="label-td">Quốc gia:</td><td class="val-td">${u.quocGia || ""}</td></tr>
+                        <tr><td class="label-td">Tỉnh thành:</td><td class="val-td">${u.tinhThanh || ""}</td></tr>
+                        <tr><td class="label-td">Quận huyện:</td><td class="val-td">${u.quanHuyen || ""}</td></tr>
+                        <tr><td class="label-td">Di động:</td><td class="val-td">${u.diDong || ""}</td></tr>
                         <tr><td class="label-td">ĐT bàn:</td><td class="val-td">${u.dtBan || ""}</td></tr>
                     </table>
                     <div class="portal-action-btn-group">
@@ -1468,15 +1468,15 @@ const HVNH = {
             <div class="section-sub-title">Thông tin gia đình</div>
             <div class="row" style="font-size: 13px; line-height: 2; margin-bottom: 20px;">
                 <div class="col-md-6">
-                    <div>Họ tên Cha: <strong>${gd.hoTenCha || "Huỳnh Quốc Thái"}</strong></div>
-                    <div>Họ tên Mẹ: <strong>${gd.hoTenMe || "Nguyễn Thị Thu Hương"}</strong></div>
-                    <div>Khi cần báo tin cho: <strong>${gd.khiCanBaoTin || "Huỳnh Quốc Thái (Bố)"}</strong></div>
-                    <div>Địa chỉ báo tin: <strong>${gd.diaChiBaoTin || "Số 36 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội"}</strong></div>
+                    <div>Họ tên Cha: <strong>${gd.hoTenCha || ""}</strong></div>
+                    <div>Họ tên Mẹ: <strong>${gd.hoTenMe || ""}</strong></div>
+                    <div>Khi cần báo tin cho: <strong>${gd.khiCanBaoTin || ""}</strong></div>
+                    <div>Địa chỉ báo tin: <strong>${gd.diaChiBaoTin || ""}</strong></div>
                 </div>
                 <div class="col-md-6">
-                    <div>Điện thoại Cha: <strong>${gd.sdtCha || "0912 345 678"}</strong></div>
-                    <div>Điện thoại Mẹ: <strong>${gd.sdtMe || "0983 654 321"}</strong></div>
-                    <div>Điện thoại báo tin: <strong>${gd.sdtBaoTin || "0912 345 678"}</strong></div>
+                    <div>Điện thoại Cha: <strong>${gd.sdtCha || ""}</strong></div>
+                    <div>Điện thoại Mẹ: <strong>${gd.sdtMe || ""}</strong></div>
+                    <div>Điện thoại báo tin: <strong>${gd.sdtBaoTin || ""}</strong></div>
                 </div>
             </div>
 
@@ -1484,13 +1484,13 @@ const HVNH = {
             <div class="section-sub-title">Thông tin bằng tốt nghiệp THPT</div>
             <div class="row" style="font-size: 13px; line-height: 2;">
                 <div class="col-md-4">
-                    <div>Số hiệu bằng: <strong>${thpt.soHieuBang || "B2025-081293"}</strong></div>
+                    <div>Số hiệu bằng: <strong>${thpt.soHieuBang || ""}</strong></div>
                 </div>
                 <div class="col-md-4">
-                    <div>Số vào sổ cấp bằng: <strong>${thpt.soVaoSo || "1284/THPT"}</strong></div>
+                    <div>Số vào sổ cấp bằng: <strong>${thpt.soVaoSo || ""}</strong></div>
                 </div>
                 <div class="col-md-4">
-                    <div>Nơi cấp: <strong>${thpt.noiCap || "Sở GD&ĐT Hà Nội"}</strong></div>
+                    <div>Nơi cấp: <strong>${thpt.noiCap || ""}</strong></div>
                 </div>
             </div>
         `;
