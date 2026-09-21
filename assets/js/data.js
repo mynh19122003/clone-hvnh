@@ -739,7 +739,7 @@ const HVNH_DATA = {
             gioiTinh: "Nữ",
             ngaySinh: "03/10/2007",
             noiSinh: "Hà Nội",
-            cmnd: "001307000568",
+            cmnd: "008307000568",
             tinhTrang: "Còn học",
             email: "28A4014332clc.hvnh@gmail.com",
             emailCaNhan: "nguyenngochavy3012007@gmail.com",
