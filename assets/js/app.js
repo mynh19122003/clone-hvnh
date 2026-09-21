@@ -1412,7 +1412,7 @@ const HVNH = {
                     </div>
                     <div style="flex: 1;">
                         <table class="student-info-table">
-                            <tr><td class="label-td">Mã SV:</td><td class="val-td">${u.username}</td></tr>
+                            <tr><td class="label-td">Mã SV:</td><td class="val-td">${u.maSV ?? u.username ?? ""}</td></tr>
                             <tr><td class="label-td">Họ tên:</td><td class="val-td">${u.hoTen}</td></tr>
                             <tr><td class="label-td">Giới tính:</td><td class="val-td">${u.gioiTinh || "Nữ"}</td></tr>
                             <tr><td class="label-td">Ngày sinh:</td><td class="val-td">${u.ngaySinh || "12/04/2007"}</td></tr>
